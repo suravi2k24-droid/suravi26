@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultural Events - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .cultural-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(255, 105, 180, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cultural-card:hover {
+            border-color: #ff69b4;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 105, 180, 0.2);
+        }
+
+        .cultural-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff69b4, #9370db);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .cultural-card:hover::before {
+            opacity: 1;
+        }
+
+        .cultural-icon {
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-bottom: 1rem;
+        }
+
+        .cultural-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .cultural-desc {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .cultural-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cultural-detail-item {
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(255, 105, 180, 0.1);
+            border-radius: 10px;
+        }
+
+        .cultural-detail-label {
+            font-size: 0.8rem;
+            color: #9370db;
+            margin-bottom: 0.2rem;
+        }
+
+        .cultural-detail-value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .cultural-category {
+            background: linear-gradient(135deg, rgba(255, 105, 180, 0.1) 0%, rgba(147, 112, 219, 0.1) 100%);
+            border: 2px solid rgba(255, 105, 180, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .cultural-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 105, 180, 0.3);
+        }
+
+        .cultural-category-icon {
+            font-size: 2.5rem;
+            color: #ff69b4;
+            margin-right: 1rem;
+        }
+
+        .cultural-category-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .cultural-count {
+            background: #ff69b4;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        /* Performance styles */
+        .performance-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(147, 112, 219, 0.2);
+            color: #9370db;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Stage info */
+        .stage-info {
+            background: rgba(255, 105, 180, 0.05);
+            border: 1px solid rgba(255, 105, 180, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stage-name {
+            color: #ff69b4;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-orbitron">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="#" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+
+            <!-- Events with submenu for mobile -->
+            <div class="relative">
+                <button id="mobile-events-btn"
+                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                    <a href="non-technical.html"
+                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                </div>
+            </div>
+
+            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cultural Events Hero -->
+    <section class="min-h-[50vh] relative flex items-center justify-center pt-24 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                <span class="text-pink-400">CULTURAL</span> EVENTS
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-purple-300">
+                Celebrating Art, Music, Dance & Performance
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#dance-music" class="neon-btn px-6 py-3">Dance & Music</a>
+                <a href="#drama-acting" class="neon-btn px-6 py-3">Drama & Acting</a>
+                <a href="#fashion-show" class="neon-btn px-6 py-3">Fashion Show</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cultural Events Grid -->
+    <section class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Dance & Music Events -->
+            <div id="dance-music" class="cultural-category">
+                <div class="cultural-header">
+                    <div class="cultural-category-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h2 class="cultural-category-title">Dance & Music Events</h2>
+                    <span class="cultural-count">4 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                    <!-- Dance Competition -->
+                    <div class="cultural-card">
+                        <div class="cultural-icon">
+                            <i class="fas fa-child"></i>
+                        </div>
+                        <span class="performance-type">Group & Solo</span>
+                        <h3 class="cultural-title">Dance Competition</h3>
+                        <p class="cultural-desc">Step into the spotlight and let your moves do the talking in the Dance
+                            Competition! From classical to contemporary,
+                            hip-hop to freestyle, this event celebrates every style of dance. Its a stage where rhythm,
+                            energy, and passion come
+                            together to create mesmerizing performances. The most captivating and skillful dancers will
+                            steal the show!</p>
+
+                        <div class="cultural-details">
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Group Size</div>
+                                <div class="cultural-detail-value">00 members</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Time Limit</div>
+                                <div class="cultural-detail-value">00 minutes</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Prize</div>
+                                <div class="cultural-detail-value">CERTIFICATE</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Fee</div>
+                                <div class="cultural-detail-value">₹00/group</div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="stage-info">
+                            <div class="stage-name">Main Stage - Day 1 | 6:00 PM</div>
+                            <div class="text-sm text-gray-300">Sound system and basic lighting provided</div>
+                        </div> -->
+
+                        <button class="register-btn mt-4"
+                            onclick="window.location.href='https://forms.gle/5X1odpHJvGx19t9S9'">Register</button>
+                    </div>
+
+                    <!-- Song Competition -->
+                    <div class="cultural-card">
+                        <div class="cultural-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <span class="performance-type">Solo & Duet</span>
+                        <h3 class="cultural-title">Song Competition</h3>
+                        <p class="cultural-desc">Showcase your vocal talent in the Song Competition, where melody meets
+                            emotion. Whether itâ€™s a soulful ballad, an
+                            energetic pop number, or a classical tune, this event is all about singing with passion and
+                            connecting with the
+                            audience. The voice that moves hearts and hits the perfect notes will take home the crown!
+                        </p>
+
+                        <div class="cultural-details">
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Categories</div>
+                                <div class="cultural-detail-value">3</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Time Limit</div>
+                                <div class="cultural-detail-value">3-5 minutes</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Prize</div>
+                                <div class="cultural-detail-value">₹000</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Fee</div>
+                                <div class="cultural-detail-value">₹00/person</div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="stage-info">
+                            <div class="stage-name">Acoustic Stage - Day 2 | 11:00 AM</div>
+                            <div class="text-sm text-gray-300">Professional sound system with monitors</div>
+                        </div> -->
+
+                        <button class="register-btn mt-4"
+                            onclick="window.location.href='https://forms.gle/kgWRX8fdGbiwpDpw6'">Register</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drama & Acting Events -->
+            <div id="drama-acting" class="cultural-category">
+                <div class="cultural-header">
+                    <div class="cultural-category-icon">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <h2 class="cultural-category-title">Drama & Acting Events</h2>
+                    <span class="cultural-count">3 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Nukad Natak -->
+                    <div class="cultural-card">
+                        <div class="cultural-icon">
+                            <i class="fas fa-street-view"></i>
+                        </div>
+                        <span class="performance-type">Street Play</span>
+                        <h3 class="cultural-title">Nukad Natak</h3>
+                        <p class="cultural-desc">Step into the street and deliver a powerful message in the Nukkad Natak
+                            (Street Play) competition! This event
+                            focuses on social issues, using drama, humor, and emotion to engage the audience and inspire
+                            change. The most impactful
+                            and thought-provoking performance will capture hearts and minds!</p>
+
+                        <div class="cultural-details">
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Team Size</div>
+                                <div class="cultural-detail-value">00 members</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Duration</div>
+                                <div class="cultural-detail-value">10-15 minutes</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Theme</div>
+                                <div class="cultural-detail-value">Social Issues</div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="stage-info">
+                            <div class="stage-name">Open Air - Day 1 | 3:00 PM</div>
+                            <div class="text-sm text-gray-300">Multiple locations across campus</div>
+                        </div> -->
+
+                        <button class="register-btn mt-4" onclick="window.location.href='https://forms.gle/Wj65wFcEsGAGBCGt5">Register</button>
+                    </div>
+
+                    <!-- Anchoring -->
+                    <!-- <div class="cultural-card">
+                        <div class="cultural-icon">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <span class="performance-type">Individual</span>
+                        <h3 class="cultural-title">Anchoring</h3>
+                        <p class="cultural-desc">Test your oratory and stage presence in the Anchoring Competition!
+                            Participants will take the role of the host,
+                            leading an event with confidence, charisma, and quick thinking. Whether its keeping the
+                            audience engaged or handling
+                            unexpected moments, the best anchor will shine with their ability to connect and entertain!
+                        </p>
+
+                        <div class="cultural-details">
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Rounds</div>
+                                <div class="cultural-detail-value">0</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Languages</div>
+                                <div class="cultural-detail-value">2+</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Prize</div>
+                                <div class="cultural-detail-value">000</div>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="stage-info">
+                            <div class="stage-name">Mini Auditorium - Day 2 | 10:00 AM</div>
+                            <div class="text-sm text-gray-300">Wireless mic and teleprompter available</div>
+                        </div> -->
+
+                        <!-- <button class="register-btn mt-4"
+                            onclick="window.location.href='https://forms.gle/AkFovJGRznX6vukr8'">Register</button>
+                    </div> -->
+
+                    <!-- Flash Mob -->
+                    <div class="cultural-card">
+                        <div class="cultural-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <span class="performance-type">Surprise Performance</span>
+                        <h3 class="cultural-title">Flash Mob</h3>
+                        <p class="cultural-desc">Join the fun and spontaneous world of Flash Mob, where participants
+                            unite to perform a surprise, high-energy dance in
+                            public spaces! With synchronized moves and upbeat rhythms, this event is all about creating
+                            a lively,
+                            unexpected spectacle that draws attention and spreads joy. The most energetic and
+                            coordinated team will win the crowd
+                            and the competition!</p>
+
+                        <div class="cultural-details">
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Team Size</div>
+                                <div class="cultural-detail-value">00 members</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Duration</div>
+                                <div class="cultural-detail-value">3-5 minutes</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Surprise Element</div>
+                                <div class="cultural-detail-value">Essential</div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="stage-info">
+                            <div class="stage-name">Various Locations</div>
+                            <div class="text-sm text-gray-300">Pre-register for locations and timing</div>
+                        </div> -->
+
+                        <button class="register-btn mt-4" onclick="window.location.href='https://forms.gle/ctKUMmAHXk9z6TqC6'">Register</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fashion Show -->
+            <div id="fashion-show" class="cultural-category">
+                <div class="cultural-header">
+                    <div class="cultural-category-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h2 class="cultural-category-title">Fashion & Ramp Walk</h2>
+                    <span class="cultural-count">1 Major Event</span>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6">
+                    <!-- Ramp Show -->
+                    <div class="cultural-card">
+                        <div class="cultural-icon">
+                            <i class="fas fa-walking"></i>
+                        </div>
+                        <span class="performance-type">Fashion Show</span>
+                        <h3 class="cultural-title">Ramp Show</h3>
+                        <p class="cultural-desc">Grace the runway in the Ethnic Ramp Show, where fashion meets culture!
+                            Participants will showcase traditional attire
+                            with modern flair, blending elegance and heritage. Whether it's sarees, lehengas, or
+                            sherwanis, this event is all about
+                            celebrating ethnic diversity through fashion. The most stylish and poised participants will
+                            shine on the ramp!</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                            <div class="text-center p-4 bg-pink-500/10 rounded-xl">
+                                <div class="text-xl font-bold text-pink-400 mb-1">Theme 1</div>
+                                <div class="text-sm text-gray-300">Traditional Wear</div>
+                            </div>
+                            <div class="text-center p-4 bg-purple-500/10 rounded-xl">
+                                <div class="text-xl font-bold text-purple-400 mb-1">Theme 2</div>
+                                <div class="text-sm text-gray-300">Western Formal</div>
+                            </div>
+                            <div class="text-center p-4 bg-blue-500/10 rounded-xl">
+                                <div class="text-xl font-bold text-blue-400 mb-1">Theme 3</div>
+                                <div class="text-sm text-gray-300">Fusion Fashion</div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="cultural-details mt-6">
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Models</div>
+                                <div class="cultural-detail-value">Individual/Team</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Prize Pool</div>
+                                <div class="cultural-detail-value">000</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Registration</div>
+                                <div class="cultural-detail-value">00/person</div>
+                            </div>
+                            <div class="cultural-detail-item">
+                                <div class="cultural-detail-label">Time</div>
+                                <div class="cultural-detail-value">Day 2 | 7:00 PM</div>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="stage-info mt-4">
+                            <div class="stage-name">Grand Stage - Day 2 | 7:00 PM</div>
+                            <div class="text-sm text-gray-300">Professional runway, lighting, and music. Makeup room
+                                available.</div>
+                        </div> -->
+
+                        <button class="register-btn mt-4" onclick="window.location.href='https://forms.gle/Mfjp9GQzzGsUNiE46'">Register
+                            Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cultural Night -->
+            <div class="cultural-category">
+                <div class="cultural-header">
+                    <div class="cultural-category-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h2 class="cultural-category-title">Cultural Night Special</h2>
+                    <span class="cultural-count">Main Event</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-6 bg-gradient-to-br from-pink-500/10 to-purple-500/10 rounded-2xl">
+                        <h3 class="text-2xl font-bold mb-4 text-pink-400">Cultural Night Extravaganza</h3>
+                        <p class="text-gray-300 mb-4">The grand finale of SURAVI 2K26 featuring professional
+                            performances, celebrity appearances, and amazing prizes.</p>
+                        <div class="space-y-3">
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-pink-400 mr-2"></i>
+                                <span>Professional DJ and sound system</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-pink-400 mr-2"></i>
+                                <span>Celebrity guest performances</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-pink-400 mr-2"></i>
+                                <span>Fireworks display</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-pink-400 mr-2"></i>
+                                <span>Food stalls and beverages</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-2xl">
+                        <h3 class="text-2xl font-bold mb-4 text-purple-400">Performance Schedule</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="font-bold text-pink-400">7:00 PM - 8:30 PM</div>
+                                <div class="text-gray-300">Ramp Show Finals</div>
+                            </div>
+                            <div>
+                                <div class="font-bold text-purple-400">8:30 PM - 9:30 PM</div>
+                                <div class="text-gray-300">Dance & Music Winners Performance</div>
+                            </div>
+                            <div>
+                                <div class="font-bold text-blue-400">9:30 PM - 11:00 PM</div>
+                                <div class="text-gray-300">Cultural Night Party with DJ</div>
+                            </div>
+                            <div>
+                                <div class="font-bold text-yellow-400">11:00 PM</div>
+                                <div class="text-gray-300">Fireworks Finale</div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- Rules & Guidelines -->
+            <div
+                class="mt-12 p-8 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-2xl border border-pink-400/30">
+                <h3 class="text-2xl font-bold mb-6 text-pink-400 text-center">Cultural Events Guidelines</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-bold mb-3 text-purple-400">General Rules</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-music text-purple-400 mr-2 mt-1"></i>
+                                <span>Submit audio tracks in MP3 format 24 hours before event</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-clock text-purple-400 mr-2 mt-1"></i>
+                                <span>Strict time limits will be enforced</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-user text-purple-400 mr-2 mt-1"></i>
+                                <span>College ID mandatory for all participants</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-ban text-purple-400 mr-2 mt-1"></i>
+                                <span>No vulgar or offensive content allowed</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-3 text-pink-400">Backstage Facilities</h4>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-tshirt text-pink-400 mr-2 mt-1"></i>
+                                <span>Changing rooms available</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-plug text-pink-400 mr-2 mt-1"></i>
+                                <span>Charging stations for devices</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-volume-up text-pink-400 mr-2 mt-1"></i>
+                                <span>Sound check 1 hour before performance</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-first-aid text-pink-400 mr-2 mt-1"></i>
+                                <span>First aid and water provided</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="text-center mt-8">
+                    <p class="text-gray-300 mb-4">For cultural events queries and support:</p>
+                    <a href="mailto:cultural@suravi2k26.in" class="neon-btn px-8 py-3">cultural@suravi2k26.in</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-pink-400/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-pink-400">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-pink-400">Home</a></li>
+                    <li><a href="technical.html" class="hover:text-pink-400">Technical Events</a></li>
+                    <li><a href="non-technical.html" class="hover:text-pink-400">Non-Technical Events</a></li>
+                    <li><a href="contact.html" class="hover:text-pink-400">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Cultural Events</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon bg-pink-500/20 text-pink-400" title="Follow us on Instagram"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/"
+                        class="social-icon bg-purple-500/20 text-purple-400" title="Follow us on Facebook"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Registration modal functions
+        function openRegistration(eventName) {
+            document.getElementById('event-name').value = eventName;
+            document.getElementById('event-display').value = eventName;
+            document.getElementById('registration-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRegistration() {
+            document.getElementById('registration-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const eventName = document.getElementById('event-name').value;
+            alert(`Registration successful for ${eventName}! You'll receive performance schedule via email.`);
+            closeRegistration();
+            this.reset();
+        });
+
+        // Close modal on outside click
+        document.getElementById('registration-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeRegistration();
+        });
+
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('mobile-menu');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                    },
+                    animation: {
+                        'count': 'count 2s ease-out forwards',
+                    },
+                    keyframes: {
+                        count: {
+                            '0%': { transform: 'translateY(20px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .stat-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stat-card:hover {
+            border-color: #00f3ff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #00f3ff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-desc {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+        }
+
+        .plus {
+            color: #9d4edd;
+            font-size: 2rem;
+            vertical-align: super;
+        }
+
+        /* Progress bars */
+        .progress-container {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00f3ff, #9d4edd);
+            border-radius: 4px;
+            transition: width 1.5s ease-out;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #00f3ff, #9d4edd);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 5px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00f3ff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+
+        .timeline-year {
+            color: #9d4edd;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-content {
+            background: rgba(30, 30, 40, 0.5);
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 3px solid #00f3ff;
+        }
+
+        /* Medal colors */
+        .gold {
+            color: #ffd700;
+        }
+
+        .silver {
+            color: #c0c0c0;
+        }
+
+        .bronze {
+            color: #cd7f32;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-orbitron">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="events.html" class="block px-4 py-3 hover:bg-neon-blue/10">Events</a>
+            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="#achievements" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Achievements Hero -->
+    <section class="min-h-[60vh] relative flex items-center justify-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                OUR <span class="text-neon-cyan">LEGACY</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                Celebrating Years of Excellence & Innovation
+            </p>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section id="achievements" class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-neon-cyan">SURAVI <span
+                    class="text-white">in Numbers</span></h2>
+
+            <!-- Animated Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                <div class="stat-card">
+                    <div class="stat-number counter" data-target="25">0</div>
+                    <div class="stat-label">Awards Won</div>
+                    <div class="stat-desc">National & State Level</div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Gold</span>
+                            <span>12</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill w-48" data-width="48" title="Gold achievements"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number counter" data-target="3000">0</div>
+                    <div class="stat-label">Participants</div>
+                    <div class="stat-desc">Expected in SURAVI 2K26</div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Registered</span>
+                            <span id="registered-count">1250</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill w-41" id="registration-progress" data-width="41"
+                                title="Registered participants"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number counter" data-target="16">0</div>
+                    <div class="stat-label">Event Organisers</div>
+                    <div class="stat-desc">Core Committee Members</div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Technical</span>
+                            <span>8</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill w-50" data-width="50" title="Technical event organisers"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-number counter" data-target="10000">0</div>
+                    <div class="stat-label">Social Reach</div>
+                    <div class="stat-desc">Across All Platforms</div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Instagram</span>
+                            <span>6500</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill w-65" data-width="65" title="Instagram social reach"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+                <div class="text-center p-4 bg-card-bg rounded-xl">
+                    <div class="text-2xl font-bold text-neon-cyan mb-1">100+</div>
+                    <div class="text-sm text-gray-300">Events</div>
+                </div>
+                <div class="text-center p-4 bg-card-bg rounded-xl">
+                    <div class="text-2xl font-bold text-neon-cyan mb-1">50+</div>
+                    <div class="text-sm text-gray-300">Colleges</div>
+                </div>
+                <div class="text-center p-4 bg-card-bg rounded-xl">
+                    <div class="text-2xl font-bold text-neon-cyan mb-1">₹2L+</div>
+                    <div class="text-sm text-gray-300">Prize Pool</div>
+                </div>
+                <div class="text-center p-4 bg-card-bg rounded-xl">
+                    <div class="text-2xl font-bold text-neon-cyan mb-1">24</div>
+                    <div class="text-sm text-gray-300">Hours Hackathon</div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Counter animation
+        document.addEventListener('DOMContentLoaded', function () {
+            const counters = document.querySelectorAll('.counter');
+            const speed = 200; // Lower is faster
+
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText.replace('+', '');
+
+                    // Check if target is reached
+                    if (count < target) {
+                        // Increment
+                        const inc = target / speed;
+
+                        // Check if we need to add + for thousands
+                        if (target >= 1000) {
+                            counter.innerText = Math.ceil(count + inc).toLocaleString() + '+';
+                        } else {
+                            counter.innerText = Math.ceil(count + inc) + '+';
+                        }
+
+                        // Call function every 20ms
+                        setTimeout(updateCount, 20);
+                    } else {
+                        // Final value
+                        if (target >= 1000) {
+                            counter.innerText = target.toLocaleString() + '+';
+                        } else {
+                            counter.innerText = target + '+';
+                        }
+                    }
+                };
+
+                // Create Intersection Observer
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCount();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                // Start observing
+                observer.observe(counter);
+            });
+
+            // Update registration progress
+            function updateRegistrationProgress() {
+                const registered = 1250;
+                const target = 3000;
+                const percentage = (registered / target) * 100;
+
+                document.getElementById('registered-count').textContent = registered.toLocaleString();
+                document.getElementById('registration-progress').style.width = percentage + '%';
+            }
+
+            updateRegistrationProgress();
+
+            // Simulate increasing registration count
+            setInterval(() => {
+                const current = parseInt(document.getElementById('registered-count').textContent.replace(',', ''));
+                if (current < 3000) {
+                    const newCount = current + Math.floor(Math.random() * 10);
+                    document.getElementById('registered-count').textContent = newCount.toLocaleString();
+
+                    // Update progress bar
+                    const percentage = (newCount / 3000) * 100;
+                    document.getElementById('registration-progress').style.width = percentage + '%';
+                }
+            }, 5000); // Update every 5 seconds
+        });
+    </script>
+</body>
+
+</html>

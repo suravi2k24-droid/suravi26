@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Events - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'neon-green': '#00ff88',
+                        'neon-red': '#ff0055',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .sport-event-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sport-event-card:hover {
+            border-color: #00ff88;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .sport-event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ff88, #00f3ff);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .sport-event-card:hover::before {
+            opacity: 1;
+        }
+
+        .sport-icon {
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-description {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .event-time {
+            color: #00f3ff;
+            font-size: 0.9rem;
+        }
+
+        .event-fee {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .sport-category {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 243, 255, 0.1) 100%);
+            border: 2px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-right: 1rem;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .category-count {
+            background: #00ff88;
+            color: #0a0a0f;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        .register-btn {
+            background: linear-gradient(135deg, #00ff88 0%, #00f3ff 100%);
+            color: #0a0a0f;
+            padding: 0.5rem 1.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .neon-btn {
+            background: transparent;
+            border: 2px solid #00f3ff;
+            color: #00f3ff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .neon-btn:hover {
+            background: #00f3ff;
+            color: #0a0a0f;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+
+        .neon-link {
+            color: #a0a0c0;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .neon-link:hover {
+            color: #00f3ff;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 243, 255, 0.1);
+            border-radius: 50%;
+            color: #00f3ff;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: #00f3ff;
+            color: #0a0a0f;
+            transform: translateY(-3px);
+        }
+
+        .shadow-neon {
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .category-title {
+                font-size: 1.5rem;
+            }
+
+            .sport-event-card {
+                min-height: 300px;
+                padding: 1.5rem;
+            }
+
+            .event-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-orbitron">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="#" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-neon-cyan" title="Toggle mobile menu">
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+
+            <!-- Events with submenu for mobile -->
+            <div class="relative">
+                <button id="mobile-events-btn"
+                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                    <a href="non-technical.html"
+                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                </div>
+            </div>
+
+            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <div
+                    class="h-12 w-12 bg-gradient-to-r from-neon-green to-neon-blue rounded-lg flex items-center justify-center">
+                    <i class="fas fa-trophy text-xl text-dark-bg"></i>
+                </div>
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sports Events Hero -->
+    <section class="min-h-[50vh] relative flex items-center justify-center pt-24 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-green/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                <span class="text-neon-green">SPORTS</span> EVENTS
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-cyan">
+                12+ Competitive Sports Tournaments
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#team-sports" class="neon-btn px-6 py-3">Team Sports</a>
+                <a href="#indoor-sports" class="neon-btn px-6 py-3">Indoor Sports</a>
+                <a href="#special-sports" class="neon-btn px-6 py-3">Special Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sports Events Grid -->
+    <section class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Team Sports -->
+            <div id="team-sports" class="sport-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2 class="category-title">Team Sports</h2>
+                    <span class="category-count">7 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Cricket -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-baseball-ball"></i>
+                        </div>
+                        <h3 class="event-title">Cricket</h3>
+                        <p class="event-description">Gear up for an exciting Cricket match where every run counts.
+                            Display your batting and bowling skills and help your
+                            team win with big hits and key wickets!</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 | 8:00 AM</div>
+                                <div class="event-fee">₹500 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/KNNWW3aYdGyShi7H8'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Football -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <h3 class="event-title">Football</h3>
+                        <p class="event-description">Join the high-energy Football competition where teamwork, speed,
+                            and precision are essential. Play hard, score
+                            goals, and defend your side to lead your team to a well-earned victory.</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 | 2:00 PM</div>
+                                <div class="event-fee">₹400 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/DN5sSCtktU45hGPi7'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Short Boundary Cricket -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-baseball-ball"></i>
+                        </div>
+                        <h3 class="event-title">Short Boundary Cricket</h3>
+                        <p class="event-description">Experience the thrill of Short Boundary Cricket, where speed and
+                            aggression rule the game. Hit big, bowl tight, and
+                            lead your team to quick success with every over!</p>
+                        <div class="event-details">
+                            <div>
+                                <!-- <div class="event-time">Day 1 | 4:00 PM</div> -->
+                                <div class="event-fee">₹250 per team</div>
+                            </div> 
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/iUiRuZHJ7FAUBmj77'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Volleyball -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-volleyball-ball"></i>
+                        </div>
+                        <h3 class="event-title">Volleyball</h3>
+                        <p class="event-description">In the Volleyball competition, teamwork and coordination are
+                            everything. Set, spike, and serve your way to success
+                            as you and your team aim to outplay the opponents with powerful attacks and smooth defense.
+                        </p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 2 | 9:00 AM</div>
+                                <div class="event-fee">₹300 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/oZxZKzDeNMVeYPxK9'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Basketball -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-basketball-ball"></i>
+                        </div>
+                        <h3 class="event-title">Basketball</h3>
+                        <p class="event-description">Join the thrilling Basketball tournament where teamwork, strategy,
+                            and accuracy are key! Showcase your skills in
+                            shooting, passing, and dribbling, and lead your team to victory with every basket.</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 2 | 11:00 AM</div>
+                                <div class="event-fee">₹350 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/ErNDKJw6qyFGKsSQ8'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Kabaddi -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h3 class="event-title">Kabaddi</h3>
+                        <p class="event-description">Take part in the intense Kabaddi match, where strength, strategy,
+                            and quick thinking are crucial. Tag your
+                            opponents, avoid tackles, and work as a team to claim victory!</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 2 | 2:00 PM</div>
+                                <div class="event-fee">₹250 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/ZcDrhyoMTRG1Hzdv9'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Throw Ball (Women) -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3 class="event-title">Throw Ball (Women)</h3>
+                        <p class="event-description">Participate in the Throw Ball competition, where quick reflexes and
+                            team coordination are vital. Catch, throw, and
+                            strategize with your teammates to secure a win in this fun, fast-paced game.</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 2 | 4:00 PM</div>
+                                <div class="event-fee">₹200 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/epr6e8ccia5b9HkE6'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Indoor Sports -->
+            <div id="indoor-sports" class="sport-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h2 class="category-title">Indoor Sports</h2>
+                    <span class="category-count">3 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Badminton (Men) -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-table-tennis"></i>
+                        </div>
+                        <h3 class="event-title">Badminton (Men)</h3>
+                        <p class="event-description">Test your reflexes and skill in the Badminton tournament. Show your
+                            strength, speed, and strategy as you compete to
+                            outplay your opponents on the court. Get ready for intense rallies and swift smashes!</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 | 10:00 AM</div>
+                                <div class="event-fee">₹150 per person</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/MUdysYuuhpi73qUp7'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Badminton (Women) -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-table-tennis"></i>
+                        </div>
+                        <h3 class="event-title">Badminton (Women)</h3>
+                        <p class="event-description">Test your reflexes and skill in the Badminton tournament. Show your
+                            strength, speed, and strategy as you compete to
+                            outplay your opponents on the court. Get ready for intense rallies and swift smashes!</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 | 3:00 PM</div>
+                                <div class="event-fee">₹150 per person</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/MUdysYuuhpi73qUp7'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Chess -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-chess"></i>
+                        </div>
+                        <h3 class="event-title">Chess Match</h3>
+                        <p class="event-description">Show off your mental prowess in the Chess competition. Plan your
+                            moves carefully, outwit your opponent, and
+                            checkmate to emerge as the master of this classic strategy game.</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 & 2</div>
+                                <div class="event-fee">₹100 per person</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/ZSrpZTPepFiC5TxRA'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Sports -->
+            <div id="special-sports" class="sport-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h2 class="category-title">Special Sports Events</h2>
+                    <span class="category-count">2 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Kho Kho -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3 class="event-title">Kho Kho</h3>
+                        <p class="event-description">Join the thrilling Kho-Kho competition, where quick reflexes,
+                            strategy, and teamwork come into play. This
+                            traditional game of tag tests your endurance, agility, and ability to think on your feet.
+                            Defenders must dodge and weave
+                            as the chasers try to tag them out, with every move counting toward victory. A game of pure
+                            adrenaline, where the team
+                            that works together and moves swiftly will come out on top. Will you be the fastest and
+                            smartest team to win this
+                            exciting race against time?</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 2 | 10:00 AM</div>
+                                <div class="event-fee">₹200 per team</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/RbzSEePyP4jPv4C78'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Carrom -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-circle"></i>
+                        </div>
+                        <h3 class="event-title">Carrom</h3>
+                        <p class="event-description">Showcase your precision in the Carrom competition. ðŸŽ¯ Use
+                            skillful shots to pocket all your pieces and challenge your
+                            opponent in this traditional game of accuracy.</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 | 1:00 PM</div>
+                                <div class="event-fee">₹100 per person</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/96pnY85vY86D6S2Q7'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Mention: Music Chair (Women) -->
+            <div class="sport-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h2 class="category-title">Fun Event</h2>
+                    <span class="category-count">1 Event</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Music Chair (Women) -->
+                    <div class="sport-event-card">
+                        <div class="sport-icon">
+                            <i class="fas fa-chair"></i>
+                        </div>
+                        <h3 class="event-title">Music Chair (Women)</h3>
+                        <p class="event-description">Ladies, join the fun in the Musical Chair game! Move with the
+                            rhythm and grab your seat before the music stops.
+                            Its a test of agility and timing, with loads of excitement!</p>
+                        <div class="event-details">
+                            <!-- <div>
+                                <div class="event-time">Day 1 | 5:00 PM</div>
+                                <div class="event-fee">₹50 per person</div>
+                            </div> -->
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/6G76pqhFCPh4Ehw5A'">Register</button>
+                        </div>
+                    </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-green/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <div
+                    class="h-16 w-16 bg-gradient-to-r from-neon-green to-neon-blue rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-trophy text-2xl text-dark-bg"></i>
+                </div>
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-green">Home</a></li>
+                    <li><a href="athletics.html" class="hover:text-neon-green">Athletics Events</a></li>
+                    <li><a href="technical.html" class="hover:text-neon-green">Technical Events</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-green">Contact Sports Head</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('mobile-menu');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            if (menu && menuBtn && !menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

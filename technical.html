@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Events - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .tech-event-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tech-event-card:hover {
+            border-color: #00f3ff;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .tech-event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00f3ff, #9d4edd);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .tech-event-card:hover::before {
+            opacity: 1;
+        }
+
+        .event-icon {
+            font-size: 2.5rem;
+            color: #00f3ff;
+            margin-bottom: 1rem;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-description {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .event-time {
+            color: #9d4edd;
+            font-size: 0.9rem;
+        }
+
+        .event-fee {
+            color: #00f3ff;
+            font-weight: bold;
+        }
+
+        .tech-category {
+            background: linear-gradient(135deg, rgba(0, 243, 255, 0.1) 0%, rgba(157, 78, 221, 0.1) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 243, 255, 0.3);
+        }
+
+        .category-icon {
+            font-size: 2.5rem;
+            color: #00f3ff;
+            margin-right: 1rem;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .category-count {
+            background: #00f3ff;
+            color: #0a0a0f;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-orbitron">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="#" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+
+            <!-- Events with submenu for mobile -->
+            <div class="relative">
+                <button id="mobile-events-btn"
+                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                    <a href="non-technical.html"
+                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                </div>
+            </div>
+
+            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Technical Events Hero -->
+    <section class="min-h-[50vh] relative flex items-center justify-center pt-24 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                <span class="text-neon-cyan">TECHNICAL</span> EVENTS
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                15+ Cutting-Edge Technical Competitions
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#engineering-events" class="neon-btn px-6 py-3">Engineering Events</a>
+                <a href="#coding-events" class="neon-btn px-6 py-3">Coding Events</a>
+                <a href="#development-events" class="neon-btn px-6 py-3">Development Events</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Events Grid -->
+    <section class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Engineering Events -->
+            <div id="engineering-events" class="tech-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                    <h2 class="category-title">Engineering & Hardware Events</h2>
+                    <span class="category-count">7 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Model Fiesta -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="event-title">Model Fiesta</h3>
+                        <p class="event-description">Participants build innovative working models showcasing engineering
+                            or scientific principles. Rules: Models must be
+                            original and self-constructed. Participants must present a demonstration and explain its
+                            functionality. No pre-built
+                            kits allowed. Judging Criteria: Innovation, feasibility, working mechanism, and
+                            presentation. Excitement Factor:
+                            Witnessing futuristic models and prototypes in action.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href= 'https://forms.gle/tffiSJF4Jwj1ZBcr9'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Waste-O-Craft -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <h3 class="event-title">Waste-O-Craft</h3>
+                        <p class="event-description">Transform waste materials into creative and useful products.
+                            Sustainability meets innovation in this eco-friendly competition.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/HDPk2gWZRWQM6APX6'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Mega Structure -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="event-title">Mega Structure</h3>
+                        <p class="event-description">Build large, load-bearing structures using basic materials. Rules:
+                            No pre-assembled structures allowed. Time limit: 2
+                            hours. Judging Criteria: Strength, design, and durability. Excitement Factor: Testing
+                            structures under weight loads
+                            until they collapse!</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/1URkUPpKMT2HQv7XA'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Circuitrix -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="event-title">Circuitrix</h3>
+                        <p class="event-description">Solve electrical circuit-related problems. Rules: Time limit: 30
+                            minutes per circuit. Debugging tasks may be included.
+                            Judging Criteria: Accuracy, speed, and efficiency. Excitement Factor: Seeing circuits come
+                            alive through light bulbs,
+                            buzzers, and motors..</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/9TfAR8sz5BBrUvsS9'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Robotics -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="event-title">Robotics</h3>
+                        <p class="event-description">Design and program robots for various tasks (e.g., maze solving,
+                            battle, sumo wrestling). Rules: No off-the-shelf
+                            robots. Must follow pre-defined arena rules. Judging Criteria: Functionality, automation,
+                            and speed. Excitement Factor:
+                            Robots battling and performing impressive feats!.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/wb3f7G5GKYn7tNvK9'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Udaan -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h3 class="event-title">Udaan</h3>
+                        <p class="event-description">Build and fly model aircraft or drones. Rules: Weight restrictions
+                            apply. Time limit: 3 minutes per flight. Judging
+                            Criteria: Flight duration, stability, and aerodynamics. Excitement Factor: Watching DIY
+                            planes soar or crash
+                            spectacularly.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/qd8UMSgEE3ChtC6eA'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Paper Presentation -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3 class="event-title">Paper Presentation</h3>
+                        <p class="event-description">Do you have the vision to explore, innovate, and inspire? Tech Talk
+                            is the perfect stage to showcase your expertise,
+                            ideas, and insights on cutting-edge technologies and groundbreaking innovations. Engage in
+                            thought-provoking
+                            discussions, present your perspectives, and captivate the audience with your knowledge. This
+                            event is designed to test
+                            your articulation, technical understanding, and ability to think on your feet. Only the most
+                            compelling speakers will
+                            leave a lasting impact.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/esP5x4UyrggYjmvAA'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coding Events -->
+            <div id="coding-events" class="tech-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h2 class="category-title">Coding & Programming Events</h2>
+                    <span class="category-count">6 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Source Code -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-terminal"></i>
+                        </div>
+                        <h3 class="event-title">Source Code</h3>
+                        <p class="event-description">The source code challenge for the Suravi Tech Cultural Fest
+                            emphasizes writing clean, efficient, and well-structured
+                            code. Participants will be judged on code quality, readability, optimization, and adherence
+                            to best practices. Key
+                            factors include proper commenting, modularity, and efficient algorithms. The participant who
+                            submits the most organized,
+                            maintainable, and performant source code will win the competition.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/jhc1HZ66Rs2knFRG9'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Code-O-Scoores -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="event-title">Code-O-Scoores</h3>
+                        <p class="event-description">Get ready to merge coding with the thrill of soccer in
+                            Codo-O-Soccor, an exhilarating event where strategy, logic, and
+                            precision come together on the virtual field. Program your bot to play, pass, and score
+                            against opponents in a
+                            high-intensity coding battle. Your ability to write efficient algorithms, predict moves, and
+                            adapt in real time will
+                            determine your victory. Only the smartest coders with the best game strategy will take home
+                            the win. Do you have what it
+                            takes?</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/aGV4GLQdgxvXVhfz7'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Blind Coding -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-eye-slash"></i>
+                        </div>
+                        <h3 class="event-title">Blind Coding</h3>
+                        <p class="event-description">Think you can code without seeing what you type? Blind Coding is
+                            the ultimate test of your programming skills, logic,
+                            and muscle memory. With your screen hidden, you must rely solely on your knowledge and
+                            accuracy to write error-free
+                            code. This challenge pushes the boundaries of concentration, precision, and confidence,
+                            rewarding only those who can
+                            truly code with their eyes closed. Are you up for it?</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/NfJyFWiQuVQi9nGT6e'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Web War -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="event-title">Web War</h3>
+                        <p class="event-description">Prepare for an intense battle of creativity, speed, and technical
+                            prowess in Web War, a competition where web developers
+                            clash to design and build the most efficient, visually stunning, and functional websites.
+                            Whether itâ€™s front-end
+                            aesthetics, back-end logic, or full-stack innovation, this event will push your web
+                            development skills to the limit.
+                            Compete against the best and prove that your code reigns supreme in the digital battlefield!
+                        </p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/xBZ7ncVUBDDRAMhD8'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Mobile App Development -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="event-title">Mobile App Development</h3>
+                        <p class="event-description">The mobile application development challenge for the Suravi Tech
+                            Cultural Fest invites participants to build the
+                            best-performing mobile app. The competition will focus on app functionality, user interface,
+                            performance, and
+                            innovation. Participants will be judged on aspects like usability, responsiveness, and
+                            design coherence. The app that
+                            demonstrates the most seamless functionality, creativity, and user-centric design will be
+                            declared the winner.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://forms.gle/EhHSkZiX12wiMFGv7'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Database Design
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3 class="event-title">Database Design</h3>
+                        <p class="event-description">The database design challenge for the Suravi Tech Cultural Fest is
+                            aimed at identifying the best-designed database by
+                            participants. The participants will be tasked with creating efficient and optimized database
+                            solutions, which will be
+                            evaluated based on factors like structure, normalization, query optimization, and data
+                            handling. The database that
+                            demonstrates the highest performance, scalability, and robustness will win the competition.
+                        </p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/example'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Development Events -->
+            <!-- <div id="development-events" class="tech-category">
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <h2 class="category-title">Development & Innovation Events</h2>
+                    <span class="category-count">4 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> -->
+
+                    <!-- Startup Fair -->
+                    <!-- <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="event-title">Startup Fair</h3>
+                        <p class="event-description">The Start-Up Fair challenge at the Suravi Tech Cultural Fest
+                            invites aspiring entrepreneurs to pitch their innovative
+                            business ideas. Participants will be judged on the uniqueness, feasibility, and potential
+                            impact of their startup
+                            concepts. Key criteria include market potential, business model, and scalability. The
+                            participant with the most
+                            promising, well-structured, and viable startup idea will win the competition, offering a
+                            platform to showcase
+                            entrepreneurial talent.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/example'">Register</button>
+                        </div>
+                    </div> -->
+
+                    <!-- Ideathon -->
+                    <!-- <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="event-title">Ideathon</h3>
+                        <p class="event-description">Brainstorm and present innovative technological solutions. Rules:
+                            Individual or team participation. Time limit: 5-minute
+                            presentation. Judging Criteria: Feasibility, innovation, and impact. Excitement Factor:
+                            Groundbreaking ideas for the
+                            future.</p>
+                        <div class="event-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/example'">Register</button>
+                        </div>
+                    </div> -->
+
+                    <!-- Hackathon -->
+                    <div class="tech-event-card">
+                        <div class="event-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="event-title">Hackathon</h3>
+                        <p class="event-description">The GIET Hackathon is a competitive, collaborative event that
+                            invites students to solve real-world problems through
+                            innovative coding and software development. This guideline provides a structured approach
+                            for organizing and executing
+                            the hackathon, from registration to the final evaluation.</p>
+                        <div class="event-details">
+                            <a href="hackathon.html" class="register-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                    <li><a href="non-technical.html" class="hover:text-neon-cyan">Non-Technical Events</a></li>
+                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('mobile-menu');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

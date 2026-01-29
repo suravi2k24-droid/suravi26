@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SURAVI 2K26 – Annual Techno-Cultural Fest</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Tailwind config for neon theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulse-glow 1.5s ease-in-out infinite',
+                        'marquee': 'marquee 20s linear infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%': { textShadow: '0 0 5px #00f3ff, 0 0 10px #00f3ff, 0 0 15px #00f3ff' },
+                            '100%': { textShadow: '0 0 10px #9d4edd, 0 0 20px #9d4edd, 0 0 30px #9d4edd' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0.7 },
+                        },
+                        'marquee': {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' },
+                        },
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(0, 243, 255, 0.7), 0 0 30px rgba(157, 78, 221, 0.5)',
+                        'neon-inner': 'inset 0 0 20px rgba(0, 243, 255, 0.3)',
+                    },
+                },
+            },
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Three.js for 3D animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body class="bg-dark-bg text-white font-orbitron overflow-x-hidden">
+    <!-- 3D Buffer Loader -->
+    <div id="loader-container">
+        <div class="loader-wrapper">
+            <div class="buffer-loader">
+                <div class="buffer-ring"></div>
+                <div class="buffer-ring"></div>
+                <div class="buffer-ring"></div>
+                <div class="loader-text">
+                    <span class="loader-percent">0</span>%
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-700">
+        <div class="flex items-center justify-between px-4 md:px-8 py-3 gap-4">
+            <!-- Left Logo -->
+            <div class="flex-shrink-0">
+                <a href="index.html" class="flex items-center space-x-2 md:space-x-3 logo-container">
+                    <img src="suravi.png" alt="SURAVI Logo" class="h-16 md:h-20 w-auto"
+                        style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
+                </a>
+            </div>
+
+            <!-- Center Navigation Menu -->
+            <div class="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-4">
+                <a href="index.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">HOME</a>
+                <div class="relative group">
+                    <div
+                        class="neon-link flex items-center text-white text-xs lg:text-sm font-semibold cursor-pointer hover:text-neon-cyan transition-colors whitespace-nowrap">
+                        EVENTS <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    </div>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                        <a href="technical.html"
+                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Technical</a>
+                        <a href="non-technical.html"
+                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                        <a href="cultural.html"
+                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Sports</a>
+                        <a href="athletics.html"
+                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html"
+                        class="neon-link flex items-center text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">
+                        SPECIAL <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                    </a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                        <a href="special.html#food-stall"
+                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">PATRON</a>
+                <a href="sponsor.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">SPONSORS</a>
+                <a href="contact.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">CONTACT</a>
+                <a href="organisers.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">ORGANISERS</a>
+                <a href="achievement.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">ACHIEVEMENTS</a>
+                <a href="hackathon.html"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">HACKATHON</a>
+                <a href="#"
+                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">NOTICES</a>
+            </div>
+
+            <!-- Right Badges and Mobile Menu -->
+            <div class="flex-shrink-0 flex items-center gap-1.5 md:gap-3">
+                <!-- Badges - Hidden on small mobile, visible on tablet and up -->
+                <img src="giet.png" alt="Badge 1" class="h-12 sm:h-14 md:h-16 w-auto"
+                    style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
+                <img src="naac.png" alt="Badge 2"
+                    class="h-8 sm:h-10 md:h-14 w-auto hidden sm:block">
+                <img src="nba.png" alt="Badge 3"
+                    class="h-8 sm:h-10 md:h-14 w-auto hidden lg:block">
+
+                <!-- Mobile Menu Button - 3 Line Hamburger -->
+                <button id="mobile-menu-btn"
+                    class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                    title="Toggle mobile menu">
+                    <span
+                        class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                        style="top: 10px;"></span>
+                    <span
+                        class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                    <span
+                        class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                        style="bottom: 10px;"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Update the Mobile Menu Section in your nav -->
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+
+            <!-- Events with submenu for mobile -->
+            <div class="relative">
+                <button id="mobile-events-btn"
+                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                    <a href="non-technical.html"
+                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                </div>
+            </div>
+
+            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+        </div>
+    </nav>
+
+
+
+    <!-- Hero Section with Neon Building Image -->
+    <section id="hero-section"
+        class="min-h-screen relative flex items-center justify-center overflow-hidden bg-dark-bg hero-night">
+        <!-- Background Video with Mobile Support -->
+        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover z-0 hero-video" autoplay muted loop
+            playsinline disablePictureInPicture>
+            <source src="suravi.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <!-- Dark night background with fog effect -->
+        <div id="hero-bg-overlay"
+            class="absolute inset-0 z-1 bg-gradient-to-b from-slate-900/70 via-slate-950/50 to-black/70 hero-bg-night">
+        </div>
+
+        <!-- Volumetric fog and glow layers -->
+        <div id="fog-layer" class="absolute inset-0 z-1 opacity-40 fog-night">
+            <div
+                class="absolute top-0 left-0 w-full h-full bg-gradient-radial from-neon-purple/20 via-transparent to-transparent blur-3xl">
+            </div>
+            <div
+                class="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-neon-cyan/10 via-transparent to-transparent blur-3xl">
+            </div>
+        </div>
+
+        <!-- 3D Canvas Background (parallax depth) -->
+        <canvas id="hero-canvas" class="absolute inset-0 z-2"></canvas>
+
+        <!-- Neon Building Image with Parallax Depth -->
+        <div class="absolute inset-0 z-3 flex items-center justify-center perspective">
+            <!-- Foreground lighting elements -->
+            <div id="light-left"
+                class="absolute bottom-0 left-0 w-96 h-64 bg-gradient-to-t from-neon-cyan to-transparent blur-2xl opacity-30 light-night">
+            </div>
+            <div id="light-right"
+                class="absolute bottom-0 right-0 w-96 h-64 bg-gradient-to-t from-neon-purple to-transparent blur-2xl opacity-30 light-night">
+            </div>
+
+            <!-- Building image with neon glow effect -->
+            <div class="relative w-full h-full flex items-center justify-center px-4">
+                <div class="neon-building-container">
+                    <!-- Holographic light accents -->
+                    <div id="holo-left"
+                        class="absolute top-1/4 -left-32 w-64 h-64 bg-neon-blue/20 rounded-full blur-3xl opacity-50 animate-pulse holo-night">
+                    </div>
+                    <div id="holo-right"
+                        class="absolute bottom-1/4 -right-32 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl opacity-50 animate-pulse holo-night">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reflective ground effect -->
+            <div id="ground-effect"
+                class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-neon-cyan/10 via-transparent to-transparent opacity-40 backdrop-blur-sm ground-night">
+            </div>
+        </div>
+
+        <!-- Animated Background -->
+        <div class="absolute inset-0 z-1 pointer-events-none">
+            <div
+                class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/10 rounded-full blur-3xl animate-float opacity-30">
+            </div>
+            <div
+                class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/10 rounded-full blur-3xl animate-float opacity-30">
+            </div>
+            <div
+                class="absolute top-3/4 left-1/2 w-96 h-96 bg-neon-cyan/5 rounded-full blur-3xl animate-float opacity-20">
+            </div>
+        </div>
+
+        <!-- Gradient Overlay for Text Readability -->
+        <div id="text-overlay"
+            class="absolute inset-0 z-3 bg-gradient-to-b from-slate-900/60 via-transparent to-slate-950/70 pointer-events-none overlay-night">
+        </div>
+
+        <!-- Left Corner Google Photos Link -->
+        <a href="https://photos.google.com/share/AF1QipMW-R25LCT0bRpt90aB3D91zsjpt0wgN0z5GwEzj4h4eSSKPqT2pnpsiiFGNT6Ngw?key=RV9HQ1dUR0tBeklfbjZHVDJPOUZPOWJ3NENLa1BB"
+            target="_blank" rel="noopener noreferrer"
+            class="absolute top-28 sm:top-32 md:top-40 left-2 sm:left-4 md:left-8 z-20 opacity-60 hover:opacity-100 transition-opacity duration-300">
+            <img src="https://www.gstatic.com/images/branding/product/1x/photos_96dp.png" alt="Google Photos"
+                class="h-8 sm:h-10 md:h-14 lg:h-16 w-auto drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300 hover:scale-110">
+        </a>
+
+        <!-- Right Corner Google Photos Link -->
+        <a href="https://photos.google.com/share/AF1QipMW-R25LCT0bRpt90aB3D91zsjpt0wgN0z5GwEzj4h4eSSKPqT2pnpsiiFGNT6Ngw?key=RV9HQ1dUR0tBeklfbjZHVDJPOUZPOWJ3NENLa1BB"
+            target="_blank" rel="noopener noreferrer"
+            class="absolute top-28 sm:top-32 md:top-40 right-2 sm:right-4 md:right-8 z-20 opacity-60 hover:opacity-100 transition-opacity duration-300">
+            <img src="https://www.gstatic.com/images/branding/product/1x/photos_96dp.png" alt="Google Photos"
+                class="h-8 sm:h-10 md:h-14 lg:h-16 w-auto drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300 hover:scale-110">
+        </a>
+
+        <!-- Hero Content (Overlay) -->
+        <div class="relative z-30 text-center px-4 pointer-events-none max-w-4xl">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 animate-glow font-tilt-neon drop-shadow-2xl text-white"
+                style="text-shadow: 0 0 20px rgba(0, 243, 255, 0.8), 0 0 40px rgba(157, 78, 221, 0.6), 0 0 60px rgba(0, 255, 255, 0.4), -2px -2px 4px rgba(0, 0, 0, 0.8);">
+                SURAVI <span class="text-neon-cyan"
+                    style="text-shadow: 0 0 20px rgba(0, 243, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(0, 243, 255, 0.6);">2K26</span>
+            </h1>
+            <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-neon-cyan font-bold drop-shadow-lg"
+                style="text-shadow: 0 0 15px rgba(0, 243, 255, 0.9), 0 0 30px rgba(157, 78, 221, 0.7), -1px -1px 3px rgba(0, 0, 0, 0.8);">
+                Annual Techno-Cultural Fest – Where Innovation Meets Culture
+            </p>
+            <!-- Countdown Timer -->
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-2xl mx-auto mb-10">
+                <div class="countdown-box">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-30">
+            <i class="fas fa-chevron-down text-3xl text-neon-cyan"
+                style="text-shadow: 0 0 10px rgba(0, 243, 255, 0.9);"></i>
+        </div>
+    </section>
+
+    <!-- Breaking News Section -->
+    <section class="py-8 bg-gradient-to-r from-blue-600 via-red-700 to-blue-600 border-y-4 border-blue-400">
+        <div class="max-w-full mx-auto px-4">
+            <div class="flex items-center justify-center mb-4">
+                <div class="bg-yellow-400 px-6 py-2 rounded-full shadow-lg">
+                    <span class="text-red-800 font-bold text-lg md:text-xl flex items-center gap-3">
+                        <i class="fas fa-exclamation-triangle animate-bounce"></i>
+                        LATEST UPDATE
+                        <i class="fas fa-exclamation-triangle animate-bounce"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Floating News Ticker -->
+            <div class="relative overflow-hidden bg-black/50 rounded-lg p-4 border border-red-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 mr-4">
+                        <i class="fas fa-newspaper text-yellow-400 text-2xl animate-pulse"></i>
+                    </div>
+                    <div class="flex-1 overflow-hidden">
+                        <div
+                            class="animate-marquee whitespace-nowrap flex items-center text-white font-semibold text-lg md:text-xl">
+                            <!-- News Items -->
+                            <span class="mx-8 text-yellow-300">🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out on
+                                Amazing Prizes!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🎵 Exclusive Night Concert with Top Artists - February
+                                21st!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-yellow-300">🏆 Hackathon 2K26
+                                Today!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🎭 Cultural Events Registration Open - Showcase Your
+                                Talent!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-yellow-300">⚡ E-Sports Championship: BGMI & Free Fire
+                                Tournaments!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🍔 Food Stalls with Special Discounts - GIET Campus!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-yellow-300">🏃‍♂️ Athletics Meet: Compete for Glory!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🎪 Special Events: Workshops, Seminars & More!</span>
+
+                            <!-- Duplicate for seamless loop -->
+                            <span class="mx-8 text-yellow-300">🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out on
+                                Amazing Prizes!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🎵 Exclusive Night Concert with Top Artists - February
+                                21st!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-yellow-300">🏆 Hackathon 2K26: ₹50,000 Prize Pool - Register
+                                Today!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🎭 Cultural Events Registration Open - Showcase Your
+                                Talent!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-yellow-300">⚡ E-Sports Championship: BGMI & Free Fire
+                                Tournaments!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🍔 Food Stalls with Special Discounts - GIET Campus!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-yellow-300">🏃‍♂️ Athletics Meet: Compete for Glory!</span>
+                            <i class="fas fa-star text-red-400 mx-4"></i>
+                            <span class="mx-8 text-cyan-300">🎪 Special Events: Workshops, Seminars & More!</span>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 ml-4">
+                        <i class="fas fa-newspaper text-yellow-400 text-2xl animate-pulse"></i>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- About SURAVI-2K26 and GIET -->
+    <section class="py-20 px-4">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-4xl md:text-5xl mb-12 font-tilt-neon">
+                About <span class="text-neon-cyan">SURAVI-2K26</span>
+            </h2>
+            <div class="mb-16">
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-8 max-w-4xl mx-auto">
+                    SURAVI-2K26 is the annual techno-cultural extravaganza of GIET, where innovation meets
+                    creativity,
+                    and passion fuels excellence! It's a grand celebration that brings together the brightest minds,
+                    the
+                    most talented performers, and the most enthusiastic participants in a festival of technology,
+                    culture, and limitless possibilities.From electrifying competitions and hackathons to
+                    mesmerizing
+                    music, dance, and art, SURAVI-2K26 is
+                    more than just an event—it's a movement, an experience, and a legacy in the making. Whether
+                    you're a
+                    tech enthusiast, an artist, or a dreamer, this is your stage to shine, create, and inspire. Get
+                    ready to ignite your spirit, push your limits, and make memories that last a lifetime!
+                </p>
+            </div>
+
+            <h3 class="text-3xl md:text-4xl mb-8 font-tilt-neon text-neon-purple">
+                About <span class="text-neon-cyan">GIET</span>
+            </h3>
+            <div class="text-left md:text-center">
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 max-w-5xl mx-auto">
+                    Gandhi Institute of Excellent Technocrats (GIET), Ghangapatna, is a NAAC A+ accredited and NBA
+                    accredited premier institute in Bhubaneswar, Odisha, recognized for its academic excellence,
+                    advanced research, and industry-oriented education. The institute is dedicated to shaping future
+                    leaders in engineering, technology, and management through global standards in education and
+                    strong
+                    industry collaborations.GIET Ghangapatna is also renowned for SURAVI, its flagship
+                    techno-cultural
+                    fest, where creativity,
+                    technology, and talent converge to create an unforgettable experience. Learn. Innovate. Excel.
+                    Welcome to GIET, where the future begins!
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/loader.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/countdown.js"></script>
+
+</body>
+
+</html>

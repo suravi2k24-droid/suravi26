@@ -1,0 +1,731 @@
+/* Advanced neon text glow */
+.neon-text {
+    text-shadow: 0 0 5px #00f3ff,
+        0 0 10px #00f3ff,
+        0 0 15px #00f3ff,
+        0 0 20px #9d4edd,
+        0 0 35px #9d4edd;
+    animation: neon-pulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon-pulse {
+    from {
+        text-shadow: 0 0 5px #00f3ff,
+            0 0 10px #00f3ff,
+            0 0 15px #00f3ff,
+            0 0 20px #9d4edd;
+    }
+
+    to {
+        text-shadow: 0 0 10px #00f3ff,
+            0 0 20px #00f3ff,
+            0 0 30px #00f3ff,
+            0 0 40px #9d4edd,
+            0 0 50px #9d4edd;
+    }
+}
+
+/* ============================================
+   TOP-LEFT LOGO CONTAINER
+   ============================================ */
+
+.logo-container {
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.logo-container:hover {
+    transform: scale(1.05);
+}
+
+.logo-container:hover .logo-3d {
+    animation-duration: 3s;
+}
+
+/* ============================================
+   BACKGROUND VIDEO STYLING
+   ============================================ */
+
+#hero-video,
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+    filter: brightness(0.9) contrast(1.15) saturate(1.1);
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Mobile Video Optimization */
+@media (max-width: 768px) {
+
+    #hero-video,
+    .hero-video {
+        filter: brightness(0.85) contrast(1.2) saturate(1.15);
+        /* Ensure video doesn't cause layout shifts on mobile */
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+    }
+}
+
+/* Tablet Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    #hero-video,
+    .hero-video {
+        filter: brightness(0.88) contrast(1.18) saturate(1.12);
+    }
+}
+
+/* Large Screens */
+@media (min-width: 1025px) {
+
+    #hero-video,
+    .hero-video {
+        filter: brightness(0.9) contrast(1.15) saturate(1.1);
+    }
+}
+
+/* Disable video on very low-end devices for performance */
+@media (max-width: 480px) and (hover: none) and (pointer: coarse) {
+
+    #hero-video,
+    .hero-video {
+        /* Video will still play but with reduced quality settings */
+        filter: brightness(0.8) contrast(1.25) saturate(1.2);
+    }
+}
+
+/* High DPI/Retina displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+    #hero-video,
+    .hero-video {
+        /* Enhance quality on high DPI screens */
+        filter: brightness(0.92) contrast(1.12) saturate(1.08);
+    }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+
+    #hero-video,
+    .hero-video {
+        display: none;
+    }
+}
+
+/* 3D card flip effect */
+.flip-card {
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flip-card-front {
+    background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+    border: 2px solid rgba(0, 243, 255, 0.3);
+    color: white;
+}
+
+.flip-card-back {
+    background: linear-gradient(135deg, rgba(50, 50, 70, 0.9) 0%, rgba(30, 30, 40, 0.9) 100%);
+    border: 2px solid rgba(157, 78, 221, 0.3);
+    color: white;
+    transform: rotateY(180deg);
+}
+
+/* Parallax scrolling effect */
+.parallax-section {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Event card styling */
+.event-card {
+    background: rgba(30, 30, 40, 0.8);
+    border: 1px solid transparent;
+    border-radius: 15px;
+    padding: 1.5rem;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+}
+
+.event-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00f3ff, #9d4edd);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.event-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 243, 255, 0.2);
+}
+
+.event-card:hover::before {
+    opacity: 1;
+}
+
+/* Register button */
+.register-btn {
+    background: linear-gradient(90deg, #00f3ff, #9d4edd);
+    border: none;
+    border-radius: 10px;
+    color: #0a0a0f;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.register-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #9d4edd, #00f3ff);
+    transition: left 0.5s;
+    z-index: -1;
+}
+
+.register-btn:hover {
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
+}
+
+.register-btn:hover::before {
+    left: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .countdown-number {
+        font-size: 2.5rem;
+    }
+
+    .category-card {
+        padding: 1.5rem;
+    }
+
+    .neon-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+}
+
+/* Category navigation buttons */
+.category-nav-btn {
+    padding: 0.8rem 1.5rem;
+    background: rgba(30, 30, 40, 0.8);
+    border: 2px solid rgba(0, 243, 255, 0.3);
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.category-nav-btn:hover {
+    border-color: #00f3ff;
+    background: rgba(0, 243, 255, 0.1);
+}
+
+.category-nav-btn.active {
+    background: linear-gradient(90deg, #00f3ff, #9d4edd);
+    border-color: transparent;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+}
+
+/* Event card details */
+.event-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.event-desc {
+    color: #a0a0c0;
+    font-size: 0.9rem;
+}
+
+.event-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.event-tag {
+    background: rgba(0, 243, 255, 0.1);
+    color: #00f3ff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    color: #a0a0c0;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+    .event-card {
+        padding: 1.2rem;
+    }
+
+    .event-title {
+        font-size: 1.2rem;
+    }
+
+    .category-nav-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile Responsive Enhancements */
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+
+    .category-card,
+    .event-card,
+    .sponsor-card,
+    .patron-card,
+    .member-card,
+    .organiser-card,
+    .stat-card,
+    .prize-card {
+        padding: 1.2rem;
+    }
+
+    .event-title,
+    .patron-name,
+    .member-name,
+    .organiser-name {
+        font-size: 1rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+
+    .sponsor-logo {
+        max-width: 150px;
+        max-height: 80px;
+    }
+
+    /* Timeline adjustments */
+    .timeline {
+        padding-left: 1.5rem;
+    }
+
+    .timeline-item {
+        padding-left: 1rem;
+    }
+
+    /* Table responsiveness */
+    .overflow-x-auto {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Hero section adjustments */
+    .text-5xl {
+        font-size: 2.5rem;
+    }
+
+    .text-7xl {
+        font-size: 3rem;
+    }
+
+    /* Reduce padding on mobile */
+    section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Mobile menu improvements */
+    #mobile-menu {
+        width: 90%;
+        max-width: 300px;
+        right: 1rem;
+    }
+
+    /* Countdown adjustments */
+    .countdown-number {
+        font-size: 2rem;
+    }
+
+    .countdown-box {
+        padding: 1rem;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px to 768px) */
+@media (min-width: 600px) and (max-width: 768px) {
+    .sponsor-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .stat-number {
+        font-size: 3rem;
+    }
+
+    .text-7xl {
+        font-size: 4rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px to 992px) */
+@media (min-width: 768px) and (max-width: 992px) {
+    .grid-cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Touch-friendly button sizing */
+@media (hover: none) and (pointer: coarse) {
+
+    .register-btn,
+    .neon-btn,
+    .filter-btn,
+    .dept-btn {
+        padding: 0.8rem 1.5rem;
+        min-height: 44px;
+        /* Minimum touch target size */
+    }
+
+    .contact-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    /* Increase tap targets for mobile */
+    a,
+    button {
+        min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Prevent text selection on interactive elements */
+.neon-btn,
+.register-btn,
+.filter-btn,
+.dept-btn,
+.category-nav-btn,
+.contact-btn {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Improve mobile form input */
+@media (max-width: 768px) {
+
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+        /* Prevents iOS zoom on focus */
+    }
+
+    .contact-input,
+    .search-input {
+        font-size: 1rem;
+        padding: 0.9rem 1rem;
+    }
+}
+
+/* Fix for mobile viewport height */
+.mobile-vh-fix {
+    min-height: calc(var(--vh, 1vh) * 100);
+}
+
+/* Image optimization for mobile */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Card flip adjustment for mobile */
+@media (max-width: 768px) {
+    .flip-card {
+        perspective: none;
+    }
+
+    .flip-card-inner {
+        transition: none;
+        transform: none;
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: none;
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+        position: relative;
+        height: auto;
+        -webkit-backface-visibility: visible;
+        backface-visibility: visible;
+        transform: none;
+    }
+
+    .flip-card-back {
+        display: none;
+    }
+
+    .event-card:hover .flip-card-back {
+        display: block;
+    }
+}
+
+/* Countdown Styles */
+.countdown-box {
+    background: rgba(18, 18, 26, 0.8);
+    border: 2px solid rgba(0, 243, 255, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    min-width: 80px;
+    transition: all 0.3s ease;
+}
+
+.countdown-box:hover {
+    border-color: rgba(157, 78, 221, 0.5);
+    transform: translateY(-5px);
+}
+
+.countdown-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+    padding: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.countdown-label {
+    font-size: 0.875rem;
+    color: #9d4edd;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Mobile Menu Dropdown Animation */
+#mobile-events-dropdown {
+    transition: all 0.3s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mobile-events-dropdown.show {
+    max-height: 300px;
+}
+
+/* ============================================
+   MIRROR EFFECT FOR CATEGORY CARDS
+   ============================================ */
+
+.mirror-card {
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mirror-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.1) 100%);
+    border-radius: 15px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.mirror-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(ellipse at 30% 30%,
+            rgba(0, 243, 255, 0.3) 0%,
+            transparent 50%);
+    border-radius: 15px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 9;
+}
+
+.mirror-card:hover {
+    transform: rotateX(5deg) rotateY(10deg) translateZ(20px);
+    box-shadow:
+        0 20px 40px rgba(0, 243, 255, 0.3),
+        inset -2px -2px 5px rgba(0, 243, 255, 0.2),
+        inset 2px 2px 5px rgba(157, 78, 221, 0.2);
+}
+
+.mirror-card:hover::after {
+    opacity: 1;
+}
+
+/* 3D Mirror reflection effect */
+.mirror-card::before {
+    background:
+        linear-gradient(135deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.05) 30%,
+            transparent 50%,
+            rgba(0, 0, 0, 0.05) 80%,
+            rgba(0, 0, 0, 0.15) 100%);
+    box-shadow: inset -1px -1px 3px rgba(0, 243, 255, 0.2), inset 1px 1px 3px rgba(157, 78, 221, 0.1);
+}
+
+/* ============================================
+   3D ANIMATED LOGO
+   ============================================ */
+
+.logo-3d {
+    display: inline-block;
+    animation: logo-3d-spin 8s linear infinite;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.6)) drop-shadow(0 0 25px rgba(157, 78, 221, 0.4));
+    transition: all 0.3s ease;
+}
+
+.logo-3d:hover {
+    animation-duration: 4s;
+    filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8)) drop-shadow(0 0 35px rgba(157, 78, 221, 0.6)) drop-shadow(0 0 50px rgba(0, 255, 255, 0.3));
+}
+
+@keyframes logo-3d-spin {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    25% {
+        transform: rotateX(10deg) rotateY(90deg) rotateZ(0deg);
+    }
+
+    50% {
+        transform: rotateX(0deg) rotateY(180deg) rotateZ(10deg);
+    }
+
+    75% {
+        transform: rotateX(-10deg) rotateY(270deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateX(0deg) rotateY(360deg) rotateZ(0deg);
+    }
+}
+
+/* Alternative smooth 3D rotation for logo */
+.logo-3d {
+    animation: logo-3d-smooth 10s ease-in-out infinite;
+}
+
+@keyframes logo-3d-smooth {
+
+    0%,
+    100% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1);
+    }
+
+    25% {
+        transform: rotateX(15deg) rotateY(45deg) rotateZ(5deg) scale(1.05);
+    }
+
+    50% {
+        transform: rotateX(-10deg) rotateY(180deg) rotateZ(-5deg) scale(1.08);
+    }
+
+    75% {
+        transform: rotateX(10deg) rotateY(315deg) rotateZ(3deg) scale(1.05);
+    }
+}
+
+/* Glow effect on logo */
+@keyframes logo-glow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.6)) drop-shadow(0 0 25px rgba(157, 78, 221, 0.4));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 25px rgba(0, 243, 255, 0.8)) drop-shadow(0 0 35px rgba(157, 78, 221, 0.6));
+    }
+}

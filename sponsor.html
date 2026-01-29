@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsors - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'orbitron': ['Orbitron', 'sans-serif'],
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .sponsor-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            transition: all 0.5s;
+            text-align: center;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sponsor-card:hover {
+            border-color: #00f3ff;
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 243, 255, 0.3);
+        }
+
+        .sponsor-logo {
+            max-width: 200px;
+            max-height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));
+            transition: all 0.4s;
+        }
+
+        .sponsor-card:hover .sponsor-logo {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.8));
+        }
+
+        .sponsor-level {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .platinum {
+            background: linear-gradient(90deg, #e5e4e2, #d4d4d4);
+            color: #333;
+        }
+
+        .gold {
+            background: linear-gradient(90deg, #ffd700, #daa520);
+            color: #333;
+        }
+
+        .silver {
+            background: linear-gradient(90deg, #c0c0c0, #a8a8a8);
+            color: #333;
+        }
+
+        .bronze {
+            background: linear-gradient(90deg, #cd7f32, #b08d57);
+            color: white;
+        }
+
+        .partner {
+            background: linear-gradient(90deg, #9d4edd, #00f3ff);
+            color: white;
+        }
+
+        .sponsor-slider {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+
+        .sponsor-track {
+            display: flex;
+            animation: scroll 30s linear infinite;
+        }
+
+        .sponsor-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-orbitron">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="events.html#technical" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="events.html#non-technical"
+                            class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="events.html#esports" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="events.html#cultural" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="events.html#sports" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="events.html#athletics" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="events.html" class="block px-4 py-3 hover:bg-neon-blue/10">Events</a>
+            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="#sponsors" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sponsors Hero -->
+    <section class="min-h-[60vh] relative flex items-center justify-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                OUR <span class="text-neon-cyan">SPONSORS</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                Powering Innovation, Empowering Dreams
+            </p>
+        </div>
+    </section>
+
+    <!-- Sponsors Grid -->
+    <section id="sponsors" class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Platinum Sponsors -->
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center">
+                    <span class="text-gray-300">TO BE</span> <span class="text-neon-cyan">ANNOUNCE</span>
+                    <!-- </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="sponsor-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg"
+                            alt="Microsoft" class="sponsor-logo mb-4">
+                        <h3 class="text-xl font-bold mb-2">Microsoft</h3>
+                        <p class="text-gray-300 text-sm mb-4">Empowering every student to achieve more</p>
+                        <span class="sponsor-level platinum">Platinum Sponsor</span>
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon"
+                            class="sponsor-logo mb-4">
+                        <h3 class="text-xl font-bold mb-2">Amazon Web Services</h3>
+                        <p class="text-gray-300 text-sm mb-4">Cloud computing services</p>
+                        <span class="sponsor-level platinum">Platinum Sponsor</span>
+                    </div> -->
+            </div>
+        </div>
+
+        <!-- Gold Sponsors -->
+        <div class="mb-16">
+            <!-- <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center">
+                    <span class="text-gray-300">Gold</span> <span class="text-neon-cyan">Sponsors</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="sponsor-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google"
+                            class="sponsor-logo mb-4">
+                        <h3 class="text-xl font-bold mb-2">Google</h3>
+                        <span class="sponsor-level gold">Gold Sponsor</span>
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple"
+                            class="sponsor-logo mb-4 bg-white p-2 rounded">
+                        <h3 class="text-xl font-bold mb-2">Apple Developer</h3>
+                        <span class="sponsor-level gold">Gold Sponsor</span>
+                    </div>
+                    <div class="sponsor-card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
+                            alt="Netflix" class="sponsor-logo mb-4">
+                        <h3 class="text-xl font-bold mb-2">Netflix</h3>
+                        <span class="sponsor-level gold">Gold Sponsor</span>
+                    </div>
+                </div>
+            </div> -->
+            <!-- Footer -->
+            <footer class="border-t border-neon-blue/30 py-10 px-4">
+                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div>
+                        <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                        <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                        <p class="mt-4">21 & 22 February 2K26</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                            <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                            <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                            <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                                class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                                title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                                title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                            <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                                class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                        <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- Chatbot Container -->
+            <div id="chatbot-container"></div>
+
+            <script src="js/main.js"></script>
+            <script src="js/chatbot.js"></script>
+            <script>
+                function openSponsorForm() {
+                    document.getElementById('sponsor-modal').classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+
+                function closeSponsorForm() {
+                    document.getElementById('sponsor-modal').classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+
+                document.getElementById('sponsor-form').addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    alert('Sponsorship application submitted successfully! Our team will contact you within 48 hours.');
+                    closeSponsorForm();
+                    this.reset();
+                });
+
+                document.getElementById('sponsor-modal').addEventListener('click', function (e) {
+                    if (e.target === this) closeSponsorForm();
+                });
+            </script>
+</body>
+
+</html>
