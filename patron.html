@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrons - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .patron-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s;
+        }
+
+        .patron-card:hover {
+            border-color: #00f3ff;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .patron-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #00f3ff;
+            margin: 0 auto 1.5rem;
+        }
+
+        .patron-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .patron-role {
+            color: #00f3ff;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .patron-message {
+            color: #a0a0c0;
+            font-style: italic;
+            border-left: 3px solid #9d4edd;
+            padding-left: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="events.html#technical" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="events.html#non-technical"
+                            class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="events.html#esports" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="events.html#cultural" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="events.html#sports" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="events.html#athletics" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-neon-cyan"
+                title="Toggle mobile navigation menu">
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+
+            <!-- Events with submenu for mobile -->
+            <div class="relative">
+                <button id="mobile-events-btn"
+                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                    <a href="non-technical.html"
+                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                </div>
+            </div>
+
+            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Patrons Hero -->
+    <section class="min-h-[60vh] relative flex items-center justify-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                OUR <span class="text-neon-cyan">PATRONS</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                The Speaker Sessions are amongst the premier events of SURAVI. Witnessing great stalwarts from varied
+                domains every
+                year, this event serves an inspiration to the young generation and provides a platform for the audience
+                to get inspired
+                from the stories of eminent personalities and imbibe their ideas to walk on their own path of glory.
+            </p>
+        </div>
+    </section>
+
+    <!-- Patrons Grid -->
+    <section id="patrons" class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Chairman -->
+                <div class="patron-card">
+                    <img src="ch.png" alt="Chairman" class="patron-image">
+                    <h3 class="patron-name">Dr. Satya Prakash Panda</h3>
+                    <div class="patron-role">Chairman, Gandhi Group</div>
+                    <p class="text-center text-gray-300 mb-4">Visionary leader and educational reformer</p>
+                    <div class="patron-message">
+                        Dr. Satya Prakash Panda is the founder and chairman of GIET Ghangapatna. An
+                        edu-entrepreneur, academician, and
+                        philanthropist, he has over 30 years of experience in HRM and has authored multiple books. He
+                        established GIET
+                        University in 1997, transforming it into a premier institution in Odisha. Beyond education, he
+                        actively supports social
+                        causes, founding Balaniketan (an orphanage) and Swabalamban (an old age home). His visionary
+                        leadership in the Gandhi
+                        Group of Institutions has earned him national recognition. At 71, he remains dedicated to
+                        education, social service, and
+                        innovation.
+                    </div>
+                </div>
+
+                <!-- Vice Chairman -->
+                <div class="patron-card">
+                    <img src="vc.png" alt="Vice Chairman" class="patron-image">
+                    <h3 class="patron-name">Er. Rama Narayan Sabat</h3>
+                    <div class="patron-role">Vice Chairman, GIET Ghangapatna</div>
+                    <p class="text-center text-gray-300 mb-4">Champion of student innovation</p>
+                    <div class="patron-message">
+                        Er. Rama Narayan Sabat serves as the Vice Chairman of the Venkateswara Educational Trust in
+                        Bhubaneswar and holds a key
+                        position on the Board of Governors at the Gandhi Institute of Excellent Technocrats (GIET),
+                        Ghangapatna, Bhubaneswar. In
+                        his message to prospective students, he emphasizes the institution's vibrant environment,
+                        characterized by inquisitive
+                        students and innovative faculty. He invites students to join GIET in its journey toward becoming
+                        a globally renowned
+                        institution.
+                    </div>
+                </div>
+
+                <!-- Secretary -->
+                <div class="patron-card">
+                    <img src="sec.png" alt="Secretary" class="patron-image">
+                    <h3 class="patron-name">Er. Minakshi Panda</h3>
+                    <div class="patron-role">Secretary, GIET Ghangapatna</div>
+                    <p class="text-center text-gray-300 mb-4">Administrative excellence leader</p>
+                    <div class="patron-message">
+                        Minakshi Panda serves as the Secretary of GIET Ghangapatna, playing a crucial role in the
+                        institutionâ€™s administration
+                        and development. Her dedication and leadership contribute significantly to the smooth
+                        functioning and growth of the
+                        institute.
+                    </div>
+                </div>
+
+                <!-- Principal -->
+                <div class="patron-card">
+                    <img src="princ.png" alt="Principal" class="patron-image">
+                    <h3 class="patron-name">Dr. Subhrajit Pradhan</h3>
+                    <div class="patron-role">Principal, GIET Ghangapatna</div>
+                    <p class="text-center text-gray-300 mb-4">Academic excellence advocate</p>
+                    <div class="patron-message">
+                        Dr. Subhrajit Pradhan serves as the Principal of Gandhi Institute of Excellent Technocrats
+                        (GIET) in Ghangapatna,
+                        Bhubaneswar. He is a member of the Board of Governors at GIET, contributing to the institution's
+                        strategic decisions. In
+                        his message to students, Dr. Pradhan emphasizes the importance of making informed decisions and
+                        highlights GIET's
+                        commitment to providing a motivating environment for knowledge assimilation, generation, and
+                        dissemination. He has been
+                        recognized for his leadership and inspiration within the GIET community.
+                    </div>
+                </div>
+            </div>
+
+            <!-- University Info -->
+            <div
+                class="mt-16 p-8 bg-gradient-to-r from-neon-blue/10 to-neon-purple/10 rounded-2xl border border-neon-blue/30">
+                <h3 class="text-2xl font-bold mb-6 text-neon-cyan text-center">About GIET Ghangapatna</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-neon-cyan mb-2">25+</div>
+                        <div class="text-lg">Years of Excellence</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-neon-cyan mb-2">50+</div>
+                        <div class="text-lg">Programs Offered</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-neon-cyan mb-2">10,000+</div>
+                        <div class="text-lg">Alumni Network</div>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-gray-300">
+                    GIET Ghangapatna, is committed to providing quality education and fostering innovation
+                    through events like SURAVI that bridge the gap between academia and industry.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+</body>
+
+</html>

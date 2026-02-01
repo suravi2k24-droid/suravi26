@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Stalls - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .food-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .food-card:hover {
+            border-color: #9d4edd;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(157, 78, 221, 0.2);
+        }
+
+        .food-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #9d4edd, #00f3ff);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .food-card:hover::before {
+            opacity: 1;
+        }
+
+        .food-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .food-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .food-desc {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .food-price {
+            color: #00f3ff;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="events.html#technical" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="events.html#non-technical"
+                            class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="events.html#esports" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="events.html#cultural" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="events.html#sports" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="events.html#athletics" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="events.html" class="block px-4 py-3 hover:bg-neon-blue/10">Events</a>
+            <a href="#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Food Stalls Hero -->
+    <section class="min-h-[60vh] relative flex items-center justify-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                FOOD <span class="text-neon-cyan">STALLS</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                1. Maintain Hygiene Standards â€“ Ensure all cooking and serving areas are clean, and staff follow
+                proper hygiene
+                practices, including wearing gloves and hairnets.
+                <br><br>
+                2. Fresh & Safe Ingredients â€“ Use fresh, high-quality ingredients and store perishable items at the
+                right
+                temperature to prevent contamination.
+                <br><br>
+                3. Proper Waste Disposal â€“ Keep separate bins for wet and dry waste, regularly dispose of garbage, and
+                avoid food
+                spillage to maintain a clean environment.
+                <br><br>
+                4. Sanitize Equipment & Utensils â€“ Regularly clean cooking tools, serving plates, and countertops with
+                food-safe
+                disinfectants to prevent bacterial growth.
+
+            </p>
+        </div>
+    </section>
+
+    <!-- Food Stalls Grid -->
+    <section id="food-stall" class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Food Stall 1 -->
+                <div class="food-card">
+                    <img src="https://img.freepik.com/free-vector/flat-design-healthy-food-twitter-header-template_23-2149154107.jpg?semt=ais_hybrid&w=740&q=80"
+                        alt="Veg Stall" class="food-image">
+                    <h3 class="food-title">VEG STALL</h3>
+                    <p class="food-desc">A veg food stall promotes healthier eating with fresh, nutrient-rich options,
+                        caters to a wide audience with diverse
+                        dietary preferences, and supports sustainability through eco-friendly practices and plant-based
+                        meals..</p>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="food-price">₹1000</span>
+                        <button class="register-btn px-4 py-2"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfJS50bMic_CeMUYsZ2PSoWWN8dPw_zwdFA3som15Sp6tUgJQ/viewform?usp=dialog'">Book
+                            Stall</button>
+                    </div>
+                </div>
+
+                <!-- Food Stall 2 -->
+                <div class="food-card">
+                    <img src="https://img.freepik.com/free-psd/food-menu-restaurant-web-banner-cover-template-design_84443-10558.jpg?semt=ais_hybrid&w=740&q=80"
+                        alt="Non-veg Stall" class="food-image">
+                    <h3 class="food-title">Non-veg Stall</h3>
+                    <p class="food-desc">A non-veg food stall offers a delicious variety of protein-rich dishes,
+                        catering to meat lovers with flavorful and
+                        satisfying options. It provides a diverse menu featuring grilled, fried, and spiced meats,
+                        ensuring a rich culinary
+                        experience. Additionally, it attracts a broad customer base, delivering high-energy meals packed
+                        with essential
+                        nutrients.</p>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="food-price">₹1000</span>
+                        <button class="register-btn px-4 py-2" onclick="openFoodRegistration('Pizza Paradise')"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfJS50bMic_CeMUYsZ2PSoWWN8dPw_zwdFA3som15Sp6tUgJQ/viewform?usp=dialog'">Book
+                            Stall</button>
+                    </div>
+                </div>
+
+                <!-- Food Stall 3 -->
+                <div class="food-card">
+                    <img src="https://img.freepik.com/free-psd/food-menu-restaurant-web-banner-template_106176-825.jpg?semt=ais_hybrid&w=740&q=80"
+                        alt="Veg & Non-veg Stall" class="food-image">
+                    <h3 class="food-title">Both Veg & Non-veg</h3>
+                    <p class="food-desc">A Veg & Non-Veg Food Stall offers the best of both worlds, catering to a wide
+                        range of tastes and dietary preferences.
+                        Whether you're a vegetarian looking for fresh, plant-based meals or a meat lover craving
+                        flavorful, protein-rich dishes,
+                        this stall has something for everyone.</p>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="food-price">₹1500</span>
+                        <button class="register-btn px-4 py-2"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfJS50bMic_CeMUYsZ2PSoWWN8dPw_zwdFA3som15Sp6tUgJQ/viewform?usp=dialog'">Book
+                            Stall</button>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Footer -->
+                <footer class="border-t border-neon-blue/30 py-10 px-4">
+                    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div>
+                            <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                            <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                            <p class="mt-4">21 & 22 February 2K26</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                            <ul class="space-y-2">
+                                <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                                <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                                <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                                <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                                    class="social-icon" title="Follow us on Instagram"><i
+                                        class="fab fa-instagram"></i></a>
+                                <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                                    title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT"
+                                    class="social-icon" title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                                <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                                    class="social-icon" title="Connect on LinkedIn"><i
+                                        class="fab fa-linkedin-in"></i></a>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+
+                <!-- Chatbot Container -->
+                <div id="chatbot-container"></div>
+
+                <script src="js/main.js"></script>
+                <script src="js/chatbot.js"></script>
+                <script>
+                    function openFoodRegistration(stallName) {
+                        alert(`Booking initiated for ${stallName}. Our team will contact you within 24 hours.`);
+                    }
+
+                    function openStallApplication() {
+                        document.getElementById('stall-modal').classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeStallApplication() {
+                        document.getElementById('stall-modal').classList.add('hidden');
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    document.getElementById('stall-form').addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        alert('Food stall application submitted successfully! We will contact you within 48 hours.');
+                        closeStallApplication();
+                        this.reset();
+                    });
+
+                    document.getElementById('stall-modal').addEventListener('click', function (e) {
+                        if (e.target === this) closeStallApplication();
+                    });
+                </script>
+</body>
+
+</html>

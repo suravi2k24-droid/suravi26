@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Sports Events - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .esports-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(255, 100, 100, 0.3);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+            .esports-card {
+                padding: 1rem;
+                min-height: 250px;
+            }
+        }
+
+        .esports-card:hover {
+            border-color: #ff6464;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 100, 100, 0.2);
+        }
+
+        .esports-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff6464, #ffb464);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .esports-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-icon {
+            font-size: 3rem;
+            color: #ff6464;
+            margin-bottom: 1rem;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-desc {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            text-align: center;
+            padding: 0.5rem;
+            background: rgba(255, 100, 100, 0.1);
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #ffb464;
+            margin-bottom: 0.2rem;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .esports-category {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.1) 0%, rgba(255, 180, 100, 0.1) 100%);
+            border: 2px solid rgba(255, 100, 100, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .esports-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(255, 100, 100, 0.3);
+        }
+
+        .esports-category-icon {
+            font-size: 2.5rem;
+            color: #ff6464;
+            margin-right: 1rem;
+        }
+
+        .esports-category-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .esports-count {
+            background: #ff6464;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        /* Tournament bracket style */
+        .tournament-info {
+            background: rgba(255, 100, 100, 0.05);
+            border: 1px solid rgba(255, 100, 100, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tournament-stage {
+            color: #ffb464;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .tournament-desc {
+            color: #a0a0c0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="#" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden flex flex-col">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical Events</a>
+            <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+            <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+            <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+            <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+            <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- E-Sports Hero -->
+    <section class="min-h-[40vh] md:min-h-[50vh] relative flex items-center justify-center pt-20 md:pt-24 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-32 h-32 md:w-64 md:h-64 bg-red-500/10 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-40 h-40 md:w-80 md:h-80 bg-orange-500/10 rounded-full blur-3xl">
+            </div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 font-tilt-neon">
+                <span class="text-red-400">E-SPORTS</span> ARENA
+            </h1>
+            <p class="text-lg md:text-xl lg:text-2xl mb-6 md:mb-8 text-orange-300 px-4">
+                Battle Royale & Mobile Gaming Championships
+            </p>
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+                <a href="#battle-royale" class="neon-btn px-4 md:px-6 py-2 md:py-3 text-sm md:text-base">Battle
+                    Royale</a>
+                <a href="#prizes" class="neon-btn px-4 md:px-6 py-2 md:py-3 text-sm md:text-base">Prizes</a>
+                <a href="#rules" class="neon-btn px-4 md:px-6 py-2 md:py-3 text-sm md:text-base">Rules</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- E-Sports Events -->
+    <section class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Battle Royale Games -->
+            <div id="battle-royale" class="esports-category">
+                <div class="esports-header">
+                    <div class="esports-category-icon">
+                        <i class="fas fa-crosshairs"></i>
+                    </div>
+                    <h2 class="esports-category-title">Battle Royale Championships</h2>
+                    <!-- <span class="esports-count">2 Games</span> -->
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Free Fire -->
+                    <div class="esports-card">
+                        <div class="game-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3 class="game-title">Free Fire</h3>
+                        <p class="game-desc">Get ready for the Free Fire Showdown, where fast-paced, tactical gameplay
+                            meets the thrill of survival! Set on the
+                            exotic island maps, solo players and squads will face off in this action-packed event to
+                            become the last man standing.
+                            With rapid matches, diverse characters, and a wide range of weapons, players must outthink,
+                            outgun, and outplay their
+                            opponents to claim victory. Only the most adaptable and skilled warriors will survive the
+                            heat of battle. Do you have
+                            what it takes to emerge victorious in Garena Free Fire?</p>
+
+                        <div class="game-details">
+                            <div class="detail-item">
+                                <div class="detail-label">Format</div>
+                                <div class="detail-value">4v4 Squad</div>
+                            </div>
+                            <!-- <div class="detail-item">
+                                <div class="detail-label">Map</div>
+                                <div class="detail-value">ANY</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Prize Pool</div>
+                                <div class="detail-value">ANNOUNCE</div>
+                            </div> -->
+                            <div class="detail-item">
+                                <div class="detail-label">Entry Fee</div>
+                                <div class="detail-value">₹00/team</div>
+                            </div>
+                        </div>
+
+                        <!-- Tournament Stages -->
+                        <!-- <div class="tournament-info">
+                            <div class="tournament-stage">Qualifiers: Day 1 | 10:00 AM</div>
+                            <div class="tournament-desc">Top 8 teams qualify for semi-finals</div>
+                        </div>
+                        <div class="tournament-info">
+                            <div class="tournament-stage">Finals: Day 2 | 2:00 PM</div>
+                            <div class="tournament-desc">Grand finale with live streaming</div>
+                        </div> -->
+
+                        <button class="register-btn mt-4"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdf-kzCnJJ-6afWbDeZ2J3OemdUfnGMLJaMownhjPJXZkgt0A/viewform?usp=dialog'">Register
+                            Team</button>
+                    </div>
+
+                    <!-- PUBG Mobile -->
+                    <div class="esports-card">
+                        <div class="game-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="game-title">BGMI</h3>
+                        <p class="game-desc">Step into the virtual battlefield where strategy, skill, and survival
+                            instincts collide in the ultimate test of gaming
+                            prowess. The BGMI Tournament is back, bigger and bolder than ever! Squads from across the
+                            nation will compete in
+                            high-octane matches, filled with intense gunfights, strategic ambushes, and
+                            adrenaline-fueled action. Whether you're
+                            dropping into Erangel or Vikendi, gear up and prove your mettle as you fight for glory,
+                            dominance, and a massive prize
+                            pool. Will your team be the last one standing?</p>
+
+                        <div class="game-details">
+                            <!-- <div class="detail-item">
+                                <div class="detail-label">Format</div>
+                                <div class="detail-value">4v4 Squad</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Map</div>
+                                <div class="detail-value">ANY</div>
+                            </div> -->
+                            <div class="detail-item">
+                                <div class="detail-label">Prize Pool</div>
+                                <div class="detail-value">ANNOUNCE</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-label">Entry Fee</div>
+                                <div class="detail-value">₹00/team</div>
+                            </div>
+                        </div>
+                        <button class="register-btn mt-4"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfids7Xtd5AFSLv_qgYVS7mBnDlLQ2nN5lCuEXtP2ULYKVO2A/viewform?usp=dialog'">Register
+                            Team</button>
+
+                            <br>
+                        <!-- LAN GAMING -->
+                        <div class="esports-card">
+                            <div class="game-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <h3 class="game-title">LAN GAMING</h3>
+                            <p class="game-desc">Get ready for the LAN GAMING Showdown, where fast-paced, tactical
+                                gameplay
+                                meets the thrill of survival! Set on the</p>
+
+                            <div class="game-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Format</div>
+                                    <div class="detail-value">0000</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Map</div>
+                                    <div class="detail-value">ANY</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Prize Pool</div>
+                                    <div class="detail-value">ANNOUNCE</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Entry Fee</div>
+                                    <div class="detail-value">₹00/team</div>
+                                </div>
+                            </div>
+
+
+                            <!-- Tournament Stages -->
+                            <!-- <div class="tournament-info">
+                            <div class="tournament-stage">Qualifiers: Day 1 | 2:00 PM</div>
+                            <div class="tournament-desc">3 matches, top 6 teams advance</div>
+                        </div>
+                        <div class="tournament-info">
+                            <div class="tournament-stage">Finals: Day 2 | 4:00 PM</div>
+                            <div class="tournament-desc">4 matches to determine champion</div>
+                        </div> -->
+
+                            <button class="register-btn mt-4"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfTGCF5S0Nl1zuWUUGLiHJ165gjs2fLZxQ11-XNUk-1Ze92qw/viewform?usp=dialog'">Register
+                                Team</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <!-- Prizes & Rewards -->
+                <div id="prizes" class="esports-category">
+                    <div class="esports-header">
+                        <div class="esports-category-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2 class="esports-category-title">Prizes & Rewards</h2>
+                        <span class="esports-count"></span>
+                    </div>
+
+                    <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-gradient-to-b from-red-500/10 to-orange-500/10 rounded-2xl">
+                        <div class="text-4xl font-bold text-red-400 mb-2">🥇</div>
+                        <div class="text-2xl font-bold text-white mb-2">1st Place</div>
+                        <div class="text-xl text-orange-300 mb-2">₹5,000</div>
+                        <p class="text-gray-300">Cash + Trophy + Gaming Merchandise</p>
+                    </div>
+
+                    <div class="text-center p-6 bg-gradient-to-b from-gray-500/10 to-gray-400/10 rounded-2xl">
+                        <div class="text-4xl font-bold text-gray-300 mb-2">🥈</div>
+                        <div class="text-2xl font-bold text-white mb-2">2nd Place</div>
+                        <div class="text-xl text-gray-300 mb-2">₹3,000</div>
+                        <p class="text-gray-300">Cash + Medal + Certificates</p>
+                    </div>
+
+                    <div class="text-center p-6 bg-gradient-to-b from-yellow-700/10 to-yellow-600/10 rounded-2xl">
+                        <div class="text-4xl font-bold text-yellow-600 mb-2">🥉</div>
+                        <div class="text-2xl font-bold text-white mb-2">3rd Place</div>
+                        <div class="text-xl text-yellow-500 mb-2">₹2,000</div>
+                        <p class="text-gray-300">Cash + Medal + Certificates</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-lg font-bold text-red-400 mb-1">₹1,000</div>
+                        <div class="text-sm text-gray-300">MVP Award</div>
+                    </div>
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-lg font-bold text-red-400 mb-1">₹500</div>
+                        <div class="text-sm text-gray-300">Best Clutch</div>
+                    </div>
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-lg font-bold text-red-400 mb-1">Gear</div>
+                        <div class="text-sm text-gray-300">Gaming Mouse</div>
+                    </div>
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-lg font-bold text-red-400 mb-1">All</div>
+                        <div class="text-sm text-gray-300">Participation Certificates</div>
+                    </div>
+                </div>
+            </div> -->
+
+                    <!-- Rules & Guidelines -->
+                    <div id="rules" class="esports-category">
+                        <div class="esports-header">
+                            <div class="esports-category-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h2 class="esports-category-title">Rules & Guidelines</h2>
+                            <span class="esports-count">Important</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-xl font-bold mb-4 text-red-400">General Rules</h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                                        <span>Team size: 4 players (no substitutes during tournament)</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                                        <span>Players must bring their own devices (phones/tablets)</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                                        <span>Headphones with mic are mandatory</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                                        <span>College ID required for verification</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
+                                        <span>Check-in 30 minutes before match time</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-bold mb-4 text-orange-300">Game-Specific Rules</h3>
+                                <ul class="space-y-3 text-gray-300">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
+                                        <span>Latest version of games must be installed</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
+                                        <span>No emulators allowed - mobile devices only</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
+                                        <span>No hacking, cheating, or third-party tools</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
+                                        <span>Disconnection during match = elimination</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
+                                        <span>Organizers' decisions are final</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 p-6 bg-gradient-to-r from-red-500/5 to-orange-500/5 rounded-xl">
+                            <h3 class="text-xl font-bold mb-3 text-white">Device Requirements</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="text-center p-3 bg-card-bg rounded-lg">
+                                    <div class="font-bold text-red-400 mb-1">Battery</div>
+                                    <div class="text-sm text-gray-300">Power bank recommended</div>
+                                </div>
+                                <div class="text-center p-3 bg-card-bg rounded-lg">
+                                    <div class="font-bold text-red-400 mb-1">Internet</div>
+                                    <div class="text-sm text-gray-300">WiFi will be provided</div>
+                                </div>
+                                <div class="text-center p-3 bg-card-bg rounded-lg">
+                                    <div class="font-bold text-red-400 mb-1">Storage</div>
+                                    <div class="text-sm text-gray-300">4GB free space minimum</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-card-bg rounded-xl">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-red-400 text-xl mr-3"></i>
+                            <div>
+                                <div class="font-bold">E-Sports Arena Venue</div>
+                                <div class="text-gray-300">GIET Ghangapatna Seminar Hall</div>
+                                <div class="text-sm text-gray-400 mt-1">Equipped with high-speed internet, charging
+                                    stations, and live streaming setup</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-red-400/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-red-400">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-red-400">Home</a></li>
+                    <li><a href="technical.html" class="hover:text-red-400">Technical Events</a></li>
+                    <li><a href="sports.html" class="hover:text-red-400">Sports Events</a></li>
+                    <li><a href="contact.html" class="hover:text-red-400">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow E-Sports</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon bg-red-500/20 text-red-400"
+                        title="Follow on Facebook">
+                        <i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT"
+                        class="social-icon bg-red-600/20 text-red-500" title="Subscribe on YouTube"><i
+                            class="fab fa-youtube"></i></a>
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Registration modal functions
+        function openRegistration(eventName) {
+            document.getElementById('event-name').value = eventName;
+            document.getElementById('registration-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRegistration() {
+            document.getElementById('registration-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const eventName = document.getElementById('event-name').value;
+            const game = document.querySelector('select').value;
+            alert(`Team registered successfully for ${game}! Tournament details will be emailed.`);
+            closeRegistration();
+            this.reset();
+        });
+
+        // Close modal on outside click
+        document.getElementById('registration-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeRegistration();
+        });
+
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('mobile-menu');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

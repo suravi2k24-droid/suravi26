@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'ibm-plex-sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .member-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.4s;
+            text-align: center;
+        }
+
+        .member-card:hover {
+            border-color: #00f3ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 243, 255, 0.2);
+        }
+
+        .member-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #00f3ff;
+            margin: 0 auto 1rem;
+            transition: all 0.4s;
+        }
+
+        .member-card:hover .member-image {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        .member-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .member-role {
+            color: #00f3ff;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .member-contact {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .contact-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 243, 255, 0.1);
+            color: #00f3ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: #00f3ff;
+            color: #0a0a0f;
+            transform: scale(1.1);
+        }
+
+        /* Filter buttons */
+        .filter-btn {
+            padding: 0.5rem 1.2rem;
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(90deg, #00f3ff, #9d4edd);
+            border-color: transparent;
+        }
+
+        /* Contact form */
+        .contact-input {
+            width: 100%;
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .contact-input:focus {
+            outline: none;
+            border-color: #00f3ff;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-ibm-plex-sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl text-neon-cyan" title="Toggle mobile menu">
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="events.html" class="block px-4 py-3 hover:bg-neon-blue/10">Events</a>
+            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="#core-members" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contact Hero -->
+    <section class="min-h-[60vh] relative flex items-center justify-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                CONTACT <span class="text-neon-cyan">US</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                Connect with the Core Team
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Contact Form -->
+                <div>
+                    <h2 class="text-3xl font-bold mb-8 text-neon-cyan">Get in Touch</h2>
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm mb-2">Your Name *</label>
+                                <input type="text" required class="contact-input" title="Enter your full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2">Email Address *</label>
+                                <input type="email" required class="contact-input" title="Enter your email address">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Phone Number</label>
+                            <input type="tel" class="contact-input" title="Enter your phone number">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Subject *</label>
+                            <select class="contact-input" title="Select subject">
+                                <option value="">Select Subject</option>
+                                <option value="event">Event Registration</option>
+                                <option value="sponsor">Sponsorship</option>
+                                <option value="collab">Collaboration</option>
+                                <option value="query">General Query</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Message *</label>
+                            <textarea rows="5" required class="contact-input" title="Enter your message"></textarea>
+                        </div>
+                        <button type="submit" class="register-btn px-8 py-3 text-lg">Send Message</button>
+                    </form>
+
+                    <!-- Contact Information -->
+                    <div class="mt-12 p-6 bg-gradient-to-r from-neon-blue/10 to-neon-purple/10 rounded-xl">
+                        <h3 class="text-xl font-bold mb-4 text-neon-cyan">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-neon-blue mr-3"></i>
+                                <div>
+                                    <div class="font-bold">Venue Address</div>
+                                    <div class="text-gray-300">GIET Ghangapatna, Bhubaneswar, Odisha 752054</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope text-neon-blue mr-3"></i>
+                                <div>
+                                    <div class="font-bold">Email</div>
+                                    <div class="text-gray-300">suravi2k24@gmail.com</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-phone text-neon-blue mr-3"></i>
+                                <div>
+                                    <div class="font-bold">Phone</div>
+                                    <div class="text-gray-300">+91</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-neon-blue mr-3"></i>
+                                <div>
+                                    <div class="font-bold">Response Time</div>
+                                    <div class="text-gray-300">24-48 Hours</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                Core Members Grid
+                <div id="core-members">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-3xl font-bold text-neon-cyan">Core Members</h2>
+                        <div class="text-sm text-gray-300">30 Members</div>
+                    </div>
+
+
+
+                    <!-- Members Grid
+                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 max-h-[600px] overflow-y-auto p-2">
+                         Member 1
+                       <div class="member-card" data-role="coordinator">
+                            <img src="bibek.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">BIBEKANANDA MEHER</h3>
+                            <div class="member-role">WEBSITE & DATABASE MANAGEMENT</div>
+                            <div class="member-contact">
+                                <a href="tel:+919692202066" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="bibekanandam958@gmail.com" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div> 
+
+                        Member 2 
+                        <div class="member-card" data-role="coordinator">
+                            <img src="sub.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">SHUBHARANJAN MISHRA</h3>
+                             <div class="member-role">Deputy Coordinator</div> 
+                            <div class="member-contact">
+                                <a href="tel:+919777186162" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                         Member 3
+                        <div class="member-card" data-role="tech">
+                            <img src="sachi.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">SACHINANDAN NAYAK</h3>
+                             <div class="member-role">Technical Head</div> 
+                            <div class="member-contact">
+                                <a href="tel:+919876543210" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="mailto:amit@suravi2k26.in" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                         Member 4
+                        <div class="member-card" data-role="tech">
+                            <img src="chinu.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">CHINMAYA GIRI</h3>
+                             <div class="member-role">Technical Coordinator</div>
+                            <div class="member-contact">
+                                <a href="tel:+918260167171" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        Member 5 
+                        <div class="member-card" data-role="cultural">
+                            <img src="tap.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">TAPAS JENA</h3>
+                            <div class="member-role">Cultural Head</div>
+                            <div class="member-contact">
+                                <a href="tel:+919337903279" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        Member 6
+                        <div class="member-card" data-role="cultural">
+                            <img src="satyam.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name"></h3>SATYAM ROUT
+                            <div class="member-role">Cultural Coordinator</div>
+                            <div class="member-contact">
+                                <a href="tel:+91" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                         Member 7
+                        <div class="member-card" data-role="sports">
+                            <img src="kam.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">KAMAL LOCHAN PRADHAN</h3>
+                            <div class="member-role">Sports Head</div> 
+                            <div class="member-contact">
+                                <a href="tel:+91" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                         Member 8
+                        <div class="member-card" data-role="media">
+                            <img src="bisal.png"
+                                alt="Member" class="member-image">
+                            <h3 class="member-name">BISAL DAS</h3>
+                            <div class="member-role">Media & PR Head</div>
+                            <div class="member-contact">
+                                <a href="tel:+91" class="contact-btn" title="Call">
+                                    <i class="fas fa-phone"></i>
+                                </a>
+                                <a href="" class="contact-btn" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a href="#" class="contact-btn" title="LinkedIn">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+    </section> -->=
+
+                    <!-- Footer -->
+                    <footer class="border-t border-neon-blue/30 py-10 px-4">
+                        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+                            <div>
+                                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                                <p class="mt-4">21 & 22 February 2K26</p>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                                <ul class="space-y-2">
+                                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                                    <li><a href="organisers.html" class="hover:text-neon-cyan">Organisers</a></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                                <div class="flex space-x-4">
+                                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                                        class="social-icon" title="Follow us on Instagram"><i
+                                            class="fab fa-instagram"></i></a>
+                                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT"
+                                        class="social-icon" title="Subscribe on YouTube"><i
+                                            class="fab fa-youtube"></i></a>
+                                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                                        class="social-icon" title="Connect on LinkedIn"><i
+                                            class="fab fa-linkedin-in"></i></a>
+                                </div>
+                                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </footer>
+
+                    <!-- Chatbot Container -->
+                    <div id="chatbot-container"></div>
+
+                    <script src="js/main.js"></script>
+                    <script src="js/chatbot.js"></script>
+                    <script>
+                        // Filter functionality for core members
+                        document.querySelectorAll('.filter-btn').forEach(btn => {
+                            btn.addEventListener('click', function () {
+                                // Remove active class from all buttons
+                                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                                // Add active class to clicked button
+                                this.classList.add('active');
+
+                                const filter = this.getAttribute('data-filter');
+                                const members = document.querySelectorAll('.member-card');
+
+                                members.forEach(member => {
+                                    if (filter === 'all' || member.getAttribute('data-role') === filter) {
+                                        member.style.display = 'block';
+                                    } else {
+                                        member.style.display = 'none';
+                                    }
+                                });
+                            });
+                        });
+
+                        // Contact form submission
+                        document.getElementById('contact-form').addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            alert('Thank you for your message! We will get back to you within 48 hours.');
+                            this.reset();
+                        });
+
+                        // Load more members functionality
+                        let loadedMembers = 10;
+                        document.getElementById('load-more').addEventListener('click', function () {
+                            // In a real implementation, this would load more members from a database
+                            // For now, we'll simulate loading more members
+                            alert('Loading more members... (In a real implementation, this would load from a database)');
+                            this.style.display = 'none';
+                        });
+                    </script>
+</body>
+
+</html>

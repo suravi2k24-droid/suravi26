@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organisers - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .organiser-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.4s;
+            text-align: center;
+            height: 100%;
+        }
+
+        .organiser-card:hover {
+            border-color: #9d4edd;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.2);
+        }
+
+        .organiser-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #9d4edd;
+            margin: 0 auto 1rem;
+            transition: all 0.4s;
+        }
+
+        .organiser-card:hover .organiser-image {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(157, 78, 221, 0.5);
+        }
+
+        .organiser-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .organiser-role {
+            color: #9d4edd;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .organiser-department {
+            color: #00f3ff;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .organiser-contact {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        /* Search bar */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(30, 30, 40, 0.8);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem 0.8rem 3rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #00f3ff;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #00f3ff;
+        }
+
+        /* Department filter */
+        .dept-filter {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dept-btn {
+            padding: 0.4rem 1rem;
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dept-btn:hover,
+        .dept-btn.active {
+            background: linear-gradient(90deg, #9d4edd, #00f3ff);
+            border-color: transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="events.html#technical" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="events.html#non-technical"
+                            class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="events.html#esports" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="events.html#cultural" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="events.html#sports" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="events.html#athletics" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="events.html" class="block px-4 py-3 hover:bg-neon-blue/10">Events</a>
+            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="#organisers" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Organisers Hero -->
+    <section class="min-h-[60vh] relative flex items-center justify-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                <span class="text-neon-cyan">ORGANISING</span> TEAM
+            </h1>
+        </div>
+    </section>
+
+    <!-- Convener & Core Team -->
+    <section class="py-16 px-4">
+        <div class="max-w-6xl mx-auto">
+            <!-- Convener -->
+            <div class="mb-16 text-center">
+                <h2 class="text-3xl font-bold mb-8 text-neon-cyan">Fest Convener</h2>
+                <div class="max-w-md mx-auto">
+                    <div class="organiser-card">
+                        <img src="jitu.png" alt="Convener" class="organiser-image">
+                        <h3 class="organiser-name">MR. JATINDRA KUMAR MISHRA</h3>
+                        <div class="organiser-role">OVERALL ARRANGEMENTS</div>
+                        <p class="text-gray-300 text-sm mt-2">Leading the SURAVI 2K26 team with dedication and vision
+                        </p>
+                        <div class="organiser-contact">
+                            <a href="mailto:convener@suravi2k26.in" class="contact-btn" title="Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <a href="#" class="contact-btn" title="LinkedIn">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Organisers Grid -->
+            <div id="organisers" class="mb-12">
+                <h2 class="text-3xl font-bold mb-8 text-neon-cyan text-center">Organising Committee</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Organiser 1 -->
+                    <div class="organiser-card" data-dept="cse" data-name="MR. SUBHASISH SWAIN">
+                        <img src="subh.png" alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. SUBHASISH SWAIN</h3>
+                        <div class="organiser-role">WEBSITE & DATABASE MANAGEMENT</div>
+                    </div>
+
+                    <!-- Organiser 2 -->
+                    <div class="organiser-card" data-dept="cse" data-name="MS. TRUPTIMALA PATTNAIK">
+                        <img src="#" alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MS. TRUPTIMALA PATTNAIK</h3>
+                        <div class="organiser-role">DIGITAL MARKETING</div>
+                    </div>
+
+                    <!-- Organiser 3 -->
+                    <div class="organiser-card" data-dept="ece" data-name="MR. SMRUTI RANJAN BHADRA">
+                        <img src="smruti.png" alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. SMRUTI RANJAN BHADRA</h3>
+                        <div class="organiser-role">DECORATION</div>
+                    </div>
+
+                    <!-- Organiser 4 -->
+                    <div class="organiser-card" data-dept="mech" data-name="Rohan Kumar">
+                        <img src="rao.png" alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR B.SRINIVAS RAO</h3>
+                        <div class="organiser-role">SPORTS, ATHLETICS</div>
+                    </div>
+
+                    <!-- Organiser 5 -->
+                    <div class="organiser-card" data-dept="civil" data-name="Anjali Reddy">
+                        <img src="siba.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. SIBABRATA MOHANTY</h3>
+                        <div class="organiser-role">NON-TECHNICAL</div>
+                    </div>
+
+                    <!-- Organiser 6 -->
+                    <div class="organiser-card" data-dept="mba" data-name="Kriti Gupta">
+                        <img src="aja.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MRS. AJANTA PRIYADARSHINEE</h3>
+                        <div class="organiser-role">NON-TECHNICAL(GIRLS)</div>
+                    </div>
+
+                    <!-- Organiser 7 -->
+                    <div class="organiser-card" data-dept="cse" data-name="Arjun Nair">
+                        <img src="aba.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. ABANIKANTA PATTANAYAK</h3>
+                        <div class="organiser-role">TECHNICAL-1</div>
+                    </div>
+
+                    <!-- Organiser 8 -->
+                    <div class="organiser-card" data-dept="ece" data-name="Sneha Das">
+                        <img src="deba.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. DEBAPRIYA NILAKANTA PADHY</h3>
+                        <div class="organiser-role">TECHNICAL-2</div>
+                    </div>
+
+                    <!-- Organiser 9 -->
+                    <div class="organiser-card" data-dept="mech" data-name="Rahul Verma">
+                        <img src="#"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. SURYA NARAYAN TRIPATHY</h3>
+                        <div class="organiser-role">TECHNICAL-3</div>
+                    </div>
+
+                    <!-- Organiser 10 -->
+                    <div class="organiser-card" data-dept="civil" data-name="Priya Sharma">
+                        <img src="mai.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">DR. MAITRAYEE ROUT</h3>
+                        <div class="organiser-role">TECHNICAL-4</div>
+                    </div>
+
+                    <!-- Organiser 11 -->
+                    <div class="organiser-card" data-dept="cse" data-name="Aditya Joshi">
+                        <img src="tama.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MRS. TAMASA PRIYADARSHINEE</h3>
+                        <div class="organiser-role">CULTURAL EVENTS</div>
+                    </div>
+
+                    <!-- Organiser 12 -->
+                    <div class="organiser-card" data-dept="mba" data-name="Neha Kapoor">
+                        <img src="pra.png"
+                            alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. PRASANNA KUMAR MISHRA</h3>
+                        <div class="organiser-role">COMPUTER EVENTS</div>
+                    </div>
+
+                    <!-- Organiser 13 -->
+                    <div class="organiser-card" data-dept="mba" data-name="Neha Kapoor">
+                        <img src="nana.png" alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR.DEBAJYOTI MISHRA</h3>
+                        <div class="organiser-role">SPONSORSHIP</div>
+                    </div>
+
+                    <!-- Organiser 14 -->
+                    <div class="organiser-card" data-dept="mba" data-name="Neha Kapoor">
+                        <img src="btm.png" alt="Organiser" class="organiser-image">
+                        <h3 class="organiser-name">MR. B.T.M NAYAK</h3>
+                        <div class="organiser-role">FOOD COURT</div>
+                    </div>
+
+                    <!-- Note: In actual implementation, you would add 18 more organisers here -->
+                </div>
+
+                <div class="text-center mt-8">
+                    <div class="inline-flex items-center space-x-2 text-gray-300">
+                        <i class="fas fa-info-circle text-neon-cyan"></i>
+                        <span>Showing 12 of 30+ organisers</span>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Search functionality
+        document.getElementById('search-input').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const organisers = document.querySelectorAll('.organiser-card');
+
+            organisers.forEach(organiser => {
+                const name = organiser.getAttribute('data-name').toLowerCase();
+                const dept = organiser.getAttribute('data-dept');
+                const deptNames = {
+                    'cse': 'computer science',
+                    'ece': 'electronics',
+                    'mech': 'mechanical',
+                    'civil': 'civil',
+                    'mba': 'management'
+                };
+
+                if (name.includes(searchTerm) || deptNames[dept].includes(searchTerm)) {
+                    organiser.style.display = 'block';
+                } else {
+                    organiser.style.display = 'none';
+                }
+            });
+        });
+
+        // Department filter
+        document.querySelectorAll('.dept-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Remove active class from all buttons
+                document.querySelectorAll('.dept-btn').forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+
+                const dept = this.getAttribute('data-dept');
+                const organisers = document.querySelectorAll('.organiser-card');
+
+                organisers.forEach(organiser => {
+                    if (dept === 'all' || organiser.getAttribute('data-dept') === dept) {
+                        organiser.style.display = 'block';
+                    } else {
+                        organiser.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Join team modal functions
+        function openJoinForm() {
+            document.getElementById('join-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeJoinForm() {
+            document.getElementById('join-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('join-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Thank you for your application! We will review it and get back to you soon.');
+            closeJoinForm();
+            this.reset();
+        });
+
+        document.getElementById('join-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeJoinForm();
+        });
+    </script>
+</body>
+
+</html>

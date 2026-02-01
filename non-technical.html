@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-Technical Events - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .non-tech-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            border-radius: 20px;
+            padding: 1.8rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .non-tech-card:hover {
+            border-color: #9d4edd;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(157, 78, 221, 0.2);
+        }
+
+        .non-tech-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #9d4edd, #00f3ff);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .non-tech-card:hover::before {
+            opacity: 1;
+        }
+
+        .non-tech-icon {
+            font-size: 2.2rem;
+            color: #9d4edd;
+            margin-bottom: 1rem;
+        }
+
+        .non-tech-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .non-tech-desc {
+            color: #a0a0c0;
+            font-size: 0.85rem;
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .non-tech-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .non-tech-category {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1) 0%, rgba(0, 243, 255, 0.1) 100%);
+            border: 2px solid rgba(157, 78, 221, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .non-tech-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(157, 78, 221, 0.3);
+        }
+
+        .non-tech-category-icon {
+            font-size: 2.5rem;
+            color: #9d4edd;
+            margin-right: 1rem;
+        }
+
+        .non-tech-category-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .non-tech-count {
+            background: #9d4edd;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-left: auto;
+        }
+
+        /* Event tags */
+        .event-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .event-tag {
+            background: rgba(157, 78, 221, 0.2);
+            color: #9d4edd;
+            padding: 0.2rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="#" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+
+            <!-- Events with submenu for mobile -->
+            <div class="relative">
+                <button id="mobile-events-btn"
+                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                    <a href="non-technical.html"
+                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                </div>
+            </div>
+
+            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Non-Technical Hero -->
+    <section class="min-h-[50vh] relative flex items-center justify-center pt-24 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                <span class="text-neon-purple">NON-TECHNICAL</span> EVENTS
+            </h1>
+            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                25+ Creative, Artistic & Fun Competitions
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#arts-crafts" class="neon-btn px-6 py-3">Arts & Crafts</a>
+                <a href="#literary" class="neon-btn px-6 py-3">Literary Events</a>
+                <a href="#fun-games" class="neon-btn px-6 py-3">Fun & Games</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Non-Technical Events Grid -->
+    <section class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Arts & Crafts Events -->
+            <div id="arts-crafts" class="non-tech-category">
+                <div class="non-tech-header">
+                    <div class="non-tech-category-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h2 class="non-tech-category-title">Arts & Crafts Events</h2>
+                    <span class="non-tech-count">9 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Card Making -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3 class="non-tech-title">Card Making</h3>
+                        <p class="non-tech-desc">Join the Card Making event and let your imagination flow as you design
+                            beautiful, personalized cards! ðŸŒŸ Whether
+                            itâ€™s for a special occasion or just a creative expression, this event is all about
+                            showcasing your artistic flair.
+                            ðŸ–Œï¸âœ¨ Use colors, textures, and unique designs to craft a card that stands out. The
+                            most creative and thoughtfully
+                            designed cards will win, so bring your ideas to life and let your creativity shine!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Creative</span>
+                            <span class="event-tag">Individual</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdFLPUtzUDp4M8WqUC-IyXYGrg3OjVegnqRML3iDmMdhhdK6g/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Nail Painting -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-hand-sparkles"></i>
+                        </div>
+                        <h3 class="non-tech-title">Nail Painting</h3>
+                        <p class="non-tech-desc">Get ready to showcase your creativity and style in the Nail Painting
+                            competition! Design intricate, bold, or elegant
+                            nail art using a variety of colors and techniques. Whether you prefer delicate patterns or
+                            vibrant, eye-catching
+                            designs, this event lets you turn nails into miniature canvases. ðŸ’– The most artistic and
+                            beautifully crafted nail
+                            designs will take home the prize, so let your imagination run wild and create nails that
+                            make a statement!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Beauty</span>
+                            <span class="event-tag">Art</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"  onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSd_Bhb_vcmAsSFnmEL8HP9OSEe9hPtFWsxBb4Gyon9xY4ZX0Q/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Photography -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3 class="non-tech-title">Photography</h3>
+                        <p class="non-tech-desc">Put your photography skills to the test in the Photography contest!
+                            Whether you focus on landscapes, portraits, or
+                            candid moments, this event challenges you to capture the essence of your subject through
+                            your lens. ðŸ’¡ Itâ€™s all
+                            about creativity, composition, and storytelling in a single frame. The best shot that
+                            conveys emotion and artistry will
+                            take home the prize!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Digital</span>
+                            <span class="event-tag">Submission</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSf4ECCyvotvBC2aVfTzqG6ziYSFPtl4nUgM5EgaWZ1TIlRLuQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Bridal Makeup -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="non-tech-title">Bridal Makeup</h3>
+                        <p class="non-tech-desc">Unveil your makeup artistry in the Bridal Makeup competition! Showcase
+                            your skills by creating stunning, flawless bridal
+                            looks, blending elegance with creativity. From bold traditional styles to soft contemporary
+                            designs, participants will
+                            transform their models into breathtaking brides. ðŸ’ The best makeup artist who captures
+                            beauty, grace, and perfection
+                            will be crowned the winner!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Professional</span>
+                            <span class="event-tag">Makeup</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSc0ai520nZle8ICfd5rPFUy15vd-1HMw1DlW5Rld0bgUC-DaQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Mehendi Competition -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-hand-paper"></i>
+                        </div>
+                        <h3 class="non-tech-title">Mehendi Competition</h3>
+                        <p class="non-tech-desc">Unleash your creativity in the Mehendi Competition, where intricate
+                            designs meet artistic flair! Participants will craft
+                            stunning mehendi patterns on hands, blending traditional motifs with modern styles. Whether
+                            you create delicate florals,
+                            elaborate paisleys, or bold geometric shapes, the focus is on precision, detail, and beauty.
+                            ðŸŒ¸ The most artistic and
+                            beautifully executed design will win, so bring your mehendi art to life in this colorful
+                            competition!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Traditional</span>
+                            <span class="event-tag">Art</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSeiIDpn1Y7ddbQq739yGPwXo3_kRrmmFKSJfu32QbDGwEXpfA/viewform?usp=publish-editor'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Rangoli Competition -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-splotch"></i>
+                        </div>
+                        <h3 class="non-tech-title">Rangoli Competition</h3>
+                        <p class="non-tech-desc">Dive into the vibrant world of colors with the Rangoli Competition,
+                            where tradition meets creativity! Participants will
+                            design beautiful, intricate rangolis using a dazzling array of colors, patterns, and shapes.
+                            From traditional motifs to
+                            modern masterpieces, this event celebrates the art of creating colorful designs that
+                            brighten up any space. ðŸŒ¼ The
+                            most creative and well-executed rangoli will be crowned the winner, showcasing your talent
+                            in this timeless Indian art
+                            form!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Team</span>
+                            <span class="event-tag">Traditional</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfLKCHSnTEDr1qLs2jVlfQsMFn-MtO3a6W5n79V52vWEe1M5w/viewform?usp=publish-editor'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Art Gallery -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="non-tech-title">Art Gallery</h3>
+                        <p class="non-tech-desc">Step into the Art Gallery, where imagination meets expression! ðŸ–¼ï¸
+                            This event showcases a stunning collection of
+                            artworks, from paintings to sketches, celebrating creativity in all its forms. Whether it's
+                            abstract art or realistic
+                            portraits, the gallery is a visual treat where every piece tells a unique story. ðŸŒŸ Let
+                            your art speak for itself and
+                            captivate the audience with your talent!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">AI Art</span>
+                            <span class="event-tag">Digital</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSc5ZWJfaFmxNnYHdvIS5JB5QvEl31IE95UUUGq0m6A_jZ1mFQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Short Movie -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="non-tech-title">Short Movie</h3>
+                        <p class="non-tech-desc">Showcase your storytelling skills in the Short Movie competition!
+                             Whether it's a drama, comedy, or documentary,
+                            this event challenges you to create a powerful and engaging film in a limited runtime. Your
+                            vision, creativity, and
+                            cinematic execution will determine the winner, so get ready to bring your ideas to life on
+                            screen!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Film Making</span>
+                            <span class="event-tag">Team</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdcyfJ_wPYsqfcGRjQYUmHl1GlwN8q25GMuRdrS4CuxUIS_TQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Reels -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="non-tech-title">Reels</h3>
+                        <p class="non-tech-desc">Unleash your creativity in the fast-paced Reels competition! Capture
+                            your audience's attention in a short reel, using
+                            unique ideas, innovative transitions, and engaging content. Whether it's comedy, dance, or
+                            storytelling, this event is
+                            all about making the most of a few seconds to stand out!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Social Media</span>
+                            <span class="event-tag">Creative</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdFxty1lGWGSiWy8lTH-ejtCfN3NVO7wBCX2bOd914Hxnsxxw/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Literary Events -->
+            <div id="literary" class="non-tech-category">
+                <div class="non-tech-header">
+                    <div class="non-tech-category-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h2 class="non-tech-category-title">Literary Events</h2>
+                    <span class="non-tech-count">7 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Shayari Competition -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-quote-right"></i>
+                        </div>
+                        <h3 class="non-tech-title">Shayari Competition</h3>
+                        <p class="non-tech-desc">Express your deepest emotions and creativity in the Shayari
+                            Competition, where words become poetry and feelings come
+                            alive! ðŸŽ¤âœ¨ Share your original shayari filled with love, hope, humor, or nostalgia, and
+                            captivate the audience with
+                            your lyrical brilliance. Whether your verses touch hearts or inspire thought, this event is
+                            all about using the beauty
+                            of words to create a lasting impact.The most heartfelt and impactful shayari will be
+                            celebrated, so bring your
+                            poetic soul to the stage!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Poetry</span>
+                            <span class="event-tag">Recitation</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfcdqfWXkMgPvLdopZiLdVJ5Keo4QN82zbp9HKPXvA4bvYqaw/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3 class="non-tech-title">Quiz</h3>
+                        <p class="non-tech-desc">Put your knowledge to the test in the Quiz Competition, where teams
+                            compete in a fast-paced, intellectually stimulating
+                            contest across various topics. ðŸ“š From science to pop culture, this event is all about
+                            quick thinking and sharp
+                            intellect. May the brightest minds win!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">General Knowledge</span>
+                            <span class="event-tag">Team</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSd2fP8sAIEjnK5W-hHLrZmslktlPNSwf1hDniwUqNZc-ZMGNg/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Debate -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="non-tech-title">Debate</h3>
+                        <p class="non-tech-desc">Step up to the podium and make your voice heard in the Debate
+                            Competition! ðŸ—£ï¸ Engage in thought-provoking
+                            discussions on critical topics, presenting strong arguments, counterpoints, and logical
+                            reasoning. This event challenges
+                            your speaking skills, critical thinking, and ability to persuade. The most convincing
+                            debater takes the crown!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Public Speaking</span>
+                            <span class="event-tag">Individual</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdR51JcH4OZQhDtkCwV2IeLy8kdeVh5e1AYhQe-HL953AVfaw/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Essay Writing -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <h3 class="non-tech-title">Essay Writing</h3>
+                        <p class="non-tech-desc">Showcase your writing skills in the Essay Writing Competition! âœï¸
+                            Participants will craft thoughtful,
+                            well-researched essays on given topics, reflecting clarity, coherence, and originality.
+                            Whether it's an opinion piece or
+                            an analytical essay, this event celebrates the power of words and ideas. The most compelling
+                            essay will win!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Writing</span>
+                            <span class="event-tag">Individual</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSeh6h2J45ID5xCYKvmjcZEMuucAygBGVjJlxQWjd4XiPgyPvw/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Email Writing -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="non-tech-title">Email Writing</h3>
+                        <p class="non-tech-desc">Master the craft of concise and impactful communication in the Email
+                            Writing competition! ðŸ“ Participants will be
+                            tasked with drafting professional, clear, and effective emails that deliver the message with
+                            precision. ðŸ’» The
+                            best-written email, balancing formality with purpose, will secure the win. A skill thatâ€™s
+                            vital in todayâ€™s world of
+                            business and beyond!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Professional</span>
+                            <span class="event-tag">Communication</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSepc1ynKHpYcbcWTWqvStXztr37enr2i5YCugcSfzRPR9TkVQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Vlogs -->
+                    <!-- <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="non-tech-title">Vlogs</h3>
+                        <p class="non-tech-desc">Bring your life and experiences to the screen in the Vlogs competition!
+                            Whether youâ€™re documenting daily life, sharing
+                            travel stories, or offering tutorials, this event celebrates creativity and storytelling
+                            through video. Participants
+                            will be judged on content, editing, and engagement. Get ready to create captivating vlogs
+                            that leave a lasting
+                            impression!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Video Blogging</span>
+                            <span class="event-tag">Creative</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://forms.gle/oHtfc9UdivTBHkLy5'">Register</button>
+                        </div>
+                    </div> -->
+
+                    <!-- Just A Minute -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <h3 class="non-tech-title">Just A Minute</h3>
+                        <p class="non-tech-desc">Step into the spotlight and show off your quick thinking in Just a
+                            Minute! ðŸ• In this exciting challenge, participants
+                            will have just 60 seconds to speak on a given topic without hesitation, repetition, or
+                            deviation. ðŸ’¡ Itâ€™s all about
+                            wit, spontaneity, and keeping your cool under pressure. The one who handles the heat and
+                            speaks fluently will emerge
+                            victorious!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Speaking</span>
+                            <span class="event-tag">Quick Thinking</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdkGfaXGxPI-S8Z41_dIn6hFN4HSJ6Yn9RMQMcp0FvpHYClcw/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fun & Games Events -->
+            <div id="fun-games" class="non-tech-category">
+                <div class="non-tech-header">
+                    <div class="non-tech-category-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h2 class="non-tech-category-title">Fun & Games Events</h2>
+                    <span class="non-tech-count">9 Events</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Treasure Hunt -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-map-signs"></i>
+                        </div>
+                        <h3 class="non-tech-title">Treasure Hunt</h3>
+                        <p class="non-tech-desc">Embark on an exciting journey filled with cryptic clues, hidden
+                            puzzles, and thrilling challenges as you race to uncover
+                            the treasure! ðŸ”ðŸ§© Test your problem-solving skills, navigate through intricate riddles,
+                            and work with your team to
+                            be the first to discover the hidden prize. ðŸ† With every clue you crack, you'll get closer
+                            to the treasure, but only
+                            the sharpest minds will claim victory!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Adventure</span>
+                            <span class="event-tag">Team</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdM5EGHn6OgCLRpdttKVZ7DGoa2x8CIleC30JM1KxALHJhEcQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Biz War -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="non-tech-title">Biz War</h3>
+                        <p class="non-tech-desc">Step into the competitive world of Biz War, where teams face off in a
+                            high-stakes simulation of real-world business
+                            challenges! ðŸ’¼ðŸ’¡ Craft strategies, outmaneuver competitors, and make critical decisions
+                            to lead your company to
+                            success. ðŸ† From marketing to finance, every move counts as you compete to prove your
+                            business acumen. Only the
+                            sharpest strategists and most innovative thinkers will emerge victorious in this battle of
+                            wits and leadership!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Business</span>
+                            <span class="event-tag">Strategy</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdcVan1VhSaWLcJ-zB_dx--wYYuzgJO8KCb312aTr-WhS2fyg/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- GIET Got Talent -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="non-tech-title">GIET Got Talent</h3>
+                        <p class="non-tech-desc">Its time to shine in GIET Got Talent, where participants showcase their
+                            diverse talents in music, dance, magic,
+                            comedy, and more! ðŸŒŸ Whether youâ€™re a singer, dancer, or performer, this event
+                            celebrates unique abilities and
+                            creativity. The stage is yours to impress and win over the audience and judges!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Talent Show</span>
+                            <span class="event-tag">Individual/Team</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSf4MTGEYkolxnZdqBDMA2ANW8zwFN6oOC1ZyfFdfWm2jWExiQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+
+                    <!-- Tech Roadies -->
+                    <div class="non-tech-card">
+                        <div class="non-tech-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <h3 class="non-tech-title">Tech Roadies</h3>
+                        <p class="non-tech-desc">Gear up for an intense and thrilling journey in Tech Roadies, where
+                            participants face a series of challenging
+                            tech-related tasks! From problem-solving to skill-based challenges, this event tests
+                            your technical expertise,
+                            adaptability, and resilience under pressure. Only the smartest and toughest will conquer the
+                            road to victory!</p>
+                        <div class="event-tags">
+                            <span class="event-tag">Adventure</span>
+                            <span class="event-tag">Technical</span>
+                        </div>
+                        <div class="non-tech-details">
+                            <button class="register-btn" onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSe3f-lCkqDdQWfAaxni99hICmhm4YOS2u_J6UAUI68pYhhRdQ/viewform?usp=dialog'">Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-purple/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-purple">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-purple">Home</a></li>
+                    <li><a href="technical.html" class="hover:text-neon-purple">Technical Events</a></li>
+                    <li><a href="cultural.html" class="hover:text-neon-purple">Cultural Events</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-purple">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Registration modal functions
+        function openRegistration(eventName) {
+            document.getElementById('event-name').value = eventName;
+            document.getElementById('event-type').value = "Non-Technical Event";
+            document.getElementById('registration-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeRegistration() {
+            document.getElementById('registration-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const eventName = document.getElementById('event-name').value;
+            alert(`Successfully registered for ${eventName}! You'll receive a confirmation email shortly.`);
+            closeRegistration();
+            this.reset();
+        });
+
+        // Close modal on outside click
+        document.getElementById('registration-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeRegistration();
+        });
+
+        // Mobile menu functionality
+        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('mobile-menu');
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

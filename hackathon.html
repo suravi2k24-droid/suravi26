@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackathon - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'pulse': 'pulse 2s infinite',
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        .hackathon-hero {
+            background: linear-gradient(135deg, rgba(157, 78, 221, 0.1) 0%, rgba(0, 243, 255, 0.1) 100%);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hackathon-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .prize-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s;
+        }
+
+        .prize-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .prize-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .schedule-item {
+            background: rgba(30, 30, 40, 0.8);
+            border-left: 4px solid #00f3ff;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s;
+        }
+
+        .schedule-item:hover {
+            background: rgba(40, 40, 50, 0.8);
+            transform: translateX(5px);
+        }
+
+        .schedule-time {
+            color: #00f3ff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .judge-card {
+            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            border: 2px solid rgba(157, 78, 221, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.4s;
+        }
+
+        .judge-card:hover {
+            border-color: #9d4edd;
+            transform: translateY(-5px);
+        }
+
+        .judge-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #9d4edd;
+            margin: 0 auto 1rem;
+        }
+
+        .faq-item {
+            background: rgba(30, 30, 40, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            max-height: 500px;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
+    <!-- Navigation Bar -->
+    <nav class="fixed w-full z-50">
+        <div class="absolute top-6 right-6 z-50">
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="neon-link">Home</a>
+                <div class="relative group">
+                    <a href="events.html" class="neon-link flex items-center">Events <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="events.html#technical" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
+                        <a href="events.html#non-technical"
+                            class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
+                        <a href="events.html#esports" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
+                        <a href="events.html#cultural" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
+                        <a href="events.html#sports" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
+                        <a href="events.html#athletics" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <a href="special.html" class="neon-link flex items-center">Special <i
+                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
+                    <div
+                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                    </div>
+                </div>
+                <a href="patron.html" class="neon-link">Patron</a>
+                <a href="sponsor.html" class="neon-link">Sponsor</a>
+                <a href="contact.html" class="neon-link">Contact</a>
+                <a href="organisers.html" class="neon-link">Organisers</a>
+                <a href="achievement.html" class="neon-link">Achievement</a>
+                <a href="hackathon.html"
+                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+            </div>
+            <button id="mobile-menu-btn"
+                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                title="Toggle mobile menu">
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="top: 10px;"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                <span
+                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                    style="bottom: 10px;"></span>
+            </button>
+        </div>
+        <div id="mobile-menu"
+            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden">
+            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
+            <a href="events.html" class="block px-4 py-3 hover:bg-neon-blue/10">Events</a>
+            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
+            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
+            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
+            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
+            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
+            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
+            <a href="#hackathon" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+            <button onclick="openHackathonRegistration()"
+                class="block w-full text-left px-4 py-3 hover:bg-neon-blue/10 text-neon-cyan font-bold">Register for
+                Hackathon</button>
+        </div>
+        <div class="absolute bottom-6 left-6 z-50">
+            <div class="flex items-center space-x-4">
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
+                <div class="text-neon-cyan font-tilt-neon text-xl">
+                    <div class="text-3xl font-bold">21 & 22 February</div>
+                    <div class="text-lg">2K26</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hackathon Hero -->
+    <section class="min-h-[80vh] relative flex items-center pt-20 px-4">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/20 rounded-full blur-3xl"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto">
+            <div class="hackathon-hero p-8 md:p-12">
+                <div class="relative z-10">
+                    <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+                        <div class="lg:w-2/3">
+                            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
+                                <span class="text-neon-cyan">GIET</span>HACKFEST
+                                <span class="block text-3xl md:text-5xl mt-2">24-Hour Hackathon</span>
+                            </h1>
+                            <p class="text-xl md:text-2xl mb-8 text-neon-blue">
+                                Build. Innovate. Transform. Join India's most exciting 24-hour coding marathon.
+                            </p>
+                            <div class="flex flex-wrap gap-4 mb-8">
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar-alt text-neon-cyan text-xl mr-2"></i>
+                                    <div>
+                                        <div class="font-bold">Date</div>
+                                        <div class="text-gray-300"> Feb 2026</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock text-neon-cyan text-xl mr-2"></i>
+                                    <div>
+                                        <div class="font-bold">Duration</div>
+                                        <div class="text-gray-300">24 Hours</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-users text-neon-cyan text-xl mr-2"></i>
+                                    <div>
+                                        <div class="font-bold">Team Size</div>
+                                        <div class="text-gray-300">4-6 Members</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-4">
+                                <button onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSeat37K5l0B6QLdTsIQiZKxkJAJ84G35P1i1wIISrs-dJNRUQ/viewform?usp=dialog'"
+                                    class="register-btn px-8 py-3 text-lg animate-pulse">
+                                    <i class="fas fa-bolt mr-2"></i> Register Now
+                                </button>
+                                <a href="#prizes" class="neon-btn px-8 py-3 text-lg">View Prizes</a>
+                            </div>
+                        </div>
+                        <div class="lg:w-1/3">
+                            <div class="text-center p-6 bg-card-bg rounded-2xl border border-neon-blue/30">
+                                <div class="text-2xl font-bold mb-4 text-neon-cyan">Registration Closes In</div>
+                                <div id="hackathon-countdown" class="grid grid-cols-4 gap-2">
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-neon-cyan" id="h-days">00</div>
+                                        <div class="text-sm">Days</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-neon-cyan" id="h-hours">00</div>
+                                        <div class="text-sm">Hours</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-neon-cyan" id="h-minutes">00</div>
+                                        <div class="text-sm">Mins</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-3xl font-bold text-neon-cyan" id="h-seconds">00</div>
+                                        <div class="text-sm">Secs</div>
+                                    </div>
+                                </div>
+                                <div class="mt-6">
+                                    <div class="text-lg font-bold mb-2">TO BE ANNOUNCE</div>
+                                    <div class="text-neon-cyan">Total Prize Pool</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hackathon Details -->
+    <section id="hackathon" class="py-16 px-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- Prizes -->
+            <div id="prizes" class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center text-neon-cyan">Prizes & <span
+                        class="text-white">Rewards</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="prize-card">
+                        <div class="text-5xl mb-4">🥇</div>
+                        <div class="prize-amount">TO BE ANNOUNCE</div>
+                        <div class="text-xl font-bold mb-2">First Prize</div>
+                        <p class="text-gray-300 mb-4">Cash prize + Trophy + Internship Opportunities</p>
+                        <!-- <div class="text-sm text-neon-cyan">+ Microsoft Azure Credits</div> -->
+                    </div>
+
+                    <div class="prize-card">
+                        <div class="text-5xl mb-4">🥈</div>
+                        <div class="prize-amount">TO BE ANNOUNCE</div>
+                        <div class="text-xl font-bold mb-2">Second Prize</div>
+                        <p class="text-gray-300 mb-4">Cash prize + Trophy + Goodies</p>
+                        <!-- <div class="text-sm text-neon-cyan">+ AWS Credits</div> -->
+                    </div>
+
+                    <div class="prize-card">
+                        <div class="text-5xl mb-4">🥉</div>
+                        <div class="prize-amount">TO BE ANNOUNCE</div>
+                        <div class="text-xl font-bold mb-2">Third Prize</div>
+                        <p class="text-gray-300 mb-4">Cash prize + Trophy</p>
+                        <div class="text-sm text-neon-cyan">+ Google Cloud Credits</div>
+                    </div>
+                </div>
+
+                <!-- Special Prizes -->
+                <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-2xl font-bold text-neon-cyan mb-1">₹10,000</div>
+                        <div class="text-sm font-bold">Best Women Team</div>
+                    </div>
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-2xl font-bold text-neon-cyan mb-1">₹5,000</div>
+                        <div class="text-sm font-bold">Best UI/UX Design</div>
+                    </div>
+                    <div class="text-center p-4 bg-card-bg rounded-xl">
+                        <div class="text-2xl font-bold text-neon-cyan mb-1">₹5,000</div>
+                        <div class="text-sm font-bold">Best Innovation</div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Themes & Tracks
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center text-neon-cyan">Problem <span
+                        class="text-white">Statements</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-card-bg border border-neon-blue/30 rounded-xl p-6">
+                        <div class="text-3xl text-neon-blue mb-4">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Sustainability & Environment</h3>
+                        <p class="text-gray-300">Build solutions for climate change, waste management, or renewable
+                            energy.</p>
+                    </div>
+
+                    <div class="bg-card-bg border border-neon-purple/30 rounded-xl p-6">
+                        <div class="text-3xl text-neon-purple mb-4">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Healthcare Technology</h3>
+                        <p class="text-gray-300">Innovate in telemedicine, health monitoring, or medical diagnosis.</p>
+                    </div>
+
+                    <div class="bg-card-bg border border-neon-cyan/30 rounded-xl p-6">
+                        <div class="text-3xl text-neon-cyan mb-4">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Education & EdTech</h3>
+                        <p class="text-gray-300">Create tools for remote learning, skill development, or educational
+                            access.</p>
+                    </div>
+
+                    <div class="bg-card-bg border border-neon-blue/30 rounded-xl p-6">
+                        <div class="text-3xl text-neon-blue mb-4">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">FinTech & E-Commerce</h3>
+                        <p class="text-gray-300">Develop solutions for digital payments, financial inclusion, or retail
+                            tech.</p>
+                    </div>
+
+                    <div class="bg-card-bg border border-neon-purple/30 rounded-xl p-6">
+                        <div class="text-3xl text-neon-purple mb-4">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">AI & Machine Learning</h3>
+                        <p class="text-gray-300">Implement AI solutions for real-world problems using latest
+                            technologies.</p>
+                    </div>
+
+                    <div class="bg-card-bg border border-neon-cyan/30 rounded-xl p-6">
+                        <div class="text-3xl text-neon-cyan mb-4">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-3">Open Innovation</h3>
+                        <p class="text-gray-300">Your choice! Solve any problem that matters to you and society.</p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Schedule -->
+            <!-- <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center text-neon-cyan">Event <span
+                        class="text-white">Schedule</span></h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 1 - 21 Feb (9:00 AM - 10:00 AM)</div>
+                        <h3 class="font-bold mb-2">Registration & Check-in</h3>
+                        <p class="text-gray-300">Team registration, verification, and welcome kit distribution.</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 1 - 21 Feb (10:00 AM - 11:00 AM)</div>
+                        <h3 class="font-bold mb-2">Opening Ceremony</h3>
+                        <p class="text-gray-300">Welcome address, rules announcement, and theme reveal.</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 1 - 21 Feb (11:00 AM)</div>
+                        <h3 class="font-bold mb-2">Hacking Begins</h3>
+                        <p class="text-gray-300">24-hour coding marathon starts. Let the innovation begin!</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 1 - 21 Feb (1:00 PM)</div>
+                        <h3 class="font-bold mb-2">Lunch & Networking</h3>
+                        <p class="text-gray-300">Lunch break and opportunity to network with mentors.</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 1 - 21 Feb (6:00 PM - 7:00 PM)</div>
+                        <h3 class="font-bold mb-2">Mentor Session 1</h3>
+                        <p class="text-gray-300">First checkpoint with mentors for project guidance.</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 2 - 22 Feb (9:00 AM)</div>
+                        <h3 class="font-bold mb-2">Breakfast & Final Push</h3>
+                        <p class="text-gray-300">Morning refreshments and last hours of hacking.</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 2 - 22 Feb (11:00 AM)</div>
+                        <h3 class="font-bold mb-2">Hacking Ends</h3>
+                        <p class="text-gray-300">Submit your projects. No more code changes allowed.</p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 2 - 22 Feb (1:00 PM - 4:00 PM)</div>
+                        <h3 class="font-bold mb-2">Project Presentation</h3>
+                        <p class="text-gray-300">Demo your project to judges. 5 minutes presentation + 3 minutes Q&A.
+                        </p>
+                    </div>
+
+                    <div class="schedule-item">
+                        <div class="schedule-time">Day 2 - 22 Feb (5:00 PM)</div>
+                        <h3 class="font-bold mb-2">Closing & Awards</h3>
+                        <p class="text-gray-300">Winner announcement and prize distribution ceremony.</p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Judges -->
+            <!-- <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center text-neon-cyan">Our <span
+                        class="text-white">Judges</span></h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="judge-card">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                            alt="Judge" class="judge-image">
+                        <h3 class="font-bold mb-1">Rajesh Kumar</h3>
+                        <div class="text-neon-cyan text-sm mb-2">CTO, Tech Innovations Inc.</div>
+                        <p class="text-gray-300 text-xs">Former Google engineer with 15+ years experience</p>
+                    </div>
+
+                    <div class="judge-card">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                            alt="Judge" class="judge-image">
+                        <h3 class="font-bold mb-1">Priya Sharma</h3>
+                        <div class="text-neon-cyan text-sm mb-2">AI Lead, Microsoft</div>
+                        <p class="text-gray-300 text-xs">Machine Learning expert and startup mentor</p>
+                    </div>
+
+                    <div class="judge-card">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                            alt="Judge" class="judge-image">
+                        <h3 class="font-bold mb-1">Amit Patel</h3>
+                        <div class="text-neon-cyan text-sm mb-2">VC Partner, Startup Fund</div>
+                        <p class="text-gray-300 text-xs">Invested in 50+ tech startups</p>
+                    </div>
+
+                    <div class="judge-card">
+                        <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                            alt="Judge" class="judge-image">
+                        <h3 class="font-bold mb-1">Dr. Sneha Reddy</h3>
+                        <div class="text-neon-cyan text-sm mb-2">Professor, IIT Delhi</div>
+                        <p class="text-gray-300 text-xs">Computer Science researcher and educator</p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Rules & Guidelines -->
+            <!-- <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center text-neon-cyan">Rules & <span
+                        class="text-white">Guidelines</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-neon-cyan">Eligibility</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-blue mr-2 mt-1"></i>
+                                <span>Open to all college students (UG/PG)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-blue mr-2 mt-1"></i>
+                                <span>Team size: 2-4 members</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-blue mr-2 mt-1"></i>
+                                <span>Inter-college teams allowed</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-blue mr-2 mt-1"></i>
+                                <span>Participants must bring their own laptops</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-neon-cyan">Submission Rules</h3>
+                        <ul class="space-y-2 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-purple mr-2 mt-1"></i>
+                                <span>Code must be written during hackathon</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-purple mr-2 mt-1"></i>
+                                <span>Open source libraries allowed</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-purple mr-2 mt-1"></i>
+                                <span>Submit GitHub repository link</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-neon-purple mr-2 mt-1"></i>
+                                <span>5-minute presentation to judges</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- FAQ -->
+            <div class="mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-10 text-center text-neon-cyan">Frequently Asked <span
+                        class="text-white">Questions</span></h2>
+                <div class="max-w-3xl mx-auto">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Who can participate in the hackathon?</span>
+                            <i class="fas fa-plus faq-icon text-neon-cyan"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>The hackathon is open to all college students (undergraduate and postgraduate) from any
+                                discipline. Inter-college teams are allowed.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What is the team size?</span>
+                            <i class="fas fa-plus faq-icon text-neon-cyan"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Teams should have 2-4 members. Solo participants are not allowed. You can register as a
+                                team or we can help you find team members.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What should I bring?</span>
+                            <i class="fas fa-plus faq-icon text-neon-cyan"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Bring your laptop, chargers, any hardware you plan to use, valid college ID, and lots of
+                                energy! Food and refreshments will be provided.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What are the judging criteria?</span>
+                            <i class="fas fa-plus faq-icon text-neon-cyan"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Projects will be judged on innovation (30%), technical implementation (30%),
+                                design/usability (20%), and presentation (20%).</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is there a registration fee?</span>
+                            <i class="fas fa-plus faq-icon text-neon-cyan"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Registration is completely free! We provide food, swag, and prizes at no cost to
+                                participants.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Can we use pre-built code?</span>
+                            <i class="fas fa-plus faq-icon text-neon-cyan"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p>You can use open-source libraries and frameworks, but the core code must be written
+                                during the hackathon. Pre-built templates are not allowed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final CTA -->
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-neon-cyan">Ready to <span
+                        class="text-white">Code?</span></h2>
+                <p class="text-xl mb-8 text-gray-300 max-w-2xl mx-auto">Join 300+ developers in this 24-hour innovation
+                    marathon. Limited spots available!</p>
+                <button
+                    onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSeat37K5l0B6QLdTsIQiZKxkJAJ84G35P1i1wIISrs-dJNRUQ/viewform?usp=dialog'"></button>
+                    <i class="fas fa-bolt mr-2"></i> Register Your Team Now
+                </button>
+                <p class="mt-4 text-gray-400">Registration closes: 00 February 2026</p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
+                    <li><a href="achievement.html" class="hover:text-neon-cyan">Achievements</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
+
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        // Hackathon countdown (to registration deadline: 18 Feb 2026)
+        function updateHackathonCountdown() {
+            const deadline = new Date('February 18, 2026 23:59:59').getTime();
+            const now = new Date().getTime();
+            const distance = deadline - now;
+
+            if (distance < 0) {
+                document.getElementById('h-days').innerText = '00';
+                document.getElementById('h-hours').innerText = '00';
+                document.getElementById('h-minutes').innerText = '00';
+                document.getElementById('h-seconds').innerText = '00';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('h-days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('h-hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('h-minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('h-seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        setInterval(updateHackathonCountdown, 1000);
+        updateHackathonCountdown();
+
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function () {
+                const item = this.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // Hackathon registration modal
+        function openHackathonRegistration() {
+            document.getElementById('hackathon-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHackathonRegistration() {
+            document.getElementById('hackathon-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('hackathon-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Team registered successfully! You will receive a confirmation email within 24 hours.');
+            closeHackathonRegistration();
+            this.reset();
+        });
+
+        document.getElementById('hackathon-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeHackathonRegistration();
+        });
+
+        // Dynamic team member fields based on team size
+        document.querySelector('select[name="team-size"]')?.addEventListener('change', function () {
+            const teamSize = parseInt(this.value);
+            const additionalMembers = document.getElementById('additional-members');
+
+            if (teamSize > 2) {
+                additionalMembers.classList.remove('hidden');
+                additionalMembers.innerHTML = '';
+
+                for (let i = 3; i <= teamSize; i++) {
+                    const memberHTML = `
+                        <div class="space-y-4 mt-4">
+                            <div>
+                                <label class="block text-sm mb-2">Member ${i} Name *</label>
+                                <input type="text" required class="w-full bg-dark-bg border border-neon-blue/30 rounded-lg px-4 py-3 focus:outline-none focus:border-neon-cyan">
+                            </div>
+                            <div>
+                                <label class="block text-sm mb-2">Member ${i} Email *</label>
+                                <input type="email" required class="w-full bg-dark-bg border border-neon-blue/30 rounded-lg px-4 py-3 focus:outline-none focus:border-neon-cyan">
+                            </div>
+                        </div>
+                    `;
+                    additionalMembers.innerHTML += memberHTML;
+                }
+            } else {
+                additionalMembers.classList.add('hidden');
+                additionalMembers.innerHTML = '';
+            }
+        });
+    </script>
+</body>
+
+</html>
