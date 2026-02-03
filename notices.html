@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Notices - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Tailwind config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'ibm-plex-sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'pulse-glow': 'pulse 2s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        }
+                    },
+                },
+            },
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Custom Styles */
+        .notice-card {
+            background: linear-gradient(145deg, #12121a, #0f0f15);
+            border: 1px solid rgba(0, 243, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .notice-card:hover {
+            border-color: rgba(0, 243, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.1);
+        }
+
+        .urgent {
+            border-left: 4px solid #ef4444;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .important {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .update {
+            border-left: 4px solid #06b6d4;
+        }
+
+        .admin-link {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 40;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-track {
+            background: #12121a;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-thumb {
+            background: #00f3ff;
+            border-radius: 3px;
+        }
+
+        .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+            background: #9d4edd;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-ibm-plex-sans min-h-screen">
+    <!-- Navigation (Same as index.html) -->
+    <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-700">
+        <div class="flex items-center justify-between px-4 md:px-8 py-3 gap-4">
+            <div class="flex-shrink-0">
+                <a href="index.html" class="flex items-center space-x-2 md:space-x-3">
+                    <img src="suravi.png" alt="SURAVI Logo" class="h-16 md:h-20 w-auto"
+                        style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
+                </a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="text-neon-cyan hover:text-white font-semibold">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-10 px-4 md:px-8">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-tilt-neon mb-4">
+                    <span class="text-neon-cyan">Latest</span> Notices & Updates
+                </h1>
+                <p class="text-gray-300 text-lg">
+                    Real-time updates about SURAVI 2K26 events, schedules, and announcements
+                </p>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-card-bg p-6 rounded-xl text-center border border-neon-cyan/20">
+                    <div class="text-3xl font-bold text-neon-cyan mb-2" id="total-notices">0</div>
+                    <div class="text-gray-300">Total Notices</div>
+                </div>
+                <div class="bg-card-bg p-6 rounded-xl text-center border border-yellow-500/20">
+                    <div class="text-3xl font-bold text-yellow-500 mb-2" id="urgent-notices">0</div>
+                    <div class="text-gray-300">Urgent Updates</div>
+                </div>
+                <div class="bg-card-bg p-6 rounded-xl text-center border border-cyan-500/20">
+                    <div class="text-3xl font-bold text-cyan-500 mb-2" id="today-notices">0</div>
+                    <div class="text-gray-300">Today's Updates</div>
+                </div>
+            </div>
+
+            <!-- Notices Container -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-white">All Announcements</h2>
+                    <div class="text-sm text-gray-400">
+                        <i class="fas fa-sync-alt mr-2 animate-spin"></i>
+                        <span id="last-updated">Updating...</span>
+                    </div>
+                </div>
+
+                <!-- Notices List -->
+                <div id="notices-container" class="space-y-4 max-h-[600px] overflow-y-auto scrollbar-custom p-2">
+                    <!-- Notices will be loaded here dynamically -->
+                    <div class="text-center py-12">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-neon-cyan mx-auto mb-4"></div>
+                        <p class="text-gray-400">Loading notices...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="bg-card-bg p-6 rounded-xl border border-gray-700 mt-8">
+                <h3 class="text-xl font-bold mb-4 text-neon-cyan">Notice Types</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-red-500 rounded-full mr-3"></div>
+                        <span class="text-white">Urgent - Immediate action required</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-yellow-500 rounded-full mr-3"></div>
+                        <span class="text-white">Important - Please read carefully</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-cyan-500 rounded-full mr-3"></div>
+                        <span class="text-white">Update - General information</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="text-center mt-10 text-gray-400 text-sm">
+                <p>
+                    <i class="fas fa-info-circle mr-2"></i>
+                    Notices are updated in real-time. Last updated: <span id="update-timestamp">--:--:--</span>
+                </p>
+                <p class="mt-2">
+                    For any queries, contact:
+                    <a href="mailto:suravi2k26@giet.edu" class="text-neon-cyan hover:underline">
+                        suravi2k24@gmail.com
+                    </a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Admin Link (Floating Button) -->
+    <!-- <a href="admin.html" class="admin-link">
+        <button class="bg-neon-purple hover:bg-neon-cyan text-white px-6 py-3 rounded-full shadow-lg transition duration-300">
+            <i class="fas fa-user-shield mr-2"></i>Admin
+        </button>
+    </a> -->
+
+    <!-- JavaScript -->
+    <script>
+        // API Configuration
+        const API_URL = 'https://suravi-test-server.vercel.app/api';
+
+        // Format date
+        function formatDate(date) {
+            return new Date(date).toLocaleDateString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Format time ago
+        function timeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+
+            let interval = Math.floor(seconds / 31536000);
+            if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s") + " ago";
+
+            interval = Math.floor(seconds / 2592000);
+            if (interval >= 1) return interval + " month" + (interval === 1 ? "" : "s") + " ago";
+
+            interval = Math.floor(seconds / 86400);
+            if (interval >= 1) return interval + " day" + (interval === 1 ? "" : "s") + " ago";
+
+            interval = Math.floor(seconds / 3600);
+            if (interval >= 1) return interval + " hour" + (interval === 1 ? "" : "s") + " ago";
+
+            interval = Math.floor(seconds / 60);
+            if (interval >= 1) return interval + " minute" + (interval === 1 ? "" : "s") + " ago";
+
+            return "Just now";
+        }
+
+        // Load notices
+        async function loadNotices() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            try {
+                const response = await fetch(`${API_URL}/notices`);
+                const result = await response.json();
+
+                if (!result.success) {
+                    throw new Error('Failed to fetch notices');
+                }
+
+                const noticesContainer = document.getElementById('notices-container');
+                const totalNotices = document.getElementById('total-notices');
+                const urgentNotices = document.getElementById('urgent-notices');
+                const todayNotices = document.getElementById('today-notices');
+                const lastUpdated = document.getElementById('last-updated');
+                const updateTimestamp = document.getElementById('update-timestamp');
+
+                let urgentCount = 0;
+                let todayCount = 0;
+                let noticesHTML = '';
+
+                if (result.data.length === 0) {
+                    noticesHTML = `
+                        <div class="text-center py-12">
+                            <i class="fas fa-newspaper text-5xl text-gray-600 mb-4"></i>
+                            <h3 class="text-xl font-bold text-gray-400 mb-2">No Notices Yet</h3>
+                            <p class="text-gray-500">Check back later for updates</p>
+                        </div>
+                    `;
+                } else {
+                    result.data.forEach((notice) => {
+                        const noticeDate = new Date(notice.timestamp);
+                        const isToday = noticeDate >= today;
+
+                        if (notice.type === 'red') urgentCount++;
+                        if (isToday) todayCount++;
+
+                        let typeClass = 'update';
+                        let typeIcon = 'fas fa-info-circle';
+                        let typeColor = 'text-cyan-400';
+                        let typeLabel = 'UPDATE';
+
+                        if (notice.type === 'red') {
+                            typeClass = 'urgent';
+                            typeIcon = 'fas fa-exclamation-triangle';
+                            typeColor = 'text-red-400';
+                            typeLabel = 'URGENT';
+                        } else if (notice.type === 'yellow') {
+                            typeClass = 'important';
+                            typeIcon = 'fas fa-exclamation-circle';
+                            typeColor = 'text-yellow-400';
+                            typeLabel = 'IMPORTANT';
+                        }
+
+                        noticesHTML += `
+                            <div class="notice-card p-6 rounded-xl ${typeClass}">
+                                <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-3">
+                                            <i class="${typeIcon} ${typeColor} text-xl"></i>
+                                            <span class="font-bold ${typeColor}">${typeLabel}</span>
+                                            <span class="text-gray-400 text-sm">${timeAgo(noticeDate)}</span>
+                                        </div>
+                                        <p class="text-lg text-white mb-2">${notice.text}</p>
+                                        <div class="text-gray-400 text-sm">
+                                            <i class="far fa-clock mr-1"></i>
+                                            ${formatDate(noticeDate)}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                // Update UI
+                noticesContainer.innerHTML = noticesHTML;
+                totalNotices.textContent = result.data.length;
+                urgentNotices.textContent = urgentCount;
+                todayNotices.textContent = todayCount;
+
+                const now = new Date();
+                lastUpdated.textContent = 'Live updates active';
+                updateTimestamp.textContent = now.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            } catch (error) {
+                console.error('Error loading notices:', error);
+                document.getElementById('notices-container').innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-exclamation-triangle text-5xl text-red-500 mb-4"></i>
+                        <h3 class="text-xl font-bold text-red-400 mb-2">Connection Error</h3>
+                        <p class="text-gray-400">Unable to load notices. Make sure the server is running at ${API_URL}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            loadNotices();
+
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                loadNotices();
+            }, 30000);
+        });
+    </script>
+</body>
+
+</html>

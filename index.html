@@ -22,13 +22,14 @@
                     },
                     fontFamily: {
                         'tilt-neon': ['Tilt Neon', 'cursive'],
-                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'ibm-plex-sans': ['IBM Plex Sans', 'sans-serif'],
                     },
                     animation: {
                         'glow': 'glow 2s ease-in-out infinite alternate',
                         'float': 'float 6s ease-in-out infinite',
                         'pulse-glow': 'pulse-glow 1.5s ease-in-out infinite',
                         'marquee': 'marquee 20s linear infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
                     },
                     keyframes: {
                         glow: {
@@ -44,9 +45,13 @@
                             '50%': { opacity: 0.7 },
                         },
                         'marquee': {
-                            '0%': { transform: 'translateX(-100%)' },
-                            '100%': { transform: 'translateX(100%)' },
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
                         },
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 },
+                        }
                     },
                     boxShadow: {
                         'neon': '0 0 15px rgba(0, 243, 255, 0.7), 0 0 30px rgba(157, 78, 221, 0.5)',
@@ -59,19 +64,244 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
         rel="stylesheet">
+    <!-- Firebase (for real-time news updates) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/neon.css">
+    <style>
+        /* Loader Styles */
+        #loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0f;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        #loader-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-wrapper {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .buffer-loader {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .buffer-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: spin 2s linear infinite;
+        }
+
+        .buffer-ring:nth-child(1) {
+            border: 4px solid transparent;
+            border-top: 4px solid #00f3ff;
+            filter: drop-shadow(0 0 10px #00f3ff);
+        }
+
+        .buffer-ring:nth-child(2) {
+            border: 4px solid transparent;
+            border-right: 4px solid #9d4edd;
+            filter: drop-shadow(0 0 10px #9d4edd);
+            animation-delay: -0.5s;
+        }
+
+        .buffer-ring:nth-child(3) {
+            border: 4px solid transparent;
+            border-bottom: 4px solid #00ffff;
+            filter: drop-shadow(0 0 10px #00ffff);
+            animation-delay: -1s;
+        }
+
+        .loader-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #00f3ff;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+        }
+
+        .loader-percent {
+            font-family: 'Tilt Neon', cursive;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Countdown styles */
+        .countdown-box {
+            background: #12121a;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .countdown-number {
+                font-size: 3rem;
+            }
+        }
+
+        .countdown-label {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Social icons */
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1f2937;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: #00f3ff;
+            color: #0a0a0f;
+            transform: scale(1.1);
+        }
+
+        /* Neon link hover effect */
+        .neon-link {
+            position: relative;
+        }
+
+        .neon-link:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #00f3ff, #9d4edd);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.7);
+        }
+
+        /* Page content fade in */
+        .page-content {
+            opacity: 0;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        /* Mobile menu animation */
+        #mobile-menu {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Disable pointer events during loading */
+        .loading {
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Admin Panel */
+        #admin-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .admin-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            color: #000;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.7);
+            transition: all 0.3s;
+        }
+
+        .admin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.9);
+        }
+
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .admin-modal.active {
+            display: flex;
+        }
+
+        .admin-form {
+            background: #1a1a2e;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid #00f3ff;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+        }
+    </style>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Three.js for 3D animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
-<body class="bg-dark-bg text-white font-orbitron overflow-x-hidden">
-    <!-- 3D Buffer Loader -->
+<body class="bg-dark-bg text-white font-ibm-plex-sans overflow-x-hidden loading">
+    <!-- 3D Buffer Loader - Will be shown only once -->
     <div id="loader-container">
         <div class="loader-wrapper">
             <div class="buffer-loader">
@@ -84,205 +314,189 @@
             </div>
         </div>
     </div>
-    <!-- Navigation Bar -->
-    <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-700">
-        <div class="flex items-center justify-between px-4 md:px-8 py-3 gap-4">
-            <!-- Left Logo -->
-            <div class="flex-shrink-0">
-                <a href="index.html" class="flex items-center space-x-2 md:space-x-3 logo-container">
-                    <img src="suravi.png" alt="SURAVI Logo" class="h-16 md:h-20 w-auto"
-                        style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
-                </a>
-            </div>
 
-            <!-- Center Navigation Menu -->
-            <div class="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-4">
-                <a href="index.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">HOME</a>
-                <div class="relative group">
-                    <div
-                        class="neon-link flex items-center text-white text-xs lg:text-sm font-semibold cursor-pointer hover:text-neon-cyan transition-colors whitespace-nowrap">
-                        EVENTS <i class="fas fa-chevron-down ml-1 text-xs"></i>
-                    </div>
-                    <div
-                        class="absolute left-0 mt-2 w-48 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
-                        <a href="technical.html"
-                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Technical</a>
-                        <a href="non-technical.html"
-                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Non-Technical</a>
-                        <a href="esports.html" class="block px-4 py-3 text-white text-sm hover:bg-gray-700">E-Sports</a>
-                        <a href="cultural.html"
-                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Cultural</a>
-                        <a href="sports.html" class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Sports</a>
-                        <a href="athletics.html"
-                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Athletics</a>
-                    </div>
-                </div>
-                <div class="relative group">
-                    <a href="special.html"
-                        class="neon-link flex items-center text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">
-                        SPECIAL <i class="fas fa-chevron-down ml-1 text-xs"></i>
+    <!-- Main Content -->
+    <div id="main-content" class="page-content">
+        <!-- Navigation Bar -->
+        <nav class="fixed w-full z-50 bg-gray-900/95 backdrop-blur-md border-b border-gray-700">
+            <div class="flex items-center justify-between px-4 md:px-8 py-3 gap-4">
+                <!-- Left Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 md:gap-3">
+                    <a href="index.html" class="flex items-center space-x-2 md:space-x-3 logo-container">
+                        <img src="suravi.png" alt="SURAVI Logo" class="h-16 md:h-20 w-auto"
+                            style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
                     </a>
-                    <div
-                        class="absolute left-0 mt-2 w-40 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
-                        <a href="special.html#food-stall"
-                            class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Food Stall</a>
-                    </div>
                 </div>
-                <a href="patron.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">PATRON</a>
-                <a href="sponsor.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">SPONSORS</a>
-                <a href="contact.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">CONTACT</a>
-                <a href="organisers.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">ORGANISERS</a>
-                <a href="achievement.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">ACHIEVEMENTS</a>
-                <a href="hackathon.html"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">HACKATHON</a>
-                <a href="#"
-                    class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">NOTICES</a>
-            </div>
 
-            <!-- Right Badges and Mobile Menu -->
-            <div class="flex-shrink-0 flex items-center gap-1.5 md:gap-3">
-                <!-- Badges - Hidden on small mobile, visible on tablet and up -->
-                <img src="giet.png" alt="Badge 1" class="h-12 sm:h-14 md:h-16 w-auto"
-                    style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
-                <img src="naac.png" alt="Badge 2"
-                    class="h-8 sm:h-10 md:h-14 w-auto hidden sm:block">
-                <img src="nba.png" alt="Badge 3"
-                    class="h-8 sm:h-10 md:h-14 w-auto hidden lg:block">
-
-                <!-- Mobile Menu Button - 3 Line Hamburger -->
-                <button id="mobile-menu-btn"
-                    class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
-                    title="Toggle mobile menu">
-                    <span
-                        class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
-                        style="top: 10px;"></span>
-                    <span
-                        class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
-                    <span
-                        class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
-                        style="bottom: 10px;"></span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Update the Mobile Menu Section in your nav -->
-        <div id="mobile-menu"
-            class="absolute top-16 right-6 w-48 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg hidden md:hidden">
-            <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
-
-            <!-- Events with submenu for mobile -->
-            <div class="relative">
-                <button id="mobile-events-btn"
-                    class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
-                    EVENTS <i class="fas fa-chevron-down text-xs"></i>
-                </button>
-                <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
-                    <a href="technical.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
-                    <a href="non-technical.html"
-                        class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
-                    <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
-                    <a href="cultural.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
-                    <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
-                    <a href="athletics.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                <!-- Center Navigation Menu -->
+                <div class="hidden md:flex flex-1 justify-center items-center gap-2 lg:gap-4">
+                    <a href="index.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">HOME</a>
+                    <div class="relative group">
+                        <div
+                            class="neon-link flex items-center text-white text-xs lg:text-sm font-semibold cursor-pointer hover:text-neon-cyan transition-colors whitespace-nowrap">
+                            EVENTS <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </div>
+                        <div
+                            class="absolute left-0 mt-2 w-48 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-10">
+                            <a href="technical.html"
+                                class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Technical</a>
+                            <a href="non-technical.html"
+                                class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                            <a href="esports.html"
+                                class="block px-4 py-3 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                            <a href="cultural.html"
+                                class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Cultural</a>
+                            <a href="sports.html"
+                                class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Sports</a>
+                            <a href="athletics.html"
+                                class="block px-4 py-3 text-white text-sm hover:bg-gray-700">Athletics</a>
+                        </div>
+                    </div>
+                    <!-- Fixed: SPECIAL link goes directly to special.html page -->
+                    <a href="special.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">
+                        SPECIAL
+                    </a>
+                    <a href="patron.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">PATRON</a>
+                    <a href="sponsor.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">SPONSORS</a>
+                    <a href="contact.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">CONTACT</a>
+                    <a href="organisers.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">ORGANISERS</a>
+                    <a href="achievement.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">ACHIEVEMENTS</a>
+                    <a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">HACKATHON</a>
+                    <a href="notices.html"
+                        class="neon-link text-white text-xs lg:text-sm font-semibold hover:text-neon-cyan transition-colors whitespace-nowrap">NOTICES</a>
                 </div>
-            </div>
 
-            <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
-            <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
-            <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
-            <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
-            <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
-            <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
-            <a href="hackathon.html" class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
-            <a href="#" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
-        </div>
-    </nav>
-
-
-
-    <!-- Hero Section with Neon Building Image -->
-    <section id="hero-section"
-        class="min-h-screen relative flex items-center justify-center overflow-hidden bg-dark-bg hero-night">
-        <!-- Background Video with Mobile Support -->
-        <video id="hero-video" class="absolute inset-0 w-full h-full object-cover z-0 hero-video" autoplay muted loop
-            playsinline disablePictureInPicture>
-            <source src="suravi.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-
-        <!-- Dark night background with fog effect -->
-        <div id="hero-bg-overlay"
-            class="absolute inset-0 z-1 bg-gradient-to-b from-slate-900/70 via-slate-950/50 to-black/70 hero-bg-night">
-        </div>
-
-        <!-- Volumetric fog and glow layers -->
-        <div id="fog-layer" class="absolute inset-0 z-1 opacity-40 fog-night">
-            <div
-                class="absolute top-0 left-0 w-full h-full bg-gradient-radial from-neon-purple/20 via-transparent to-transparent blur-3xl">
-            </div>
-            <div
-                class="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-neon-cyan/10 via-transparent to-transparent blur-3xl">
-            </div>
-        </div>
-
-        <!-- 3D Canvas Background (parallax depth) -->
-        <canvas id="hero-canvas" class="absolute inset-0 z-2"></canvas>
-
-        <!-- Neon Building Image with Parallax Depth -->
-        <div class="absolute inset-0 z-3 flex items-center justify-center perspective">
-            <!-- Foreground lighting elements -->
-            <div id="light-left"
-                class="absolute bottom-0 left-0 w-96 h-64 bg-gradient-to-t from-neon-cyan to-transparent blur-2xl opacity-30 light-night">
-            </div>
-            <div id="light-right"
-                class="absolute bottom-0 right-0 w-96 h-64 bg-gradient-to-t from-neon-purple to-transparent blur-2xl opacity-30 light-night">
-            </div>
-
-            <!-- Building image with neon glow effect -->
-            <div class="relative w-full h-full flex items-center justify-center px-4">
-                <div class="neon-building-container">
-                    <!-- Holographic light accents -->
-                    <div id="holo-left"
-                        class="absolute top-1/4 -left-32 w-64 h-64 bg-neon-blue/20 rounded-full blur-3xl opacity-50 animate-pulse holo-night">
-                    </div>
-                    <div id="holo-right"
-                        class="absolute bottom-1/4 -right-32 w-64 h-64 bg-neon-purple/20 rounded-full blur-3xl opacity-50 animate-pulse holo-night">
-                    </div>
+                <div class="flex-shrink-0 flex items-center gap-1.5 md:gap-3">
+                    <!-- Badges -->
+                    <img src="https://suravi.gietbbsr.edu.in/giet.png" alt="Badge 1" class="h-12 w-auto object-contain"
+                        style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5)); transform: translateY(5px);">
+                    <img src="naac.png" alt="Badge 2" class="h-12 w-auto object-contain hidden sm:block">
+                    <img src="nba.png" alt="Badge 3" class="h-12 w-auto object-contain hidden lg:block">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobile-menu-btn"
+                        class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
+                        title="Toggle mobile menu">
+                        <span
+                            class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                            style="top: 10px;"></span>
+                        <span
+                            class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
+                        <span
+                            class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
+                            style="bottom: 10px;"></span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Reflective ground effect -->
-            <div id="ground-effect"
-                class="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-neon-cyan/10 via-transparent to-transparent opacity-40 backdrop-blur-sm ground-night">
+            <!-- Mobile Menu -->
+            <div id="mobile-menu"
+                class="absolute top-16 right-6 w-48 bg-gray-800/90 border border-gray-700 rounded-lg shadow-lg hidden md:hidden z-50">
+                <a href="index.html" class="block px-4 py-3 text-white hover:bg-gray-700">HOME</a>
+                <div class="relative">
+                    <button id="mobile-events-btn"
+                        class="w-full text-left px-4 py-3 text-white hover:bg-gray-700 flex justify-between items-center">
+                        EVENTS <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div id="mobile-events-dropdown" class="hidden ml-4 mt-1 border-l-2 border-gray-700">
+                        <a href="technical.html"
+                            class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Technical</a>
+                        <a href="non-technical.html"
+                            class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Non-Technical</a>
+                        <a href="esports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">E-Sports</a>
+                        <a href="cultural.html"
+                            class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Cultural</a>
+                        <a href="sports.html" class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Sports</a>
+                        <a href="athletics.html"
+                            class="block px-4 py-2 text-white text-sm hover:bg-gray-700">Athletics</a>
+                    </div>
+                </div>
+                <a href="special.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPECIAL</a>
+                <a href="patron.html" class="block px-4 py-3 text-white hover:bg-gray-700">PATRON</a>
+                <a href="sponsor.html" class="block px-4 py-3 text-white hover:bg-gray-700">SPONSORS</a>
+                <a href="contact.html" class="block px-4 py-3 text-white hover:bg-gray-700">CONTACT</a>
+                <a href="organisers.html" class="block px-4 py-3 text-white hover:bg-gray-700">ORGANISERS</a>
+                <a href="achievement.html" class="block px-4 py-3 text-white hover:bg-gray-700">ACHIEVEMENTS</a>
+                <a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                    class="block px-4 py-3 text-white hover:bg-gray-700">HACKATHON</a>
+                <a href="notices.html" class="block px-4 py-3 text-white hover:bg-gray-700">NOTICES</a>
+            </div>
+        </nav>
+
+
+
+        <!-- Admin Panel Button (hidden by default, will be shown to admin) -->
+        <div id="admin-panel" style="display: none;">
+            <button id="admin-btn" class="admin-btn">
+                <i class="fas fa-cog mr-2"></i>Admin Panel
+            </button>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="admin-login-modal" class="admin-modal">
+            <div class="admin-form">
+                <h2 class="text-2xl font-bold mb-4 text-neon-cyan">Admin Login</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-300 mb-2">Admin Password</label>
+                    <input type="password" id="admin-password"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                        placeholder="Enter admin password">
+                </div>
+                <div class="flex gap-4">
+                    <button id="login-btn"
+                        class="flex-1 px-4 py-2 bg-neon-blue text-dark-bg font-bold rounded-lg hover:opacity-90">Login</button>
+                    <button id="close-login-btn"
+                        class="flex-1 px-4 py-2 bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-600">Cancel</button>
+                </div>
             </div>
         </div>
 
-        <!-- Animated Background -->
-        <div class="absolute inset-0 z-1 pointer-events-none">
-            <div
-                class="absolute top-1/4 left-1/4 w-64 h-64 bg-neon-purple/10 rounded-full blur-3xl animate-float opacity-30">
-            </div>
-            <div
-                class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neon-blue/10 rounded-full blur-3xl animate-float opacity-30">
-            </div>
-            <div
-                class="absolute top-3/4 left-1/2 w-96 h-96 bg-neon-cyan/5 rounded-full blur-3xl animate-float opacity-20">
+        <!-- Admin News Modal -->
+        <div id="admin-news-modal" class="admin-modal">
+            <div class="admin-form">
+                <h2 class="text-2xl font-bold mb-4 text-neon-cyan">Add Latest News</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-300 mb-2">News Text</label>
+                    <input type="text" id="news-text"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                        placeholder="Enter news text">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-300 mb-2">News Type</label>
+                    <select id="news-type"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white">
+                        <option value="yellow">Important (Yellow)</option>
+                        <option value="cyan">Update (Cyan)</option>
+                        <option value="red">Urgent (Red)</option>
+                    </select>
+                </div>
+                <div class="flex gap-4">
+                    <button id="add-news-btn"
+                        class="flex-1 px-4 py-2 bg-neon-purple text-white font-bold rounded-lg hover:opacity-90">Add
+                        News</button>
+                    <button id="close-news-btn"
+                        class="flex-1 px-4 py-2 bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-600">Cancel</button>
+                    <button id="clear-all-news-btn"
+                        class="flex-1 px-4 py-2 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700">Clear
+                        All</button>
+                </div>
+                <div class="mt-6">
+                    <h3 class="text-lg font-bold mb-2 text-neon-cyan">Current News Items</h3>
+                    <div id="current-news-list" class="bg-gray-900 p-4 rounded-lg max-h-40 overflow-y-auto">
+                        <!-- News items will be loaded here -->
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- Gradient Overlay for Text Readability -->
-        <div id="text-overlay"
-            class="absolute inset-0 z-3 bg-gradient-to-b from-slate-900/60 via-transparent to-slate-950/70 pointer-events-none overlay-night">
-        </div>
-
         <!-- Left Corner Google Photos Link -->
-        <a href="https://photos.google.com/share/AF1QipMW-R25LCT0bRpt90aB3D91zsjpt0wgN0z5GwEzj4h4eSSKPqT2pnpsiiFGNT6Ngw?key=RV9HQ1dUR0tBeklfbjZHVDJPOUZPOWJ3NENLa1BB"
+        <a href="https://photos.google.com/u/1/share/AF1QipPu97kO9g9DNQo-S4igpQLsHAwzfHdKAbPFghTHRU3SHVT_9T7W_JAjJZ2VIGcuDQ?key=ZTBydFlXMDlKVWZzV2xyc2RKS1NGRkloMUVxRER3"
             target="_blank" rel="noopener noreferrer"
             class="absolute top-28 sm:top-32 md:top-40 left-2 sm:left-4 md:left-8 z-20 opacity-60 hover:opacity-100 transition-opacity duration-300">
             <img src="https://www.gstatic.com/images/branding/product/1x/photos_96dp.png" alt="Google Photos"
@@ -290,209 +504,763 @@
         </a>
 
         <!-- Right Corner Google Photos Link -->
-        <a href="https://photos.google.com/share/AF1QipMW-R25LCT0bRpt90aB3D91zsjpt0wgN0z5GwEzj4h4eSSKPqT2pnpsiiFGNT6Ngw?key=RV9HQ1dUR0tBeklfbjZHVDJPOUZPOWJ3NENLa1BB"
+        <a href="https://photos.google.com/u/1/share/AF1QipPu97kO9g9DNQo-S4igpQLsHAwzfHdKAbPFghTHRU3SHVT_9T7W_JAjJZ2VIGcuDQ?key=ZTBydFlXMDlKVWZzV2xyc2RKS1NGRkloMUVxRER3"
             target="_blank" rel="noopener noreferrer"
             class="absolute top-28 sm:top-32 md:top-40 right-2 sm:right-4 md:right-8 z-20 opacity-60 hover:opacity-100 transition-opacity duration-300">
             <img src="https://www.gstatic.com/images/branding/product/1x/photos_96dp.png" alt="Google Photos"
                 class="h-8 sm:h-10 md:h-14 lg:h-16 w-auto drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300 hover:scale-110">
         </a>
 
-        <!-- Hero Content (Overlay) -->
-        <div class="relative z-30 text-center px-4 pointer-events-none max-w-4xl">
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 animate-glow font-tilt-neon drop-shadow-2xl text-white"
-                style="text-shadow: 0 0 20px rgba(0, 243, 255, 0.8), 0 0 40px rgba(157, 78, 221, 0.6), 0 0 60px rgba(0, 255, 255, 0.4), -2px -2px 4px rgba(0, 0, 0, 0.8);">
-                SURAVI <span class="text-neon-cyan"
-                    style="text-shadow: 0 0 20px rgba(0, 243, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(0, 243, 255, 0.6);">2K26</span>
-            </h1>
-            <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-neon-cyan font-bold drop-shadow-lg"
-                style="text-shadow: 0 0 15px rgba(0, 243, 255, 0.9), 0 0 30px rgba(157, 78, 221, 0.7), -1px -1px 3px rgba(0, 0, 0, 0.8);">
-                Annual Techno-Cultural Fest – Where Innovation Meets Culture
-            </p>
-            <!-- Countdown Timer -->
-            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-2xl mx-auto mb-10">
-                <div class="countdown-box">
-                    <div class="countdown-number" id="days">00</div>
-                    <div class="countdown-label">Days</div>
+        <!-- Hero Section -->
+        <section id="hero-section"
+            class="min-h-screen relative flex items-center justify-center overflow-hidden bg-dark-bg hero-night">
+            <!-- Background Video -->
+            <video id="hero-video" class="absolute inset-0 w-full h-full object-cover z-0 hero-video" autoplay muted
+                loop playsinline disablePictureInPicture>
+                <source src="videos/suravi.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <!-- Overlays -->
+            <div id="hero-bg-overlay"
+                class="absolute inset-0 z-1 bg-gradient-to-b from-slate-900/70 via-slate-950/50 to-black/70 hero-bg-night">
+            </div>
+
+            <div id="fog-layer" class="absolute inset-0 z-1 opacity-40 fog-night">
+                <div
+                    class="absolute top-0 left-0 w-full h-full bg-gradient-radial from-neon-purple/20 via-transparent to-transparent blur-3xl">
                 </div>
-                <div class="countdown-box">
-                    <div class="countdown-number" id="hours">00</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-number" id="minutes">00</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-number" id="seconds">00</div>
-                    <div class="countdown-label">Seconds</div>
+                <div
+                    class="absolute bottom-0 right-0 w-full h-1/2 bg-gradient-to-t from-neon-cyan/10 via-transparent to-transparent blur-3xl">
                 </div>
             </div>
 
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-30">
-            <i class="fas fa-chevron-down text-3xl text-neon-cyan"
-                style="text-shadow: 0 0 10px rgba(0, 243, 255, 0.9);"></i>
-        </div>
-    </section>
-
-    <!-- Breaking News Section -->
-    <section class="py-8 bg-gradient-to-r from-blue-600 via-red-700 to-blue-600 border-y-4 border-blue-400">
-        <div class="max-w-full mx-auto px-4">
-            <div class="flex items-center justify-center mb-4">
-                <div class="bg-yellow-400 px-6 py-2 rounded-full shadow-lg">
-                    <span class="text-red-800 font-bold text-lg md:text-xl flex items-center gap-3">
-                        <i class="fas fa-exclamation-triangle animate-bounce"></i>
-                        LATEST UPDATE
-                        <i class="fas fa-exclamation-triangle animate-bounce"></i>
-                    </span>
-                </div>
-            </div>
-
-            <!-- Floating News Ticker -->
-            <div class="relative overflow-hidden bg-black/50 rounded-lg p-4 border border-red-500">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0 mr-4">
-                        <i class="fas fa-newspaper text-yellow-400 text-2xl animate-pulse"></i>
+            <!-- Hero Content -->
+            <div class="relative z-30 text-center px-4 max-w-4xl">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 animate-glow font-tilt-neon drop-shadow-2xl text-white"
+                    style="text-shadow: 0 0 20px rgba(0, 243, 255, 0.8), 0 0 40px rgba(157, 78, 221, 0.6), 0 0 60px rgba(0, 255, 255, 0.4), -2px -2px 4px rgba(0, 0, 0, 0.8);">
+                    SURAVI <span class="text-neon-cyan"
+                        style="text-shadow: 0 0 20px rgba(0, 243, 255, 1), 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(0, 243, 255, 0.6);">2K26</span>
+                </h1>
+                <p class="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-neon-cyan font-bold drop-shadow-lg"
+                    style="text-shadow: 0 0 15px rgba(0, 243, 255, 0.9), 0 0 30px rgba(157, 78, 221, 0.7), -1px -1px 3px rgba(0, 0, 0, 0.8);">
+                    Annual Techno-Cultural Fest – Where Innovation Meets Culture
+                </p>
+                <!-- Countdown Timer -->
+                <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-2xl mx-auto mb-10">
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="days">00</div>
+                        <div class="countdown-label">Days</div>
                     </div>
-                    <div class="flex-1 overflow-hidden">
-                        <div
-                            class="animate-marquee whitespace-nowrap flex items-center text-white font-semibold text-lg md:text-xl">
-                            <!-- News Items -->
-                            <span class="mx-8 text-yellow-300">🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out on
-                                Amazing Prizes!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🎵 Exclusive Night Concert with Top Artists - February
-                                21st!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-yellow-300">🏆 Hackathon 2K26
-                                Today!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🎭 Cultural Events Registration Open - Showcase Your
-                                Talent!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-yellow-300">⚡ E-Sports Championship: BGMI & Free Fire
-                                Tournaments!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🍔 Food Stalls with Special Discounts - GIET Campus!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-yellow-300">🏃‍♂️ Athletics Meet: Compete for Glory!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🎪 Special Events: Workshops, Seminars & More!</span>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-box">
+                        <div class="countdown-number" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
 
-                            <!-- Duplicate for seamless loop -->
-                            <span class="mx-8 text-yellow-300">🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out on
-                                Amazing Prizes!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🎵 Exclusive Night Concert with Top Artists - February
-                                21st!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-yellow-300">🏆 Hackathon 2K26: ₹50,000 Prize Pool - Register
-                                Today!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🎭 Cultural Events Registration Open - Showcase Your
-                                Talent!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-yellow-300">⚡ E-Sports Championship: BGMI & Free Fire
-                                Tournaments!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🍔 Food Stalls with Special Discounts - GIET Campus!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-yellow-300">🏃‍♂️ Athletics Meet: Compete for Glory!</span>
-                            <i class="fas fa-star text-red-400 mx-4"></i>
-                            <span class="mx-8 text-cyan-300">🎪 Special Events: Workshops, Seminars & More!</span>
+
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce z-30">
+                <i class="fas fa-chevron-down text-3xl text-neon-cyan"
+                    style="text-shadow: 0 0 10px rgba(0, 243, 255, 0.9);"></i>
+            </div>
+        </section>
+
+        <!-- Breaking News Section -->
+        <section class="py-3 md:py-4 px-4 bg-card-bg border-y border-neon-cyan/20">
+            <div class="max-w-7xl mx-auto">
+                <!-- Mobile Layout: Stack vertically -->
+                <div class="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+                    <!-- Header -->
+                    <div class="flex items-center gap-2 text-neon-cyan">
+                        <i class="fas fa-newspaper text-lg md:text-xl animate-pulse"></i>
+                        <span class="font-bold text-base md:text-lg">LATEST UPDATES</span>
+                    </div>
+
+                    <!-- News Marquee -->
+                    <div class="flex-1 overflow-hidden w-full md:w-auto">
+                        <div id="breaking-news-marquee" class="relative">
+                            <div id="breaking-news-content"
+                                class="whitespace-nowrap text-white text-sm md:text-lg font-medium animate-marquee">
+                                <!-- News headlines will be loaded here -->
+                                <span class="text-yellow-300 mx-4 md:mx-8">🚀 SURAVI 2K26 Registration Now Open! Don't
+                                    Miss
+                                    Out!</span>
+                                <i class="fas fa-star text-red-400 mx-2 md:mx-4"></i>
+                                <span class="text-cyan-300 mx-4 md:mx-8">🎵 Exclusive Night Concert - February
+                                    21st!</span>
+                                <i class="fas fa-star text-red-400 mx-2 md:mx-4"></i>
+                                <span class="text-yellow-300 mx-4 md:mx-8">🏆 Hackathon 2K26 Starting Soon!</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex-shrink-0 ml-4">
-                        <i class="fas fa-newspaper text-yellow-400 text-2xl animate-pulse"></i>
+
+                    <!-- View All Link -->
+                    <a href="notices.html"
+                        class="text-neon-cyan hover:text-neon-purple font-semibold transition-colors flex items-center gap-1 md:gap-2 text-sm md:text-base">
+                        <span>View All</span>
+                        <i class="fas fa-arrow-right text-xs md:text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="py-20 px-4">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-4xl md:text-5xl mb-12 font-tilt-neon">
+                    About <span class="text-neon-cyan">SURAVI-2K26</span>
+                </h2>
+                <div class="mb-16">
+                    <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-8 max-w-4xl mx-auto">
+                        SURAVI-2K26 is the annual techno-cultural extravaganza of GIET, where innovation meets
+                        creativity,
+                        and passion fuels excellence! It's a grand celebration that brings together the brightest minds,
+                        the
+                        most talented performers, and the most enthusiastic participants in a festival of technology,
+                        culture, and limitless possibilities.From electrifying competitions and hackathons to
+                        mesmerizing
+                        music, dance, and art, SURAVI-2K26 is
+                        more than just an event—it's a movement, an experience, and a legacy in the making. Whether
+                        you're a
+                        tech enthusiast, an artist, or a dreamer, this is your stage to shine, create, and inspire. Get
+                        ready to ignite your spirit, push your limits, and make memories that last a lifetime!
+                    </p>
+                </div>
+
+                <h3 class="text-3xl md:text-4xl mb-8 font-tilt-neon text-neon-purple">
+                    About <span class="text-neon-cyan">GIET</span>
+                </h3>
+                <div class="text-left md:text-center">
+                    <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 max-w-5xl mx-auto">
+                        Gandhi Institute of Excellent Technocrats (GIET), Ghangapatna, is a NAAC A+ accredited and NBA
+                        accredited premier institute in Bhubaneswar, Odisha, recognized for its academic excellence,
+                        advanced research, and industry-oriented education. The institute is dedicated to shaping future
+                        leaders in engineering, technology, and management through global standards in education and
+                        strong
+                        industry collaborations.GIET Ghangapatna is also renowned for SURAVI, its flagship
+                        techno-cultural
+                        fest, where creativity,
+                        technology, and talent converge to create an unforgettable experience. Learn. Innovate. Excel.
+                        Welcome to GIET, where the future begins!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Preview Section -->
+        <section class="py-20 px-4 bg-card-bg">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-4xl md:text-5xl mb-12 text-center font-tilt-neon text-neon-cyan">
+                    Featured Events
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Technical Events -->
+                    <div
+                        class="bg-dark-bg p-6 rounded-xl border border-neon-blue/30 hover:shadow-neon transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-4 text-neon-blue"><i
+                                class="fas fa-microchip mr-2"></i>Technical</h3>
+                        <p class="text-gray-300 mb-4">Robotics, Coding, Web Development, AI/ML and more...</p>
+                        <a href="technical.html" class="text-neon-cyan hover:text-neon-purple font-semibold">View All
+                            →</a>
+                    </div>
+
+                    <!-- Non-Technical Events -->
+                    <div
+                        class="bg-dark-bg p-6 rounded-xl border border-neon-purple/30 hover:shadow-neon transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-4 text-neon-purple"><i
+                                class="fas fa-microchip mr-2"></i>Non-Technical</h3>
+                        <p class="text-gray-300 mb-4">Quiz, Treasure Hunt, Poster Making and more...</p>
+                        <a href="non-technical.html" class="text-neon-cyan hover:text-neon-purple font-semibold">View
+                            All
+                            →</a>
+                    </div>
+
+                    <!-- Sports Events -->
+                    <div
+                        class="bg-dark-bg p-6 rounded-xl border border-neon-blue/30 hover:shadow-neon transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-4 text-neon-blue"><i class="fas fa-running mr-2"></i>Sports
+                        </h3>
+                        <p class="text-gray-300 mb-4">Cricket, Football, Badminton, Basketball and more...</p>
+                        <a href="sports.html" class="text-neon-cyan hover:text-neon-purple font-semibold">View All
+                            →</a>
+                    </div>
+
+                    <!-- Athletics Events -->
+                    <div
+                        class="bg-dark-bg p-6 rounded-xl border border-neon-purple/30 hover:shadow-neon transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-4 text-neon-purple"><i
+                                class="fas fa-running mr-2"></i>Athletics</h3>
+                        <p class="text-gray-300 mb-4">100m, 200m, 400m, Long Jump, High Jump and more...</p>
+                        <a href="athletics.html" class="text-neon-cyan hover:text-neon-purple font-semibold">View All
+                            →</a>
+                    </div>
+
+                    <!-- Cultural Events -->
+                    <div
+                        class="bg-dark-bg p-6 rounded-xl border border-neon-purple/30 hover:shadow-neon transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-4 text-neon-purple"><i
+                                class="fas fa-theater-masks mr-2"></i>Cultural</h3>
+                        <p class="text-gray-300 mb-4">Music, Dance, Drama, Fashion Show and more...</p>
+                        <a href="cultural.html" class="text-neon-cyan hover:text-neon-purple font-semibold">View All
+                            →</a>
+                    </div>
+
+                    <!-- E-Sports -->
+                    <div
+                        class="bg-dark-bg p-6 rounded-xl border border-neon-cyan/30 hover:shadow-neon transition-all duration-300">
+                        <h3 class="text-2xl font-bold mb-4 text-neon-cyan"><i class="fas fa-gamepad mr-2"></i>E-Sports
+                        </h3>
+                        <p class="text-gray-300 mb-4">BGMI, Free Fire, Valorant and other gaming tournaments...</p>
+                        <a href="esports.html" class="text-neon-cyan hover:text-neon-purple font-semibold">View All
+                            →</a>
                     </div>
                 </div>
             </div>
-    </section>
+        </section>
 
-    <!-- About SURAVI-2K26 and GIET -->
-    <section class="py-20 px-4">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-4xl md:text-5xl mb-12 font-tilt-neon">
-                About <span class="text-neon-cyan">SURAVI-2K26</span>
-            </h2>
-            <div class="mb-16">
-                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-8 max-w-4xl mx-auto">
-                    SURAVI-2K26 is the annual techno-cultural extravaganza of GIET, where innovation meets
-                    creativity,
-                    and passion fuels excellence! It's a grand celebration that brings together the brightest minds,
-                    the
-                    most talented performers, and the most enthusiastic participants in a festival of technology,
-                    culture, and limitless possibilities.From electrifying competitions and hackathons to
-                    mesmerizing
-                    music, dance, and art, SURAVI-2K26 is
-                    more than just an event—it's a movement, an experience, and a legacy in the making. Whether
-                    you're a
-                    tech enthusiast, an artist, or a dreamer, this is your stage to shine, create, and inspire. Get
-                    ready to ignite your spirit, push your limits, and make memories that last a lifetime!
-                </p>
-            </div>
-
-            <h3 class="text-3xl md:text-4xl mb-8 font-tilt-neon text-neon-purple">
-                About <span class="text-neon-cyan">GIET</span>
-            </h3>
-            <div class="text-left md:text-center">
-                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-6 max-w-5xl mx-auto">
-                    Gandhi Institute of Excellent Technocrats (GIET), Ghangapatna, is a NAAC A+ accredited and NBA
-                    accredited premier institute in Bhubaneswar, Odisha, recognized for its academic excellence,
-                    advanced research, and industry-oriented education. The institute is dedicated to shaping future
-                    leaders in engineering, technology, and management through global standards in education and
-                    strong
-                    industry collaborations.GIET Ghangapatna is also renowned for SURAVI, its flagship
-                    techno-cultural
-                    fest, where creativity,
-                    technology, and talent converge to create an unforgettable experience. Learn. Innovate. Excel.
-                    Welcome to GIET, where the future begins!
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="border-t border-neon-blue/30 py-10 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div>
-                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
-                <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
-                <p class="mt-4">21 & 22 February 2K26</p>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
-                    <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
-                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
-                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold mb-4">Follow Us</h4>
-                <div class="flex space-x-4">
-                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
-                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
-                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
-                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
-                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
-                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <!-- Footer -->
+        <footer class="border-t border-neon-blue/30 py-10 px-4">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div>
+                    <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                    <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                    <p class="mt-4">21 & 22 February 2K26</p>
                 </div>
-                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
+                        <li><a href="technical.html" class="hover:text-neon-cyan">Events</a></li>
+                        <li><a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                                class="hover:text-neon-cyan">Hackathon</a></li>
+                        <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                        <li><a href="registration.html" class="hover:text-neon-cyan">Register</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                            class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                            title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                            title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                            class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+                    <p class="text-sm text-gray-500 mt-2">Developed with ❤️ by GIET Students</p>
+                </div>
             </div>
-    </footer>
+        </footer>
+    </div>
 
-    <!-- JavaScript Files -->
-    <script src="js/loader.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/countdown.js"></script>
+    <!-- JavaScript -->
+    <script>
+        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Check if this is the first visit
+        const isFirstVisit = !sessionStorage.getItem('suravi_visited');
+
+        // If first visit, show loader
+        if (isFirstVisit) {
+            document.addEventListener('DOMContentLoaded', function () {
+                const loaderContainer = document.getElementById('loader-container');
+                const mainContent = document.getElementById('main-content');
+                const loaderPercent = document.querySelector('.loader-percent');
+                const body = document.body;
+
+                let percent = 0;
+                const interval = setInterval(() => {
+                    percent += 1;
+                    loaderPercent.textContent = percent;
+
+                    if (percent >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            loaderContainer.classList.add('hidden');
+                            mainContent.style.opacity = '0';
+                            mainContent.style.display = 'block';
+                            body.classList.remove('loading');
+
+                            setTimeout(() => {
+                                mainContent.style.opacity = '1';
+                                mainContent.style.transition = 'opacity 0.5s ease-in-out';
+                            }, 50);
+
+                            sessionStorage.setItem('suravi_visited', 'true');
+                        }, 500);
+                    }
+                }, 30);
+            });
+        } else {
+            document.addEventListener('DOMContentLoaded', function () {
+                const loaderContainer = document.getElementById('loader-container');
+                const mainContent = document.getElementById('main-content');
+                const body = document.body;
+
+                loaderContainer.style.display = 'none';
+                mainContent.style.display = 'block';
+                mainContent.style.opacity = '1';
+                body.classList.remove('loading');
+            });
+        }
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileEventsBtn = document.getElementById('mobile-events-btn');
+            const mobileEventsDropdown = document.getElementById('mobile-events-dropdown');
+
+            // Toggle mobile menu
+            if (mobileMenuBtn && mobileMenu) {
+                mobileMenuBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Toggle events dropdown
+            if (mobileEventsBtn && mobileEventsDropdown) {
+                mobileEventsBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    mobileEventsDropdown.classList.toggle('hidden');
+                });
+            }
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function (event) {
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    if (!mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+                        mobileMenu.classList.add('hidden');
+                        if (mobileEventsDropdown) {
+                            mobileEventsDropdown.classList.add('hidden');
+                        }
+                    }
+                }
+            });
+
+            // Prevent navigation links from closing dropdown
+            const mobileLinks = mobileMenu.querySelectorAll('a');
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                });
+            });
+
+            // Update countdown timer
+            function updateCountdown() {
+                const targetDate = new Date('2026-02-21T10:00:00').getTime();
+                const now = new Date().getTime();
+                const timeLeft = targetDate - now;
+
+                if (timeLeft > 0) {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                    if (document.getElementById('days')) {
+                        document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                    }
+                }
+            }
+
+            // Initial call and set interval
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Load news from Firebase
+            loadNews();
+
+            // Load breaking news from notices API
+            loadBreakingNews();
+
+            // Check if user is admin
+            checkAdminStatus();
+        });
+
+        // Handle browser back/forward navigation
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                const loaderContainer = document.getElementById('loader-container');
+                const mainContent = document.getElementById('main-content');
+                const body = document.body;
+
+                if (loaderContainer && !loaderContainer.classList.contains('hidden')) {
+                    loaderContainer.classList.add('hidden');
+                }
+
+                if (mainContent) {
+                    mainContent.style.display = 'block';
+                    mainContent.style.opacity = '1';
+                }
+
+                body.classList.remove('loading');
+            }
+        });
+
+        // ================= ENHANCED NEWS SYSTEM =================
+        let isAdmin = false;
+        const ADMIN_PASSWORD = "suravi2026"; // Change this to your desired password
+
+        // Check admin status from localStorage
+        function checkAdminStatus() {
+            const adminStatus = localStorage.getItem('suravi_admin');
+            if (adminStatus === 'true') {
+                isAdmin = true;
+                showAdminPanel();
+            }
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('admin-panel').style.display = 'block';
+            setupAdminEvents();
+        }
+
+        // Setup admin event listeners
+        function setupAdminEvents() {
+            // Admin button click
+            document.getElementById('admin-btn').addEventListener('click', function () {
+                document.getElementById('admin-news-modal').classList.add('active');
+                loadCurrentNews();
+            });
+
+            // Add news button
+            document.getElementById('add-news-btn').addEventListener('click', addNews);
+
+            // Clear all news button
+            document.getElementById('clear-all-news-btn').addEventListener('click', clearAllNews);
+
+            // Close news modal
+            document.getElementById('close-news-btn').addEventListener('click', function () {
+                document.getElementById('admin-news-modal').classList.remove('active');
+            });
+
+            // If not admin, show login modal
+            if (!isAdmin) {
+                document.getElementById('admin-btn').addEventListener('click', function () {
+                    document.getElementById('admin-login-modal').classList.add('active');
+                });
+
+                // Login button
+                document.getElementById('login-btn').addEventListener('click', function () {
+                    const password = document.getElementById('admin-password').value;
+                    if (password === ADMIN_PASSWORD) {
+                        isAdmin = true;
+                        localStorage.setItem('suravi_admin', 'true');
+                        document.getElementById('admin-login-modal').classList.remove('active');
+                        showAdminPanel();
+                        alert('Admin login successful!');
+                    } else {
+                        alert('Incorrect password!');
+                    }
+                });
+
+                // Close login modal
+                document.getElementById('close-login-btn').addEventListener('click', function () {
+                    document.getElementById('admin-login-modal').classList.remove('active');
+                });
+            }
+        }
+
+        // Load news from Firebase with real-time updates
+        function loadNews() {
+            db.collection('news').orderBy('timestamp', 'desc').limit(10)
+                .onSnapshot((snapshot) => {
+                    const newsItems = [];
+                    snapshot.forEach((doc) => {
+                        newsItems.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+                    updateNewsTicker(newsItems);
+                }, (error) => {
+                    console.error('Error loading news:', error);
+                    // Show default news if Firebase fails
+                    const defaultNews = [
+                        { text: "🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out!", type: "yellow" },
+                        { text: "🎵 Exclusive Night Concert - February 21st!", type: "cyan" },
+                        { text: "🏆 Hackathon 2K26 Starting Soon!", type: "yellow" }
+                    ];
+                    updateNewsTicker(defaultNews);
+                });
+        }
+
+        // Update news ticker with animation
+        function updateNewsTicker(newsItems) {
+            const marqueeContent = document.getElementById('marquee-content');
+
+            if (!marqueeContent) return;
+
+            if (newsItems.length === 0) {
+                marqueeContent.innerHTML = '<span class="text-yellow-300 mx-8">📢 No updates yet. Check back soon!</span>';
+                return;
+            }
+
+            // Create news HTML
+            let newsHTML = '';
+            newsItems.forEach((item, index) => {
+                let colorClass = 'text-yellow-300';
+                if (item.type === 'cyan') colorClass = 'text-cyan-300';
+                if (item.type === 'red') colorClass = 'text-red-300';
+
+                newsHTML += `<span class="mx-8 ${colorClass}">${item.text}</span>`;
+                if (index < newsItems.length - 1) {
+                    newsHTML += `<i class="fas fa-star text-red-400 mx-4"></i>`;
+                }
+            });
+
+            // Duplicate for seamless loop
+            const duplicatedHTML = newsHTML + newsHTML;
+
+            // Update marquee content
+            marqueeContent.innerHTML = duplicatedHTML;
+
+            // Reset animation
+            marqueeContent.style.animation = 'none';
+            setTimeout(() => {
+                marqueeContent.style.animation = 'marquee 20s linear infinite';
+            }, 10);
+        }
+
+        // Add news to Firebase
+        function addNews() {
+            const newsText = document.getElementById('news-text').value;
+            const newsType = document.getElementById('news-type').value;
+
+            if (!newsText.trim()) {
+                alert('Please enter news text!');
+                return;
+            }
+
+            db.collection('news').add({
+                text: newsText,
+                type: newsType,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                date: new Date().toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                })
+            }).then(() => {
+                document.getElementById('news-text').value = '';
+                alert('News added successfully!');
+                loadCurrentNews();
+            }).catch((error) => {
+                console.error('Error adding news: ', error);
+                alert('Error adding news. Please try again.');
+            });
+        }
+
+        // Load current news for admin panel
+        function loadCurrentNews() {
+            db.collection('news').orderBy('timestamp', 'desc').limit(20)
+                .get()
+                .then((snapshot) => {
+                    const newsList = document.getElementById('current-news-list');
+                    newsList.innerHTML = '';
+
+                    if (snapshot.empty) {
+                        newsList.innerHTML = '<p class="text-gray-400 text-center py-4">No news items yet.</p>';
+                        return;
+                    }
+
+                    snapshot.forEach((doc) => {
+                        const item = doc.data();
+                        const newsItem = document.createElement('div');
+                        newsItem.className = 'flex justify-between items-center mb-3 p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors';
+                        newsItem.innerHTML = `
+                        <div class="flex-1">
+                            <span class="${item.type === 'cyan' ? 'text-cyan-300' : item.type === 'red' ? 'text-red-300' : 'text-yellow-300'} font-medium">${item.text}</span>
+                            <div class="text-gray-400 text-xs mt-1">${item.date || 'Just now'}</div>
+                        </div>
+                        <button class="text-red-400 hover:text-red-300 delete-news ml-4" data-id="${doc.id}" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                        newsList.appendChild(newsItem);
+                    });
+
+                    // Add delete event listeners
+                    document.querySelectorAll('.delete-news').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const newsId = this.getAttribute('data-id');
+                            deleteNews(newsId);
+                        });
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error loading current news:', error);
+                    document.getElementById('current-news-list').innerHTML =
+                        '<p class="text-red-300 text-center py-4">Error loading news. Please check Firebase connection.</p>';
+                });
+        }
+
+        // Delete single news item
+        function deleteNews(newsId) {
+            if (confirm('Are you sure you want to delete this news item?')) {
+                db.collection('news').doc(newsId).delete()
+                    .then(() => {
+                        alert('News deleted successfully!');
+                        loadCurrentNews();
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting news: ', error);
+                        alert('Error deleting news. Please try again.');
+                    });
+            }
+        }
+
+        // Clear all news
+        function clearAllNews() {
+            if (confirm('⚠️ Are you sure you want to delete ALL news items?\n\nThis action cannot be undone!')) {
+                db.collection('news').get()
+                    .then((snapshot) => {
+                        const batch = db.batch();
+                        snapshot.forEach((doc) => {
+                            batch.delete(doc.ref);
+                        });
+                        return batch.commit();
+                    })
+                    .then(() => {
+                        alert('✅ All news items deleted successfully!');
+                        loadCurrentNews();
+                    })
+                    .catch((error) => {
+                        console.error('Error clearing news: ', error);
+                        alert('❌ Error clearing news. Please try again.');
+                    });
+            }
+        }
+
+        // Logout function
+        function logoutAdmin() {
+            if (confirm('Are you sure you want to logout?')) {
+                isAdmin = false;
+                localStorage.removeItem('suravi_admin');
+                document.getElementById('admin-panel').style.display = 'none';
+                alert('Logged out successfully!');
+            }
+        }
+
+        // Load breaking news from notices API
+        function loadBreakingNews() {
+            const API_URL = 'https://suravi-test-server.vercel.app/api';
+
+            fetch(`${API_URL}/notices`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success && result.data.length > 0) {
+                        // Take the latest 5 notices for breaking news
+                        const latestNotices = result.data.slice(0, 5);
+                        updateBreakingNewsTicker(latestNotices);
+                    } else {
+                        // Show default news if no notices available
+                        const defaultNews = [
+                            { text: "🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out!", type: "yellow" },
+                            { text: "🎵 Exclusive Night Concert - February 21st!", type: "cyan" },
+                            { text: "🏆 Hackathon 2K26 Starting Soon!", type: "yellow" }
+                        ];
+                        updateBreakingNewsTicker(defaultNews);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading breaking news:', error);
+                    // Show default news on error
+                    const defaultNews = [
+                        { text: "🚀 SURAVI 2K26 Registration Now Open! Don't Miss Out!", type: "yellow" },
+                        { text: "🎵 Exclusive Night Concert - February 21st!", type: "cyan" },
+                        { text: "🏆 Hackathon 2K26 Starting Soon!", type: "yellow" }
+                    ];
+                    updateBreakingNewsTicker(defaultNews);
+                });
+        }
+
+        // Update breaking news ticker
+        function updateBreakingNewsTicker(newsItems) {
+            const breakingNewsContent = document.getElementById('breaking-news-content');
+
+            if (!breakingNewsContent) return;
+
+            if (newsItems.length === 0) {
+                breakingNewsContent.innerHTML = '<span class="text-yellow-300 mx-8">📢 No updates yet. Check back soon!</span>';
+                return;
+            }
+
+            // Create news HTML
+            let newsHTML = '';
+            newsItems.forEach((item, index) => {
+                let colorClass = 'text-yellow-300';
+                if (item.type === 'cyan') colorClass = 'text-cyan-300';
+                if (item.type === 'red') colorClass = 'text-red-300';
+
+                newsHTML += `<span class="mx-8 ${colorClass}">${item.text}</span>`;
+                if (index < newsItems.length - 1) {
+                    newsHTML += `<i class="fas fa-star text-red-400 mx-4"></i>`;
+                }
+            });
+
+            // Duplicate for seamless loop
+            const duplicatedHTML = newsHTML + newsHTML;
+
+            // Update breaking news content
+            breakingNewsContent.innerHTML = duplicatedHTML;
+
+            // Reset animation
+            breakingNewsContent.style.animation = 'none';
+            setTimeout(() => {
+                breakingNewsContent.style.animation = 'marquee 25s linear infinite';
+            }, 10);
+        }
+    </script>
 </body>
 
 </html>

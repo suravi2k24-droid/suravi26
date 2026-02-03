@@ -1,0 +1,374 @@
+/* Enhanced Mobile Responsiveness for SURAVI 2K26 */
+
+/* General Mobile Styles */
+@media (max-width: 768px) {
+
+    /* Reduce padding and margins on mobile */
+    section {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* Hero sections */
+    .min-h-screen {
+        min-height: 100vh;
+    }
+
+    /* Text sizes */
+    .text-4xl {
+        font-size: 2rem;
+    }
+
+    .text-5xl {
+        font-size: 2.5rem;
+    }
+
+    .text-6xl {
+        font-size: 3rem;
+    }
+
+    .text-7xl {
+        font-size: 3.5rem;
+    }
+
+    /* Grid layouts */
+    .grid-cols-1.md\\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-cols-1.md\\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+
+    /* Button sizes */
+    .px-8.py-4 {
+        padding: 0.75rem 1.5rem;
+    }
+
+    /* Card layouts */
+    .p-6 {
+        padding: 1rem;
+    }
+
+    .p-8 {
+        padding: 1.5rem;
+    }
+
+    /* Spacing */
+    .gap-8 {
+        gap: 1.5rem;
+    }
+
+    .gap-6 {
+        gap: 1rem;
+    }
+
+    /* Navigation improvements */
+    nav {
+        padding: 1rem;
+    }
+
+    /* Footer adjustments */
+    footer {
+        padding: 2rem 1rem;
+    }
+
+    /* Form inputs */
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+        /* Prevents zoom on iOS */
+    }
+
+    /* Event cards */
+    .tech-event-card,
+    .sport-event-card,
+    .member-card {
+        min-height: auto;
+        padding: 1.5rem;
+    }
+
+    /* Category headers */
+    .category-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .category-count {
+        margin-left: 0;
+        margin-top: 0.5rem;
+    }
+
+    /* Statistics cards */
+    .stat-card {
+        min-height: auto;
+        padding: 1.5rem;
+    }
+
+    /* Timeline adjustments */
+    .timeline {
+        padding-left: 1rem;
+    }
+
+    .timeline-item {
+        padding-left: 1rem;
+    }
+
+    /* Mobile menu enhancements */
+    #mobile-menu {
+        width: 90%;
+        max-width: 320px;
+        right: 1rem;
+    }
+
+    /* Social icons */
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+    .text-3xl {
+        font-size: 1.5rem;
+    }
+
+    .text-4xl {
+        font-size: 1.75rem;
+    }
+
+    .text-5xl {
+        font-size: 2rem;
+    }
+
+    .text-6xl {
+        font-size: 2.5rem;
+    }
+
+    .text-7xl {
+        font-size: 3rem;
+    }
+
+    /* Reduce spacing further */
+    .py-16 {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .py-20 {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    /* Smaller gaps */
+    .gap-4 {
+        gap: 0.75rem;
+    }
+
+    .gap-6 {
+        gap: 1rem;
+    }
+
+    .gap-8 {
+        gap: 1.25rem;
+    }
+
+    /* Event cards on very small screens */
+    .tech-event-card,
+    .sport-event-card {
+        padding: 1rem;
+    }
+
+    .event-title {
+        font-size: 1.1rem;
+    }
+
+    .event-description {
+        font-size: 0.85rem;
+    }
+
+    /* Member cards */
+    .member-card {
+        padding: 1rem;
+    }
+
+    .member-name {
+        font-size: 1rem;
+    }
+
+    .member-role {
+        font-size: 0.85rem;
+    }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Increase touch targets */
+    a,
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Larger buttons on touch devices */
+    .neon-btn,
+    .register-btn {
+        padding: 0.875rem 1.75rem;
+        font-size: 1rem;
+    }
+
+    /* Social icons */
+    .social-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+    /* Enhance quality on high DPI screens */
+    .logo-container img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    .min-h-screen {
+        min-height: 100vh;
+    }
+
+    /* Adjust hero content for landscape */
+    .hero-content {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    /* Reduce text sizes in landscape */
+    .text-5xl {
+        font-size: 2rem;
+    }
+
+    .text-6xl {
+        font-size: 2.5rem;
+    }
+
+    .text-7xl {
+        font-size: 3rem;
+    }
+}
+
+/* Tablet specific styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    /* Adjust grid layouts for tablets */
+    .grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Adjust text sizes for tablets */
+    .text-6xl {
+        font-size: 4rem;
+    }
+
+    .text-7xl {
+        font-size: 5rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .fixed {
+        position: static !important;
+    }
+
+    .hidden {
+        display: block !important;
+    }
+
+    .bg-dark-bg {
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Hide mobile menus in print */
+    #mobile-menu {
+        display: none !important;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+
+    /* Reduce animations for users who prefer reduced motion */
+    .animate-glow,
+    .animate-float,
+    .animate-pulse {
+        animation: none;
+    }
+
+    /* Reduce transitions */
+    * {
+        transition: none !important;
+    }
+}
+
+/* Dark mode adjustments for mobile */
+@media (max-width: 768px) {
+    .bg-dark-bg {
+        background: linear-gradient(135deg, #0a0a0f 0%, #0f0f15 100%);
+    }
+
+    .card-bg {
+        background: rgba(18, 18, 26, 0.95);
+    }
+}
+
+/* Focus states for keyboard navigation */
+@media (min-width: 768px) {
+
+    .neon-link:focus,
+    .social-icon:focus,
+    .neon-btn:focus {
+        outline: 2px solid #00f3ff;
+        outline-offset: 2px;
+    }
+}
+
+/* Ensure proper viewport handling */
+* {
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal scroll */
+html,
+body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Improve readability on mobile */
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    p,
+    li {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+}

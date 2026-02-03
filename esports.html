@@ -17,40 +17,139 @@
                         'neon-cyan': '#00ffff',
                         'dark-bg': '#0a0a0f',
                         'card-bg': '#12121a',
+                        'fire-orange': '#ff4d00',
+                        'bgmi-yellow': '#ffcc00',
                     },
                     fontFamily: {
                         'tilt-neon': ['Tilt Neon', 'cursive'],
-                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
                     },
+                    animation: {
+                        'energy-pulse': 'energyPulse 2s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        energyPulse: {
+                            '0%, 100%': { transform: 'scale(1)', 'box-shadow': '0 0 20px rgba(255, 77, 0, 0.5)' },
+                            '50%': { transform: 'scale(1.05)', 'box-shadow': '0 0 40px rgba(255, 77, 0, 0.8)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%, 100%': { opacity: 1 },
+                            '50%': { opacity: 0.7 },
+                        }
+                    }
                 },
             },
         }
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/neon.css">
     <style>
+        /* 3D Background Styles */
+        .bg-3d {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a1f 50%, #0a0f1a 100%);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 100, 100, 0.2) 0%, transparent 70%);
+            animation: float 15s infinite linear;
+        }
+
+        .particle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            background: radial-gradient(circle, rgba(255, 77, 0, 0.15) 0%, transparent 70%);
+            animation-duration: 20s;
+        }
+
+        .particle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.1) 0%, transparent 70%);
+            animation-duration: 25s;
+        }
+
+        .particle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            bottom: 20%;
+            left: 15%;
+            background: radial-gradient(circle, rgba(255, 100, 100, 0.1) 0%, transparent 70%);
+            animation-duration: 18s;
+        }
+
+        .game-logo-3d {
+            position: absolute;
+            opacity: 0.1;
+            filter: blur(20px);
+            animation: float 30s infinite linear;
+        }
+
+        .freefire-3d {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 77, 0, 0.2) 0%, transparent 60%);
+            top: 20%;
+            right: 15%;
+        }
+
+        .bgmi-3d {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255, 204, 0, 0.15) 0%, transparent 60%);
+            bottom: 25%;
+            left: 10%;
+        }
+
+        /* Enhanced Card Styles */
         .esports-card {
-            background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(50, 50, 70, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 35, 0.95) 100%);
             border: 2px solid rgba(255, 100, 100, 0.3);
             border-radius: 20px;
             padding: 2rem;
-            transition: all 0.4s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
-            min-height: 300px;
+            min-height: 380px;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(255, 100, 100, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .esports-card {
+                padding: 1.5rem;
+                min-height: auto;
+            }
         }
 
         .esports-card:hover {
             border-color: #ff6464;
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(255, 100, 100, 0.2);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 100, 100, 0.3);
         }
 
         .esports-card::before {
@@ -72,208 +171,633 @@
         .game-icon {
             font-size: 3rem;
             color: #ff6464;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .game-icon img {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .esports-card:hover .game-icon img {
+            transform: scale(1.1);
         }
 
         .game-title {
-            font-size: 1.8rem;
-            font-weight: bold;
+            font-size: 2rem;
+            font-weight: 900;
             color: #fff;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(255, 100, 100, 0.3);
         }
 
         .game-desc {
             color: #a0a0c0;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
             flex-grow: 1;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
         }
 
+        /* Enhanced Game Details */
         .game-details {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .detail-item {
             text-align: center;
-            padding: 0.5rem;
-            background: rgba(255, 100, 100, 0.1);
-            border-radius: 10px;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.1) 0%, rgba(255, 180, 100, 0.1) 100%);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 100, 100, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .detail-item:hover {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.2) 0%, rgba(255, 180, 100, 0.2) 100%);
+            transform: translateY(-2px);
         }
 
         .detail-label {
             font-size: 0.8rem;
             color: #ffb464;
-            margin-bottom: 0.2rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .detail-value {
-            font-size: 1.1rem;
-            font-weight: bold;
+            font-size: 1.2rem;
+            font-weight: 800;
             color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        /* Energy Button Effect */
+        .energy-btn {
+            position: relative;
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #ff4d00 0%, #ff9900 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: energy-pulse 2s ease-in-out infinite;
+            box-shadow: 0 10px 20px rgba(255, 77, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .energy-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        .energy-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(255, 77, 0, 0.5);
+            animation: none;
+        }
+
+        .energy-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff4d00, #ff9900, #ff4d00, #ff9900);
+            border-radius: 14px;
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .energy-btn:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes borderRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .energy-btn::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            background: linear-gradient(135deg, #ff4d00 0%, #ff9900 100%);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .energy-btn span {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Button Container Alignment */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Enhanced Card Container */
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        @media (max-width: 1024px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Category Enhancements */
         .esports-category {
-            background: linear-gradient(135deg, rgba(255, 100, 100, 0.1) 0%, rgba(255, 180, 100, 0.1) 100%);
-            border: 2px solid rgba(255, 100, 100, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            margin-bottom: 3rem;
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.15) 0%, rgba(255, 180, 100, 0.15) 100%);
+            border: 2px solid rgba(255, 100, 100, 0.3);
+            border-radius: 25px;
+            padding: 2.5rem;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .esports-category {
+                padding: 1.5rem;
+                border-radius: 20px;
+            }
+        }
+
+        .esports-category::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 100, 100, 0.1) 0%, transparent 70%);
+            animation: float 20s linear infinite;
         }
 
         .esports-header {
             display: flex;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(255, 100, 100, 0.3);
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(255, 100, 100, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .esports-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
         }
 
         .esports-category-icon {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #ff6464;
-            margin-right: 1rem;
+            margin-right: 1.5rem;
+            text-shadow: 0 0 20px rgba(255, 100, 100, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .esports-category-icon {
+                font-size: 2rem;
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
         }
 
         .esports-category-title {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.5rem;
+            font-weight: 900;
             color: #fff;
+            text-shadow: 0 2px 10px rgba(255, 100, 100, 0.3);
+            background: linear-gradient(135deg, #ff6464 0%, #ffb464 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .esports-count {
-            background: #ff6464;
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-left: auto;
+        @media (max-width: 768px) {
+            .esports-category-title {
+                font-size: 1.8rem;
+            }
         }
 
-        /* Tournament bracket style */
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 1.6rem;
+            }
+
+            .game-desc {
+                font-size: 0.9rem;
+                padding: 0 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .detail-value {
+                font-size: 1.1rem;
+            }
+
+            .game-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+
+            .detail-item {
+                padding: 0.6rem;
+            }
+
+            .detail-label {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .esports-card {
+                padding: 1.2rem;
+            }
+
+            .game-title {
+                font-size: 1.4rem;
+            }
+
+            .game-details {
+                grid-template-columns: 1fr;
+            }
+
+            .energy-btn {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Additional Decorative Elements */
+        .game-corner {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(255, 100, 100, 0.3);
+            opacity: 0.3;
+        }
+
+        @media (max-width: 768px) {
+            .game-corner {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        .game-corner-tl {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 20px 0 0 0;
+        }
+
+        .game-corner-br {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 20px 0;
+        }
+
+        .floating-text {
+            position: absolute;
+            color: rgba(255, 100, 100, 0.1);
+            font-size: 3rem;
+            font-weight: 900;
+            transform: rotate(-45deg);
+            user-select: none;
+        }
+
+        @media (max-width: 768px) {
+            .floating-text {
+                font-size: 1.5rem;
+                display: none;
+            }
+        }
+
+        .floating-text-1 {
+            top: 10%;
+            left: 5%;
+        }
+
+        .floating-text-2 {
+            bottom: 15%;
+            right: 5%;
+        }
+
+        /* Tournament Info Styles */
         .tournament-info {
-            background: rgba(255, 100, 100, 0.05);
-            border: 1px solid rgba(255, 100, 100, 0.2);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 77, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 77, 0, 0.1) 0%, rgba(255, 77, 0, 0.05) 100%);
+        }
+
+        @media (max-width: 768px) {
+            .tournament-info {
+                padding: 1rem;
+            }
         }
 
         .tournament-stage {
-            color: #ffb464;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .tournament-stage {
+                font-size: 1rem;
+            }
         }
 
         .tournament-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .tournament-desc {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Social Icons */
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.2) 0%, rgba(255, 180, 100, 0.2) 100%);
+            color: #ff6464;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #ff6464 0%, #ffb464 100%);
+            color: white;
+        }
+
+        /* Mobile Menu Styles */
+        #mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            height: 100vh;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-left: 2px solid rgba(255, 100, 100, 0.3);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            padding: 5rem 2rem 2rem 2rem;
+            overflow-y: auto;
+        }
+
+        #mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-item {
+            display: block;
+            padding: 1rem;
+            color: white;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 100, 100, 0.1);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .mobile-menu-item:hover {
+            color: #ff6464;
+            padding-left: 1.5rem;
+            background: rgba(255, 100, 100, 0.1);
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Mobile Menu Button Animation */
+        #mobile-menu-btn {
+            transition: all 0.3s ease;
+        }
+
+        #mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        #mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Footer Styles */
+        .footer-link {
             color: #a0a0c0;
-            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-link:hover {
+            color: #ff6464;
+            transform: translateX(5px);
+        }
+
+        /* Container for hero section */
+        .hero-container {
+            min-height: calc(100vh - 80px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-container {
+                min-height: calc(100vh - 60px);
+                padding-top: 4rem;
+                padding-bottom: 2rem;
+            }
         }
     </style>
 </head>
 
-<body class="bg-dark-bg text-white font-orbitron">
+<body class="bg-dark-bg text-white font-IBM Plex Sans overflow-x-hidden">
+    <!-- 3D Background -->
+    <div class="bg-3d">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="game-logo-3d freefire-3d"></div>
+        <div class="game-logo-3d bgmi-3d"></div>
+        <div class="floating-text floating-text-1">FREE FIRE</div>
+        <div class="floating-text floating-text-2">BGMI</div>
+    </div>
+
     <!-- Navigation Bar -->
-    <nav class="fixed w-full z-50">
-        <div class="absolute top-6 right-6 z-50">
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="index.html" class="neon-link">Home</a>
-                <div class="relative group">
-                    <a href="#" class="neon-link flex items-center">Events <i
-                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
-                    <div
-                        class="absolute left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                        <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical</a>
-                        <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
-                        <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
-                        <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
-                        <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
-                        <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
+    <nav class="fixed w-full z-50 bg-dark-bg/90 backdrop-blur-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <img src="suravi.png" alt="Suravi Logo" class="h-10 w-10 md:h-12 md:w-12">
+                    <div class="text-neon-cyan font-tilt-neon">
+                        <div class="text-xl md:text-2xl font-bold">21 & 22 February</div>
+                        <div class="text-sm md:text-base">2K26</div>
                     </div>
                 </div>
-                <div class="relative group">
-                    <a href="special.html" class="neon-link flex items-center">Special <i
-                            class="fas fa-chevron-down ml-2 text-xs"></i></a>
-                    <div
-                        class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                        <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-white hover:text-neon-cyan transition-colors">Home</a>
+                    <div class="relative group">
+                        <a href="#" class="text-white hover:text-neon-cyan transition-colors flex items-center">
+                            Events <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </a>
+                        <div
+                            class="absolute top-full left-0 mt-2 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <a href="technical.html" class="block px-4 py-2 hover:bg-neon-blue/10">Technical</a>
+                            <a href="non-technical.html" class="block px-4 py-2 hover:bg-neon-blue/10">Non-Technical</a>
+                            <a href="esports.html"
+                                class="block px-4 py-2 hover:bg-neon-blue/10 text-neon-cyan">E-Sports</a>
+                            <a href="cultural.html" class="block px-4 py-2 hover:bg-neon-blue/10">Cultural</a>
+                            <a href="sports.html" class="block px-4 py-2 hover:bg-neon-blue/10">Sports</a>
+                        </div>
                     </div>
+                    <a href="contact.html" class="text-white hover:text-neon-cyan transition-colors">Contact</a>
+                    <a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                        class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg hover:shadow-lg transition-all duration-300">Hackathon</a>
                 </div>
-                <a href="patron.html" class="neon-link">Patron</a>
-                <a href="sponsor.html" class="neon-link">Sponsor</a>
-                <a href="contact.html" class="neon-link">Contact</a>
-                <a href="organisers.html" class="neon-link">Organisers</a>
-                <a href="achievement.html" class="neon-link">Achievement</a>
-                <a href="hackathon.html"
-                    class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn"
+                    class="md:hidden flex flex-col justify-center items-center w-8 h-8 relative">
+                    <span class="absolute w-6 h-0.5 bg-white rounded-full transition-all duration-300"
+                        style="top: 10px;"></span>
+                    <span class="absolute w-6 h-0.5 bg-white rounded-full transition-all duration-300"></span>
+                    <span class="absolute w-6 h-0.5 bg-white rounded-full transition-all duration-300"
+                        style="bottom: 10px;"></span>
+                </button>
             </div>
-            <button id="mobile-menu-btn"
-                class="md:hidden flex flex-col justify-center items-center w-8 h-8 ml-2 relative group"
-                title="Toggle mobile menu">
-                <span
-                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
-                    style="top: 10px;"></span>
-                <span
-                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"></span>
-                <span
-                    class="absolute w-5 h-0.5 bg-white rounded-full transition-all duration-300 group-hover:bg-neon-cyan"
-                    style="bottom: 10px;"></span>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu">
+            <button class="mobile-menu-close">
+                <i class="fas fa-times"></i>
             </button>
-        </div>
-        <div id="mobile-menu"
-            class="absolute top-16 right-6 w-48 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon hidden md:hidden flex flex-col">
-            <a href="index.html" class="block px-4 py-3 hover:bg-neon-blue/10">Home</a>
-            <a href="technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Technical Events</a>
-            <a href="non-technical.html" class="block px-4 py-3 hover:bg-neon-blue/10">Non-Technical</a>
-            <a href="esports.html" class="block px-4 py-3 hover:bg-neon-blue/10">E-Sports</a>
-            <a href="cultural.html" class="block px-4 py-3 hover:bg-neon-blue/10">Cultural</a>
-            <a href="sports.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sports</a>
-            <a href="athletics.html" class="block px-4 py-3 hover:bg-neon-blue/10">Athletics</a>
-            <a href="special.html" class="block px-4 py-3 hover:bg-neon-blue/10">Special</a>
-            <a href="patron.html" class="block px-4 py-3 hover:bg-neon-blue/10">Patron</a>
-            <a href="sponsor.html" class="block px-4 py-3 hover:bg-neon-blue/10">Sponsor</a>
-            <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
-            <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
-            <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
-            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
-        </div>
-        <div class="absolute bottom-6 left-6 z-50">
-            <div class="flex items-center space-x-4">
-                <img src="suravi.png" alt="Suravi Logo" class="h-12 w-auto filter drop-shadow-neon">
-                <div class="text-neon-cyan font-tilt-neon text-xl">
-                    <div class="text-3xl font-bold">21 & 22 February</div>
-                    <div class="text-lg">2K26</div>
-                </div>
+            <div class="space-y-2">
+                <a href="index.html" class="mobile-menu-item">Home</a>
+                <a href="technical.html" class="mobile-menu-item">Technical Events</a>
+                <a href="non-technical.html" class="mobile-menu-item">Non-Technical Events</a>
+                <a href="esports.html" class="mobile-menu-item text-fire-orange">E-Sports</a>
+                <a href="cultural.html" class="mobile-menu-item">Cultural Events</a>
+                <a href="sports.html" class="mobile-menu-item">Sports Events</a>
+                <a href="contact.html" class="mobile-menu-item">Contact Us</a>
+                <a href="https://giet-ghangapatna-hackfest.vercel.app/" class="mobile-menu-item">Hackathon</a>
             </div>
         </div>
     </nav>
 
     <!-- E-Sports Hero -->
-    <section class="min-h-[50vh] relative flex items-center justify-center pt-24 px-4">
+    <section class="hero-container relative flex items-center justify-center px-4 pt-16">
         <div class="absolute inset-0 z-0">
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-red-500/10 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl"></div>
+            <div
+                class="absolute top-1/4 left-1/4 w-32 h-32 md:w-64 md:h-64 bg-red-500/20 rounded-full blur-3xl animate-pulse">
+            </div>
+            <div class="absolute bottom-1/4 right-1/4 w-40 h-40 md:w-80 md:h-80 bg-orange-500/20 rounded-full blur-3xl animate-pulse"
+                style="animation-delay: 1s;"></div>
         </div>
-        <div class="relative z-10 text-center">
-            <h1 class="text-5xl md:text-7xl font-black mb-6 font-tilt-neon">
-                <span class="text-red-400">E-SPORTS</span> ARENA
+        <div class="relative z-10 text-center max-w-4xl mx-auto">
+            <h1
+                class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-4 md:mb-6 font-tilt-neon leading-tight">
+                <span
+                    class="bg-gradient-to-r from-fire-orange via-red-400 to-bgmi-yellow bg-clip-text text-transparent animate-glow">E-SPORTS</span>
+                <br>
+                <span class="text-2xl sm:text-3xl md:text-4xl text-neon-cyan mt-2 block">ARENA</span>
             </h1>
-            <p class="text-xl md:text-2xl mb-8 text-orange-300">
+            <p class="text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 text-orange-300 px-4 font-bold">
                 Battle Royale & Mobile Gaming Championships
             </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#battle-royale" class="neon-btn px-6 py-3">Battle Royale</a>
-                <a href="#prizes" class="neon-btn px-6 py-3">Prizes</a>
-                <a href="#rules" class="neon-btn px-6 py-3">Rules</a>
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4">
+                <a href="#battle-royale"
+                    class="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-fire-orange to-bgmi-yellow rounded-lg font-bold hover:shadow-lg transition-all duration-300 text-sm md:text-base">Battle
+                    Royale</a>
+                <a href="#prizes"
+                    class="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg font-bold hover:shadow-lg transition-all duration-300 text-sm md:text-base">Prizes</a>
+                <a href="#rules"
+                    class="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-neon-cyan to-neon-blue rounded-lg font-bold hover:shadow-lg transition-all duration-300 text-sm md:text-base">Rules</a>
             </div>
         </div>
     </section>
 
     <!-- E-Sports Events -->
-    <section class="py-16 px-4">
+    <section class="py-12 md:py-16 px-4 relative z-10">
         <div class="max-w-7xl mx-auto">
             <!-- Battle Royale Games -->
             <div id="battle-royale" class="esports-category">
@@ -282,345 +806,399 @@
                         <i class="fas fa-crosshairs"></i>
                     </div>
                     <h2 class="esports-category-title">Battle Royale Championships</h2>
-                    <span class="esports-count">2 Games</span>
+                    <div class="ml-auto md:ml-0">
+                        <span
+                            class="px-3 py-1 md:px-4 md:py-2 bg-gradient-to-r from-fire-orange to-bgmi-yellow rounded-full text-white font-bold text-sm">
+                            2 Games
+                        </span>
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="cards-container">
                     <!-- Free Fire -->
-                    <div class="esports-card">
+                    <div class="esports-card relative">
+                        <div class="game-corner game-corner-tl"></div>
+                        <div class="game-corner game-corner-br"></div>
+
                         <div class="game-icon">
-                            <i class="fas fa-fire"></i>
+                            <img src="download.png" alt="Free Fire" class="h-12 md:h-16 w-auto">
                         </div>
-                        <h3 class="game-title">Free Fire</h3>
-                        <p class="game-desc">Get ready for the Free Fire Showdown, where fast-paced, tactical gameplay
-                            meets the thrill of survival! Set on the
-                            exotic island maps, solo players and squads will face off in this action-packed event to
-                            become the last man standing.
-                            With rapid matches, diverse characters, and a wide range of weapons, players must outthink,
-                            outgun, and outplay their
-                            opponents to claim victory. Only the most adaptable and skilled warriors will survive the
-                            heat of battle. Do you have
-                            what it takes to emerge victorious in Garena Free Fire?</p>
+                        <h3 class="game-title text-fire-orange">FREE FIRE</h3>
+                        <p class="game-desc">
+                            Get ready for the Free Fire Showdown, where fast-paced, tactical gameplay meets the thrill
+                            of survival!
+                            Set on exotic island maps, solo players and squads will face off in this action-packed event
+                            to become
+                            the last man standing. With rapid matches, diverse characters, and a wide range of weapons,
+                            players must
+                            outthink, outgun, and outplay their opponents to claim victory.
+                        </p>
 
                         <div class="game-details">
                             <div class="detail-item">
-                                <div class="detail-label">Format</div>
-                                <div class="detail-value">4v4 Squad</div>
+                                <div class="detail-label">FORMAT</div>
+                                <div class="detail-value text-fire-orange">4v4 Squad</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Map</div>
+                                <div class="detail-label">MAP</div>
                                 <div class="detail-value">ANY</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Prize Pool</div>
-                                <div class="detail-value">ANNOUNCE</div>
+                                <div class="detail-label">ENTRY FEE</div>
+                                <div class="detail-value text-fire-orange">₹250 / Team</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Entry Fee</div>
-                                <div class="detail-value">₹00/team</div>
+                                <div class="detail-label">PRIZE POOL</div>
+                                <div class="detail-value">TBA</div>
                             </div>
+                            <button class="energy-btn"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdf-kzCnJJ-6afWbDeZ2J3OemdUfnGMLJaMownhjPJXZkgt0A/viewform?usp=dialog'">
+                                <span><i class="fas fa-fire mr-2"></i> <span class="hidden sm:inline">REGISTER </span>FREE
+                                    FIRE</span>
+                            </button>
                         </div>
-
-                        <!-- Tournament Stages -->
-                        <!-- <div class="tournament-info">
-                            <div class="tournament-stage">Qualifiers: Day 1 | 10:00 AM</div>
-                            <div class="tournament-desc">Top 8 teams qualify for semi-finals</div>
-                        </div>
-                        <div class="tournament-info">
-                            <div class="tournament-stage">Finals: Day 2 | 2:00 PM</div>
-                            <div class="tournament-desc">Grand finale with live streaming</div>
-                        </div> -->
-
-                        <button class="register-btn mt-4"'
-                            onclick="window.location.href='https://forms.gle/FQgdAKSYJ4VtDV8S9'">Register Team</button>
                     </div>
 
-                    <!-- PUBG Mobile -->
-                    <div class="esports-card">
+                    <!-- BGMI -->
+                    <div class="esports-card relative">
+                        <div class="game-corner game-corner-tl"></div>
+                        <div class="game-corner game-corner-br"></div>
+
                         <div class="game-icon">
-                            <i class="fas fa-mobile-alt"></i>
+                            <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2023/05/48/64711804c17fd.png"
+                                alt="BGMI" class="h-12 md:h-16 w-auto">
                         </div>
-                        <h3 class="game-title">PUBG Mobile</h3>
-                        <p class="game-desc">Step into the virtual battlefield where strategy, skill, and survival
-                            instincts collide in the ultimate test of gaming
-                            prowess. The BGMI Tournament is back, bigger and bolder than ever! Squads from across the
-                            nation will compete in
-                            high-octane matches, filled with intense gunfights, strategic ambushes, and
-                            adrenaline-fueled action. Whether you're
-                            dropping into Erangel or Vikendi, gear up and prove your mettle as you fight for glory,
-                            dominance, and a massive prize
-                            pool. Will your team be the last one standing?</p>
+                        <h3 class="game-title text-bgmi-yellow">BATTLEGROUNDS<br>MOBILE INDIA</h3>
+                        <p class="game-desc">
+                            Step into the virtual battlefield where strategy, skill, and survival instincts collide in
+                            the ultimate test of gaming prowess.
+                            Squads from across the nation will compete in high-octane matches, filled with intense
+                            gunfights, strategic ambushes, and
+                            adrenaline-fueled action. Whether you're dropping into Erangel or Vikendi, gear up and prove
+                            your mettle!
+                        </p>
 
                         <div class="game-details">
                             <div class="detail-item">
-                                <div class="detail-label">Format</div>
-                                <div class="detail-value">4v4 Squad</div>
+                                <div class="detail-label">FORMAT</div>
+                                <div class="detail-value text-bgmi-yellow">4v4 Squad</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Map</div>
+                                <div class="detail-label">MAP</div>
                                 <div class="detail-value">ANY</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Prize Pool</div>
-                                <div class="detail-value">ANNOUNCE</div>
+                                <div class="detail-label">ENTRY FEE</div>
+                                <div class="detail-value text-bgmi-yellow">₹150 / Team</div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Entry Fee</div>
-                                <div class="detail-value">₹00/team</div>
+                                <div class="detail-label">PRIZE POOL</div>
+                                <div class="detail-value">TBA</div>
                             </div>
-                        </div>
+                            <button class="energy-btn" style="background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%);"
+                                onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfids7Xtd5AFSLv_qgYVS7mBnDlLQ2nN5lCuEXtP2ULYKVO2A/viewform?usp=dialog'">
+                                <span><i class="fas fa-crosshairs mr-2"></i> <span class="hidden sm:inline">REGISTER
+                                    </span>BGMI</span>
+                            </button>
 
-                        <!-- Tournament Stages -->
-                        <!-- <div class="tournament-info">
-                            <div class="tournament-stage">Qualifiers: Day 1 | 2:00 PM</div>
-                            <div class="tournament-desc">3 matches, top 6 teams advance</div>
                         </div>
-                        <div class="tournament-info">
-                            <div class="tournament-stage">Finals: Day 2 | 4:00 PM</div>
-                            <div class="tournament-desc">4 matches to determine champion</div>
-                        </div> -->
+                    </div>
+                </div>
 
-                        <button class="register-btn mt-4"
-                            onclick="window.location.href='https://forms.gle/AkFovJGRznX6vukr8'">Register
-                            Team</button>
+
+                <!-- Tournament Info -->
+                <div class="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div class="tournament-info">
+                        <div class="tournament-stage text-fire-orange">
+                            <i class="fas fa-calendar-alt mr-2"></i>TOURNAMENT SCHEDULE
+                        </div>
+                        <div class="tournament-desc">
+                            <p class="mb-1"><span class="text-fire-orange font-bold">Day 1:</span> Qualifiers &
+                                Semi-Finals</p>
+                            <p><span class="text-fire-orange font-bold">Day 2:</span> Grand Finals & Awards</p>
+                        </div>
+                    </div>
+
+                    <div class="tournament-info">
+                        <div class="tournament-stage text-bgmi-yellow">
+                            <i class="fas fa-trophy mr-2"></i>VENUE DETAILS
+                        </div>
+                        <div class="tournament-desc">
+                            <p class="mb-1"><span class="text-bgmi-yellow font-bold">Location:</span> GIET Seminar Hall
+                            </p>
+                            <p><span class="text-bgmi-yellow font-bold">Facilities:</span> High-speed WiFi & Charging
+                                Stations</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Prizes & Rewards -->
-            <div id="prizes" class="esports-category">
+            <!-- Prizes Section -->
+            <!-- <div id="prizes" class="esports-category mt-8 md:mt-12">
                 <div class="esports-header">
                     <div class="esports-category-icon">
                         <i class="fas fa-trophy"></i>
                     </div>
                     <h2 class="esports-category-title">Prizes & Rewards</h2>
-                    <span class="esports-count"></span>
                 </div>
 
-                <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="text-center p-6 bg-gradient-to-b from-red-500/10 to-orange-500/10 rounded-2xl">
-                        <div class="text-4xl font-bold text-red-400 mb-2">🥇</div>
-                        <div class="text-2xl font-bold text-white mb-2">1st Place</div>
-                        <div class="text-xl text-orange-300 mb-2">₹5,000</div>
-                        <p class="text-gray-300">Cash + Trophy + Gaming Merchandise</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                    <div
+                        class="text-center p-4 md:p-6 bg-gradient-to-b from-fire-orange/10 to-transparent rounded-2xl border border-fire-orange/30">
+                        <div class="text-3xl md:text-4xl font-bold text-fire-orange mb-2">🥇</div>
+                        <div class="text-xl md:text-2xl font-bold text-white mb-2">1st Place</div>
+                        <div class="text-lg md:text-xl text-fire-orange mb-2">₹5,000</div>
+                        <p class="text-sm md:text-base text-gray-300">Cash + Trophy + Gaming Merchandise</p>
                     </div>
 
-                    <div class="text-center p-6 bg-gradient-to-b from-gray-500/10 to-gray-400/10 rounded-2xl">
-                        <div class="text-4xl font-bold text-gray-300 mb-2">🥈</div>
-                        <div class="text-2xl font-bold text-white mb-2">2nd Place</div>
-                        <div class="text-xl text-gray-300 mb-2">₹3,000</div>
-                        <p class="text-gray-300">Cash + Medal + Certificates</p>
+                    <div
+                        class="text-center p-4 md:p-6 bg-gradient-to-b from-gray-500/10 to-transparent rounded-2xl border border-gray-500/30">
+                        <div class="text-3xl md:text-4xl font-bold text-gray-300 mb-2">🥈</div>
+                        <div class="text-xl md:text-2xl font-bold text-white mb-2">2nd Place</div>
+                        <div class="text-lg md:text-xl text-gray-300 mb-2">₹3,000</div>
+                        <p class="text-sm md:text-base text-gray-300">Cash + Medal + Certificates</p>
                     </div>
 
-                    <div class="text-center p-6 bg-gradient-to-b from-yellow-700/10 to-yellow-600/10 rounded-2xl">
-                        <div class="text-4xl font-bold text-yellow-600 mb-2">🥉</div>
-                        <div class="text-2xl font-bold text-white mb-2">3rd Place</div>
-                        <div class="text-xl text-yellow-500 mb-2">₹2,000</div>
-                        <p class="text-gray-300">Cash + Medal + Certificates</p>
-                    </div>
-                </div>
-
-                <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="text-center p-4 bg-card-bg rounded-xl">
-                        <div class="text-lg font-bold text-red-400 mb-1">₹1,000</div>
-                        <div class="text-sm text-gray-300">MVP Award</div>
-                    </div>
-                    <div class="text-center p-4 bg-card-bg rounded-xl">
-                        <div class="text-lg font-bold text-red-400 mb-1">₹500</div>
-                        <div class="text-sm text-gray-300">Best Clutch</div>
-                    </div>
-                    <div class="text-center p-4 bg-card-bg rounded-xl">
-                        <div class="text-lg font-bold text-red-400 mb-1">Gear</div>
-                        <div class="text-sm text-gray-300">Gaming Mouse</div>
-                    </div>
-                    <div class="text-center p-4 bg-card-bg rounded-xl">
-                        <div class="text-lg font-bold text-red-400 mb-1">All</div>
-                        <div class="text-sm text-gray-300">Participation Certificates</div>
+                    <div
+                        class="text-center p-4 md:p-6 bg-gradient-to-b from-yellow-600/10 to-transparent rounded-2xl border border-yellow-600/30">
+                        <div class="text-3xl md:text-4xl font-bold text-yellow-600 mb-2">🥉</div>
+                        <div class="text-xl md:text-2xl font-bold text-white mb-2">3rd Place</div>
+                        <div class="text-lg md:text-xl text-yellow-500 mb-2">₹2,000</div>
+                        <p class="text-sm md:text-base text-gray-300">Cash + Medal + Certificates</p>
                     </div>
                 </div>
             </div> -->
 
-            <!-- Rules & Guidelines -->
-            <div id="rules" class="esports-category">
+            <!-- Rules Section -->
+            <!-- <div id="rules" class="esports-category mt-8 md:mt-12">
                 <div class="esports-header">
                     <div class="esports-category-icon">
                         <i class="fas fa-book"></i>
                     </div>
                     <h2 class="esports-category-title">Rules & Guidelines</h2>
-                    <span class="esports-count">Important</span>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                     <div>
-                        <h3 class="text-xl font-bold mb-4 text-red-400">General Rules</h3>
-                        <ul class="space-y-3 text-gray-300">
+                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-fire-orange">General Rules</h3>
+                        <ul class="space-y-2 md:space-y-3 text-gray-300">
                             <li class="flex items-start">
-                                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
-                                <span>Team size: 4 players (no substitutes during tournament)</span>
+                                <i class="fas fa-check text-fire-orange mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Team size: 4 players (no substitutes during
+                                    tournament)</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
-                                <span>Players must bring their own devices (phones/tablets)</span>
+                                <i class="fas fa-check text-fire-orange mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Players must bring their own devices
+                                    (phones/tablets)</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
-                                <span>Headphones with mic are mandatory</span>
+                                <i class="fas fa-check text-fire-orange mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Headphones with mic are mandatory</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
-                                <span>College ID required for verification</span>
+                                <i class="fas fa-check text-fire-orange mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">College ID required for verification</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-check text-red-400 mr-2 mt-1"></i>
-                                <span>Check-in 30 minutes before match time</span>
+                                <i class="fas fa-check text-fire-orange mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Check-in 30 minutes before match time</span>
                             </li>
                         </ul>
                     </div>
 
                     <div>
-                        <h3 class="text-xl font-bold mb-4 text-orange-300">Game-Specific Rules</h3>
-                        <ul class="space-y-3 text-gray-300">
+                        <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 text-bgmi-yellow">Game-Specific Rules</h3>
+                        <ul class="space-y-2 md:space-y-3 text-gray-300">
                             <li class="flex items-start">
-                                <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
-                                <span>Latest version of games must be installed</span>
+                                <i class="fas fa-gamepad text-bgmi-yellow mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Latest version of games must be installed</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
-                                <span>No emulators allowed - mobile devices only</span>
+                                <i class="fas fa-gamepad text-bgmi-yellow mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">No emulators allowed - mobile devices only</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
-                                <span>No hacking, cheating, or third-party tools</span>
+                                <i class="fas fa-gamepad text-bgmi-yellow mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">No hacking, cheating, or third-party tools</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
-                                <span>Disconnection during match = elimination</span>
+                                <i class="fas fa-gamepad text-bgmi-yellow mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Disconnection during match = elimination</span>
                             </li>
                             <li class="flex items-start">
-                                <i class="fas fa-gamepad text-orange-300 mr-2 mt-1"></i>
-                                <span>Organizers' decisions are final</span>
+                                <i class="fas fa-gamepad text-bgmi-yellow mr-2 mt-1"></i>
+                                <span class="text-sm md:text-base">Organizers' decisions are final</span>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="mt-8 p-6 bg-gradient-to-r from-red-500/5 to-orange-500/5 rounded-xl">
-                    <h3 class="text-xl font-bold mb-3 text-white">Device Requirements</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="mt-6 md:mt-8 p-4 md:p-6 bg-gradient-to-r from-fire-orange/5 to-bgmi-yellow/5 rounded-xl">
+                    <h3 class="text-lg md:text-xl font-bold mb-3 text-white">Device Requirements</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                         <div class="text-center p-3 bg-card-bg rounded-lg">
-                            <div class="font-bold text-red-400 mb-1">Battery</div>
+                            <div class="font-bold text-fire-orange mb-1">Battery</div>
                             <div class="text-sm text-gray-300">Power bank recommended</div>
                         </div>
                         <div class="text-center p-3 bg-card-bg rounded-lg">
-                            <div class="font-bold text-red-400 mb-1">Internet</div>
+                            <div class="font-bold text-fire-orange mb-1">Internet</div>
                             <div class="text-sm text-gray-300">WiFi will be provided</div>
                         </div>
                         <div class="text-center p-3 bg-card-bg rounded-lg">
-                            <div class="font-bold text-red-400 mb-1">Storage</div>
+                            <div class="font-bold text-fire-orange mb-1">Storage</div>
                             <div class="text-sm text-gray-300">4GB free space minimum</div>
                         </div>
                     </div>
                 </div>
             </div>
-
-                <div class="mt-6 p-4 bg-card-bg rounded-xl">
-                    <div class="flex items-center">
-                        <i class="fas fa-map-marker-alt text-red-400 text-xl mr-3"></i>
-                        <div>
-                            <div class="font-bold">E-Sports Arena Venue</div>
-                            <div class="text-gray-300">GIET Ghangapatna Seminar Hall</div>
-                            <div class="text-sm text-gray-400 mt-1">Equipped with high-speed internet, charging
-                                stations, and live streaming setup</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        </div> -->
     </section>
 
-
-
     <!-- Footer -->
-    <footer class="border-t border-red-400/30 py-10 px-4">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div>
-                <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
-                <p class="text-red-400">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
-                <p class="mt-4">21 & 22 February 2K26</p>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
-                <ul class="space-y-2">
-                    <li><a href="index.html" class="hover:text-red-400">Home</a></li>
-                    <li><a href="technical.html" class="hover:text-red-400">Technical Events</a></li>
-                    <li><a href="sports.html" class="hover:text-red-400">Sports Events</a></li>
-                    <li><a href="contact.html" class="hover:text-red-400">Contact</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-xl font-bold mb-4">Follow E-Sports</h4>
-                <div class="flex space-x-4">
-                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon bg-red-500/20 text-red-400"
-                        title="Follow on Facebook">
-                        <i class="fab fa-facebook-f"></i></a>
-                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT"
-                        class="social-icon bg-red-600/20 text-red-500" title="Subscribe on YouTube"><i
-                            class="fab fa-youtube"></i></a>
-                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
-                        class="social-icon" title="Follow on Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
-                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    <footer class="border-t border-red-400/30 py-8 md:py-10 px-4 relative z-10 bg-dark-bg/80 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="suravi.png" alt="Suravi Logo" class="h-12 w-12 md:h-16 md:w-16">
+                        <div>
+                            <div class="text-xl md:text-2xl font-bold text-neon-cyan">SURAVI 2K26</div>
+                            <div class="text-sm md:text-base text-red-400">Annual Techno-Cultural Fest</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm md:text-base">Gandhi Institute of Excellent Technocrats</p>
+                    <p class="mt-2 text-gray-400 text-sm md:text-base">21 & 22 February 2026</p>
+                    <p class="mt-4 text-gray-300 text-sm md:text-base">GIET, Ghangapatna, Bhubaneswar, Odisha</p>
                 </div>
-                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+
+                <div>
+                    <h4 class="text-lg md:text-xl font-bold mb-4 text-fire-orange">Quick Links</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="index.html" class="footer-link text-sm md:text-base">Home</a>
+                        <a href="technical.html" class="footer-link text-sm md:text-base">Technical Events</a>
+                        <a href="non-technical.html" class="footer-link text-sm md:text-base">Non-Technical</a>
+                        <a href="esports.html" class="footer-link text-sm md:text-base text-fire-orange">E-Sports</a>
+                        <a href="cultural.html" class="footer-link text-sm md:text-base">Cultural</a>
+                        <a href="sports.html" class="footer-link text-sm md:text-base">Sports</a>
+                        <a href="contact.html" class="footer-link text-sm md:text-base">Contact</a>
+                        <a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                            class="footer-link text-sm md:text-base">Hackathon</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg md:text-xl font-bold mb-4 text-bgmi-yellow">Connect With Us</h4>
+                    <div class="flex space-x-3 mb-6">
+                        <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                            class="social-icon" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                            title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                            class="social-icon" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5 class="font-bold text-white mb-2 text-sm md:text-base">E-Sports Coordinator</h5>
+                        <p class="text-gray-400 text-sm">Email: esports@suravi2k26.com</p>
+                        <p class="text-gray-400 text-sm">Phone: +91 98765 43210</p>
+                    </div>
+
+                    <p class="text-xs md:text-sm text-gray-500 mt-6">© 2026 SURAVI 2K26. All rights reserved.</p>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Chatbot Container -->
-    <div id="chatbot-container"></div>
-
-    <script src="js/main.js"></script>
-    <script src="js/chatbot.js"></script>
     <script>
-        // Registration modal functions
-        function openRegistration(eventName) {
-            document.getElementById('event-name').value = eventName;
-            document.getElementById('registration-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
         }
 
-        function closeRegistration() {
-            document.getElementById('registration-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileMenuClose.addEventListener('click', toggleMobileMenu);
 
-        // Form submission
-        document.getElementById('registration-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const eventName = document.getElementById('event-name').value;
-            const game = document.querySelector('select').value;
-            alert(`Team registered successfully for ${game}! Tournament details will be emailed.`);
-            closeRegistration();
-            this.reset();
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.mobile-menu-item').forEach(item => {
+            item.addEventListener('click', toggleMobileMenu);
         });
 
-        // Close modal on outside click
-        document.getElementById('registration-modal').addEventListener('click', function (e) {
-            if (e.target === this) closeRegistration();
-        });
-
-        // Mobile menu functionality
-        document.getElementById('mobile-menu-btn').addEventListener('click', function () {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function (e) {
-            const menu = document.getElementById('mobile-menu');
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-                menu.classList.add('hidden');
+        // Enhanced animations for 3D effect
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create additional floating particles
+            for (let i = 0; i < 10; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 100 + 50 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 20 + 10) + 's';
+                particle.style.background = `radial-gradient(circle, rgba(${Math.random() > 0.5 ? '255,77,0' : '255,204,0'}, ${Math.random() * 0.2}) 0%, transparent 70%)`;
+                document.querySelector('.bg-3d').appendChild(particle);
             }
+
+            // Add hover effect to game cards
+            const cards = document.querySelectorAll('.esports-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    const gameTitle = card.querySelector('.game-title');
+                    gameTitle.style.transform = 'scale(1.1)';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    const gameTitle = card.querySelector('.game-title');
+                    gameTitle.style.transform = 'scale(1)';
+                });
+            });
+
+            // Energy button interaction
+            const buttons = document.querySelectorAll('.energy-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', () => {
+                    button.style.animation = 'none';
+                    setTimeout(() => {
+                        button.style.animation = 'energyPulse 0.5s ease-in-out infinite';
+                    }, 50);
+                });
+
+                button.addEventListener('mouseleave', () => {
+                    button.style.animation = 'energyPulse 2s ease-in-out infinite';
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
         });
     </script>
 </body>

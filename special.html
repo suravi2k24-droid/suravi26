@@ -20,7 +20,7 @@
                     },
                     fontFamily: {
                         'tilt-neon': ['Tilt Neon', 'cursive'],
-                        'orbitron': ['Orbitron', 'sans-serif'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
                     },
                 },
             },
@@ -28,7 +28,7 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tilt+Neon&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=IBM Plex Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -96,7 +96,7 @@
     </style>
 </head>
 
-<body class="bg-dark-bg text-white font-orbitron">
+<body class="bg-dark-bg text-white font-IBM Plex Sans">
     <!-- Navigation Bar -->
     <nav class="fixed w-full z-50">
         <div class="absolute top-6 right-6 z-50">
@@ -129,7 +129,7 @@
                 <a href="contact.html" class="neon-link">Contact</a>
                 <a href="organisers.html" class="neon-link">Organisers</a>
                 <a href="achievement.html" class="neon-link">Achievement</a>
-                <a href="hackathon.html"
+                <a href="https://giet-ghangapatna-hackfest.vercel.app/"
                     class="px-4 py-2 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg shadow-neon hover:shadow-xl transition-all duration-300">Hackathon</a>
             </div>
             <button id="mobile-menu-btn"
@@ -155,7 +155,8 @@
             <a href="contact.html" class="block px-4 py-3 hover:bg-neon-blue/10">Contact</a>
             <a href="organisers.html" class="block px-4 py-3 hover:bg-neon-blue/10">Organisers</a>
             <a href="achievement.html" class="block px-4 py-3 hover:bg-neon-blue/10">Achievement</a>
-            <a href="hackathon.html" class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
+            <a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                class="block px-4 py-3 hover:bg-neon-blue/10">Hackathon</a>
         </div>
         <div class="absolute bottom-6 left-6 z-50">
             <div class="flex items-center space-x-4">
@@ -213,8 +214,9 @@
                         dietary preferences, and supports sustainability through eco-friendly practices and plant-based
                         meals..</p>
                     <div class="flex justify-between items-center mt-4">
-                        <span class="food-price">₹500</span>
-                        <button class="register-btn px-4 py-2" onclick="window.location.href='https://forms.gle/BqevhHX98MzU5EnKA'">Book
+                        <span class="food-price">₹1000</span>
+                        <button class="register-btn px-4 py-2"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfJS50bMic_CeMUYsZ2PSoWWN8dPw_zwdFA3som15Sp6tUgJQ/viewform?usp=dialog'">Book
                             Stall</button>
                     </div>
                 </div>
@@ -232,8 +234,9 @@
                         with essential
                         nutrients.</p>
                     <div class="flex justify-between items-center mt-4">
-                        <span class="food-price">700</span>
-                        <button class="register-btn px-4 py-2" onclick="openFoodRegistration('Pizza Paradise')"onclick="window.location.href='https://forms.gle/BqevhHX98MzU5EnKA'">Book
+                        <span class="food-price">₹1000</span>
+                        <button class="register-btn px-4 py-2"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfJS50bMic_CeMUYsZ2PSoWWN8dPw_zwdFA3som15Sp6tUgJQ/viewform?usp=dialog'">Book
                             Stall</button>
                     </div>
                 </div>
@@ -249,82 +252,83 @@
                         flavorful, protein-rich dishes,
                         this stall has something for everyone.</p>
                     <div class="flex justify-between items-center mt-4">
-                        <span class="food-price">₹1000</span>
-                        <button class="register-btn px-4 py-2" onclick="window.location.href='https://forms.gle/BqevhHX98MzU5EnKA'">Book
+                        <span class="food-price">₹1500</span>
+                        <button class="register-btn px-4 py-2"
+                            onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSfJS50bMic_CeMUYsZ2PSoWWN8dPw_zwdFA3som15Sp6tUgJQ/viewform?usp=dialog'">Book
                             Stall</button>
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
+    <footer class="border-t border-neon-blue/30 py-8 md:py-10 px-4">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+            <div>
+                <img src="suravi.png" alt="Suravi Logo" class="h-12 md:h-16 w-auto mb-4">
+                <p class="text-neon-cyan text-sm md:text-base">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
+                <p class="mt-4 text-sm md:text-base">21 & 22 February 2K26</p>
+            </div>
+            <div>
+                <h4 class="text-lg md:text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="index.html" class="hover:text-neon-cyan text-sm md:text-base">Home</a></li>
+                    <li><a href="events.html" class="hover:text-neon-cyan text-sm md:text-base">Events</a></li>
+                    <li><a href="https://giet-ghangapatna-hackfest.vercel.app/"
+                            class="hover:text-neon-cyan text-sm md:text-base">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan text-sm md:text-base">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg md:text-xl font-bold mb-4">Follow Us</h4>
+                <div class="flex space-x-4">
+                    <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
+                        class="social-icon" title="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
+                        title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT" class="social-icon"
+                        title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
+                        class="social-icon" title="Connect on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
+    <!-- Chatbot Container -->
+    <div id="chatbot-container"></div>
 
-                <!-- Footer -->
-                <footer class="border-t border-neon-blue/30 py-10 px-4">
-                    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-                        <div>
-                            <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
-                            <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
-                            <p class="mt-4">21 & 22 February 2K26</p>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-4">Quick Links</h4>
-                            <ul class="space-y-2">
-                                <li><a href="index.html" class="hover:text-neon-cyan">Home</a></li>
-                                <li><a href="events.html" class="hover:text-neon-cyan">Events</a></li>
-                                <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
-                                <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="text-xl font-bold mb-4">Follow Us</h4>
-                            <div class="flex space-x-4">
-                                <a href="https://www.instagram.com/giet_ghangapatna_official?igsh=MWc1bWRreWFpeXNxOQ=="
-                                    class="social-icon" title="Follow us on Instagram"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a href="https://www.facebook.com/share/17tBXiJy2K/" class="social-icon"
-                                    title="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
-                                <a href="https://youtube.com/@g.i.e.tghangapatna?si=JuLgQCB8SdPGqLtT"
-                                    class="social-icon" title="Subscribe on YouTube"><i class="fab fa-youtube"></i></a>
-                                <a href="https://www.linkedin.com/company/gandhi-institute-of-excellent-technocrats/"
-                                    class="social-icon" title="Connect on LinkedIn"><i
-                                        class="fab fa-linkedin-in"></i></a>
-                            </div>
-                            <p class="mt-6 text-sm text-gray-400">© 2026 SURAVI 2K26. All rights reserved.</p>
-                        </div>
-                    </div>
-                </footer>
+    <script src="js/main.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script>
+        function openFoodRegistration(stallName) {
+            alert(`Booking initiated for ${stallName}. Our team will contact you within 24 hours.`);
+        }
 
-                <!-- Chatbot Container -->
-                <div id="chatbot-container"></div>
+        function openStallApplication() {
+            document.getElementById('stall-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
 
-                <script src="js/main.js"></script>
-                <script src="js/chatbot.js"></script>
-                <script>
-                    function openFoodRegistration(stallName) {
-                        alert(`Booking initiated for ${stallName}. Our team will contact you within 24 hours.`);
-                    }
+        function closeStallApplication() {
+            document.getElementById('stall-modal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
 
-                    function openStallApplication() {
-                        document.getElementById('stall-modal').classList.remove('hidden');
-                        document.body.style.overflow = 'hidden';
-                    }
+        document.getElementById('stall-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Food stall application submitted successfully! We will contact you within 48 hours.');
+            closeStallApplication();
+            this.reset();
+        });
 
-                    function closeStallApplication() {
-                        document.getElementById('stall-modal').classList.add('hidden');
-                        document.body.style.overflow = 'auto';
-                    }
-
-                    document.getElementById('stall-form').addEventListener('submit', function (e) {
-                        e.preventDefault();
-                        alert('Food stall application submitted successfully! We will contact you within 48 hours.');
-                        closeStallApplication();
-                        this.reset();
-                    });
-
-                    document.getElementById('stall-modal').addEventListener('click', function (e) {
-                        if (e.target === this) closeStallApplication();
-                    });
-                </script>
+        document.getElementById('stall-modal').addEventListener('click', function (e) {
+            if (e.target === this) closeStallApplication();
+        });
+    </script>
 </body>
 
 </html>
