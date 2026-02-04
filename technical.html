@@ -171,6 +171,7 @@
                     <div
                         class="absolute left-0 mt-2 w-40 bg-card-bg border border-neon-blue/30 rounded-lg shadow-neon opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                         <a href="special.html#food-stall" class="block px-4 py-3 hover:bg-neon-blue/10">Food Stall</a>
+                        <a href="goodies.html" class="block px-4 py-3 hover:bg-neon-blue/10">Goodies</a>
                     </div>
                 </div>
                 <a href="patron.html" class="neon-link">Patron</a>
@@ -615,8 +616,8 @@
                     <li><a href="non-technical.html" class="hover:text-neon-cyan">Non-Technical Events</a></li>
                     <li><a href="https://giet-ghangapatna-hackfest.vercel.app/"
                             class="hover:text-neon-cyan">Hackathon</a></li>
-                                                <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
-                                                <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
+                    <li><a href="hackathon.html" class="hover:text-neon-cyan">Hackathon</a></li>
+                    <li><a href="contact.html" class="hover:text-neon-cyan">Contact</a></li>
                 </ul>
             </div>
             <div>
@@ -648,12 +649,25 @@
             menu.classList.toggle('hidden');
         });
 
+        // Toggle special dropdown
+        const mobileSpecialBtn = document.getElementById('mobile-special-btn');
+        const mobileSpecialDropdown = document.getElementById('mobile-special-dropdown');
+        if (mobileSpecialBtn && mobileSpecialDropdown) {
+            mobileSpecialBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mobileSpecialDropdown.classList.toggle('hidden');
+            });
+        }
+
         // Close mobile menu when clicking outside
         document.addEventListener('click', function (e) {
             const menu = document.getElementById('mobile-menu');
             const menuBtn = document.getElementById('mobile-menu-btn');
             if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
                 menu.classList.add('hidden');
+                if (mobileSpecialDropdown) {
+                    mobileSpecialDropdown.classList.add('hidden');
+                }
             }
         });
     </script>
