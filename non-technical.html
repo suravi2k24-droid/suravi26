@@ -609,28 +609,6 @@
                         </div>
                     </div>
 
-                    <!-- Vlogs -->
-                    <!-- <div class="non-tech-card">
-                        <div class="non-tech-icon">
-                            <i class="fas fa-video"></i>
-                        </div>
-                        <h3 class="non-tech-title">Vlogs</h3>
-                        <p class="non-tech-desc">Bring your life and experiences to the screen in the Vlogs competition!
-                            Whether youâ€™re documenting daily life, sharing
-                            travel stories, or offering tutorials, this event celebrates creativity and storytelling
-                            through video. Participants
-                            will be judged on content, editing, and engagement. Get ready to create captivating vlogs
-                            that leave a lasting
-                            impression!</p>
-                        <div class="event-tags">
-                            <span class="event-tag">Video Blogging</span>
-                            <span class="event-tag">Creative</span>
-                        </div>
-                        <div class="non-tech-details">
-                            <button class="register-btn" onclick="window.location.href='https://forms.gle/oHtfc9UdivTBHkLy5'">Register</button>
-                        </div>
-                    </div> -->
-
                     <!-- Just A Minute -->
                     <div class="non-tech-card">
                         <div class="non-tech-icon">
@@ -799,33 +777,9 @@
         </div>
     </footer>
 
-    <!-- Chatbot Container -->
-    <div id="chatbot-container"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/chatbot.js"></script>
     <script>
-        // Registration modal functions
-        function openRegistration(eventName) {
-            document.getElementById('event-name').value = eventName;
-            document.getElementById('event-type').value = "Non-Technical Event";
-            document.getElementById('registration-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeRegistration() {
-            document.getElementById('registration-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Form submission
-        document.getElementById('registration-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const eventName = document.getElementById('event-name').value;
-            alert(`Successfully registered for ${eventName}! You'll receive a confirmation email shortly.`);
-            closeRegistration();
-            this.reset();
-        });
 
         // Close modal on outside click
         document.getElementById('registration-modal').addEventListener('click', function (e) {

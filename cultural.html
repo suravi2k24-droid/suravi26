@@ -340,11 +340,6 @@
                             </div>
                         </div>
 
-                        <!-- <div class="stage-info">
-                            <div class="stage-name">Main Stage - Day 1 | 6:00 PM</div>
-                            <div class="text-sm text-gray-300">Sound system and basic lighting provided</div>
-                        </div> -->
-
                         <button class="register-btn mt-4"
                             onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLScJBS2K56BLpWAjtk_rOrJY7ZfA080nq8M3-fV9r83kF7uYtQ/viewform?usp=dialog'">Register</button>
                     </div>
@@ -382,10 +377,6 @@
                             </div>
                         </div>
 
-                        <!-- <div class="stage-info">
-                            <div class="stage-name">Acoustic Stage - Day 2 | 11:00 AM</div>
-                            <div class="text-sm text-gray-300">Professional sound system with monitors</div>
-                        </div> -->
 
                         <button class="register-btn mt-4"
                             onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSdD_HrzTqQS6ZtRj2VNybVx1q3g8XoGSchgBT2-EiOMz8N8wQ/viewform?usp=dialog'">Register</button>
@@ -527,42 +518,12 @@
                                     <div class="cultural-detail-value">--</div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-                                <div class="text-center p-4 bg-pink-500/10 rounded-xl">
-                                    <div class="text-xl font-bold text-pink-400 mb-1">Theme 1</div>
-                                    <div class="text-sm text-gray-300">Traditional Wear</div>
-                                </div>
-                                <div class="text-center p-4 bg-purple-500/10 rounded-xl">
-                                    <div class="text-xl font-bold text-purple-400 mb-1">Theme 2</div>
-                                    <div class="text-sm text-gray-300">Western Formal</div>
-                                </div>
-                                <div class="text-center p-4 bg-blue-500/10 rounded-xl">
-                                    <div class="text-xl font-bold text-blue-400 mb-1">Theme 3</div>
-                                    <div class="text-sm text-gray-300">Fusion Fashion</div>
-                                </div>
-                            </div>
                             <button class="register-btn mt-4"
                                 onclick="window.location.href='https://docs.google.com/forms/d/e/1FAIpQLSc3DXWBl1KY0nzksbLLM8dK1W7eADKmKTLUTJPI4Tl6L3YLSA/viewform?usp=dialog'">Registe</button>
                         </div>
                     </div>
-
-
-
-
-
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
 
             <!-- Cultural Night -->
             <div class="cultural-category">
@@ -598,28 +559,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-2xl">
-                        <h3 class="text-2xl font-bold mb-4 text-purple-400">Performance Schedule</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="font-bold text-pink-400">7:00 PM - 8:30 PM</div>
-                                <div class="text-gray-300">Ramp Show Finals</div>
-                            </div>
-                            <div>
-                                <div class="font-bold text-purple-400">8:30 PM - 9:30 PM</div>
-                                <div class="text-gray-300">Dance & Music Winners Performance</div>
-                            </div>
-                            <div>
-                                <div class="font-bold text-blue-400">9:30 PM - 11:00 PM</div>
-                                <div class="text-gray-300">Cultural Night Party with DJ</div>
-                            </div>
-                            <div>
-                                <div class="font-bold text-yellow-400">11:00 PM</div>
-                                <div class="text-gray-300">Fireworks Finale</div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
 
@@ -679,7 +618,7 @@
             </div>
         </div>
         </div>
-        </DIV>
+    </div>
         </div>
     </section>
 
@@ -721,34 +660,9 @@
         </div>
     </footer>
 
-    <!-- Chatbot Container -->
-    <div id="chatbot-container"></div>
 
     <script src="js/main.js"></script>
-    <script src="js/chatbot.js"></script>
     <script>
-        // Registration modal functions
-        function openRegistration(eventName) {
-            document.getElementById('event-name').value = eventName;
-            document.getElementById('event-display').value = eventName;
-            document.getElementById('registration-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeRegistration() {
-            document.getElementById('registration-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Form submission
-        document.getElementById('registration-form').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const eventName = document.getElementById('event-name').value;
-            alert(`Registration successful for ${eventName}! You'll receive performance schedule via email.`);
-            closeRegistration();
-            this.reset();
-        });
-
         // Close modal on outside click
         document.getElementById('registration-modal').addEventListener('click', function (e) {
             if (e.target === this) closeRegistration();
