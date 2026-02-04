@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Shirt Registration - SURAVI 2K26</title>
+    <link rel="icon" type="image/png" href="suravi.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-blue': '#00f3ff',
+                        'neon-purple': '#9d4edd',
+                        'neon-cyan': '#00ffff',
+                        'dark-bg': '#0a0a0f',
+                        'card-bg': '#12121a',
+                        'primary': '#ff4d00',
+                        'secondary': '#00d4ff',
+                    },
+                    fontFamily: {
+                        'tilt-neon': ['Tilt Neon', 'cursive'],
+                        'IBM Plex Sans': ['IBM Plex Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s ease-in-out infinite',
+                        'bounce-slow': 'bounce 3s infinite',
+                        'spin-slow': 'spin 20s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700;800;900&family=Tilt+Neon&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* Background Styles */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a1f 50%, #0a0f1a 100%);
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--color) 0%, transparent 70%);
+            animation: float var(--duration) ease-in-out infinite;
+            opacity: 0.1;
+        }
+
+        /* T-Shirt Preview Styles */
+        .tshirt-preview {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .tshirt-base {
+            width: 100%;
+            filter: drop-shadow(0 10px 30px rgba(255, 77, 0, 0.3));
+        }
+
+        .design-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: white;
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 25, 35, 0.95) 100%);
+            border: 2px solid rgba(255, 77, 0, 0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(255, 77, 0, 0.2);
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 77, 0, 0.2);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: white;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ff4d00;
+            box-shadow: 0 0 0 3px rgba(255, 77, 0, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-label {
+            color: #ffb464;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-wrapper select {
+            appearance: none;
+            padding-right: 40px;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff4d00;
+            pointer-events: none;
+        }
+
+        /* Radio and Checkbox Styles */
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: rgba(255, 77, 0, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .radio-option:hover {
+            background: rgba(255, 77, 0, 0.2);
+        }
+
+        .radio-option.active {
+            background: rgba(255, 77, 0, 0.25);
+            border-color: #ff4d00;
+        }
+
+        .radio-input {
+            display: none;
+        }
+
+        .radio-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ff4d00;
+            position: relative;
+        }
+
+        .radio-input:checked+.radio-dot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff4d00;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: linear-gradient(135deg, #ff4d00 0%, #ff9900 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(255, 77, 0, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 77, 0, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: rotate(45deg);
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+
+        /* Size Guide Modal */
+        .size-guide {
+            background: rgba(10, 10, 15, 0.95);
+            border: 2px solid rgba(255, 77, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .size-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .size-table th {
+            background: rgba(255, 77, 0, 0.2);
+            color: #ffb464;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .size-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 77, 0, 0.1);
+            color: #a0a0c0;
+        }
+
+        .size-table tr:hover td {
+            background: rgba(255, 77, 0, 0.05);
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tshirt-preview {
+                max-width: 300px;
+            }
+
+            .color-option {
+                width: 32px;
+                height: 32px;
+            }
+
+            .submit-btn {
+                padding: 14px 30px;
+                font-size: 1rem;
+            }
+
+            .form-container {
+                padding: 20px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tshirt-preview {
+                max-width: 250px;
+            }
+
+            .color-option {
+                width: 28px;
+                height: 28px;
+            }
+
+            .radio-option {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 77, 0, 0.3);
+            border-top: 3px solid #ff4d00;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-dark-bg text-white font-IBM Plex Sans min-h-screen">
+    <!-- Background Pattern -->
+    <div class="bg-pattern">
+        <div class="floating-element"
+            style="--color: #ff4d00; --duration: 20s; top: 10%; left: 5%; width: 300px; height: 300px;"></div>
+        <div class="floating-element"
+            style="--color: #00d4ff; --duration: 25s; top: 60%; right: 10%; width: 200px; height: 200px;"></div>
+        <div class="floating-element"
+            style="--color: #9d4edd; --duration: 18s; bottom: 20%; left: 15%; width: 250px; height: 250px;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-dark-bg/90 backdrop-blur-sm border-b border-primary/30">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-3">
+                    <img src="suravi.png" alt="Suravi Logo" class="h-10 w-10 md:h-12 md:w-12">
+                    <div class="text-secondary font-tilt-neon">
+                        <div class="text-xl md:text-2xl font-bold">SURAVI 2K26</div>
+                        <div class="text-sm md:text-base">T-Shirt Registration</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="index.html" class="text-white hover:text-primary transition-colors hidden md:block">
+                        <i class="fas fa-home mr-2"></i> Home
+                    </a>
+                    <a href="esports.html" class="text-white hover:text-primary transition-colors hidden md:block">
+                        <i class="fas fa-gamepad mr-2"></i> E-Sports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-16 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <!-- Header -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-6xl font-black mb-4 font-tilt-neon">
+                    <span
+                        class="bg-gradient-to-r from-primary via-secondary to-neon-purple bg-clip-text text-transparent">
+                        SURAVI 2K26
+                    </span>
+                    <br>
+                    <span class="text-2xl md:text-4xl text-white mt-2">Official T-Shirt Registration</span>
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+                    Get your exclusive SURAVI 2K26 commemorative T-shirt. Limited stock available!
+                </p>
+            </div>
+
+            <!-- Price Banner -->
+            <div
+                class="bg-gradient-to-r from-primary/20 to-secondary/20 border border-primary/30 rounded-xl p-4 md:p-6 mb-8 text-center">
+                <div class="flex flex-wrap justify-center items-center gap-4 md:gap-8">
+                    <div class="text-center">
+                        <div class="text-sm text-gray-300">Price</div>
+                        <div class="text-3xl md:text-4xl font-bold text-primary">₹280</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+                <!-- Left Column: T-Shirt Preview -->
+                <div class="space-y-8">
+                    <!-- T-Shirt Preview -->
+                    <div class="form-container p-6">
+                        <h2 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                            <i class="fas fa-tshirt mr-3"></i> T-Shirt Preview
+                        </h2>
+
+                        <div class="tshirt-preview">
+                            <!-- T-Shirt Base -->
+                            <svg class="tshirt-base" viewBox="0 0 400 500">
+
+                                <path fill="#1a1a2e" stroke="#ff4d00" stroke-width="3" />
+                                Sleeves
+                                <path d="M100,100 Q80,120 70,150 L50,200" fill="none" stroke="#ff4d00"
+                                    stroke-width="3" />
+                                <path d="M300,100 Q320,120 330,150 L350,200" fill="none" stroke="#ff4d00"
+                                    stroke-width="3" />
+                            </svg>
+
+                            <!-- Design Overlay -->
+                            <img src="tshirt.jpeg" alt="T-shirt Design" class="design-overlay">
+
+                            <br>
+                            <!-- Register Button -->
+                            <div class="mt-6 text-center">
+                                <button class="submit-btn"
+                                    onclick="window.location.href='https://forms.gle/6BciJr2QcNYRVtoo6'">Register
+                                    Now</button>
+                            </div>
+
+                            <br>
+                            <!-- Color Options -->
+                            <!-- <div class="mt-8">
+                            <h3 class="text-lg font-bold mb-4 text-white">Choose Color</h3>
+                            <div class="flex flex-wrap gap-4">
+                                <div class="color-option active bg-black" data-color="black"
+                                    style="background-color: #1a1a2e;"></div>
+                                <div class="color-option bg-white" data-color="white"
+                                    style="background-color: #ffffff;"></div>
+                                <div class="color-option bg-red-500" data-color="red"
+                                    style="background-color: #dc2626;"></div>
+                                <div class="color-option bg-blue-500" data-color="blue"
+                                    style="background-color: #3b82f6;"></div>
+                                <div class="color-option bg-gray-800" data-color="gray"
+                                    style="background-color: #374151;"></div>
+                            </div>
+                        </div> -->
+
+                            <!-- Size Guide Button -->
+                            <!-- <button onclick="toggleSizeGuide()"
+                            class="mt-6 w-full py-3 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg hover:from-gray-700 hover:to-gray-800 transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fas fa-ruler"></i> View Size Guide
+                        </button> -->
+                        </div>
+
+                        <!-- Design Features -->
+                        <div class="form-container p-6">
+                            <h2 class="text-2xl font-bold mb-6 text-primary flex items-center">
+                                <i class="fas fa-star mr-3"></i> Design Features
+                            </h2>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary mr-3 mt-1"></i>
+                                    <span class="text-gray-300">Premium quality cotton fabric</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary mr-3 mt-1"></i>
+                                    <span class="text-gray-300">High-quality screen printing</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary mr-3 mt-1"></i>
+                                    <span class="text-gray-300">Exclusive SURAVI 2K26 design</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary mr-3 mt-1"></i>
+                                    <span class="text-gray-300">Limited edition commemorative piece</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check text-primary mr-3 mt-1"></i>
+                                    <span class="text-gray-300">Comfortable fit for all-day wear</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Registration Form -->
+                    <!-- <div class="space-y-8">
+                    <div class="form-container p-6 md:p-8">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-8 text-primary flex items-center">
+                            <i class="fas fa-edit mr-3"></i> Registration Details
+                        </h2>
+
+                        <form id="tshirt-form" class="space-y-6"> -->
+                    <!-- Personal Information -->
+                    <!-- <div>
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" class="form-input" placeholder="Enter your full name" required>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="form-label">Email Address *</label>
+                                    <input type="email" class="form-input" placeholder="example@email.com" required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-input" placeholder="+91 98765 43210" required>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="form-label">College Name *</label>
+                                <input type="text" class="form-input" placeholder="Enter your college name" required>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="form-label">Registration Number *</label>
+                                    <input type="text" class="form-input" placeholder="Enter registration number"
+                                        required>
+                                </div>
+                                <div>
+                                    <label class="form-label">Year of Study *</label>
+                                    <div class="select-wrapper">
+                                        <select class="form-input" required>
+                                            <option value="">Select Year</option>
+                                            <option value="1">1st Year</option>
+                                            <option value="2">2nd Year</option>
+                                            <option value="3">3rd Year</option>
+                                            <option value="4">4th Year</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                    <!-- T-Shirt Details -->
+                    <!-- <div>
+                                <label class="form-label">T-Shirt Size *</label>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                    <label class="radio-option">
+                                        <input type="radio" name="size" value="S" class="radio-input" required>
+                                        <div class="radio-dot"></div>
+                                        <span>S</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="size" value="M" class="radio-input">
+                                        <div class="radio-dot"></div>
+                                        <span>M</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="size" value="L" class="radio-input">
+                                        <div class="radio-dot"></div>
+                                        <span>L</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="size" value="XL" class="radio-input">
+                                        <div class="radio-dot"></div>
+                                        <span>XL</span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="size" value="XXL" class="radio-input">
+                                        <div class="radio-dot"></div>
+                                        <span>XXL</span>
+                                    </label>
+                                </div>
+                            </div> -->
+
+                    <!-- <div>
+                                <label class="form-label">Quantity *</label>
+                                <div class="flex items-center space-x-4">
+                                    <button type="button" onclick="adjustQuantity(-1)"
+                                        class="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center hover:bg-primary/30 transition-colors">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" id="quantity" class="form-input text-center w-24" value="1"
+                                        min="1" max="5" readonly>
+                                    <button type="button" onclick="adjustQuantity(1)"
+                                        class="w-10 h-10 rounded-full bg-primary/20 text-primary flex items-center justify-center hover:bg-primary/30 transition-colors">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <span class="text-sm text-gray-400 ml-4">Max 5 per person</span>
+                                </div>
+                            </div> -->
+
+                    <!-- Payment Information -->
+                    <!-- <div>
+                                <label class="form-label">Payment Method *</label>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <label class="radio-option">
+                                        <input type="radio" name="payment" value="cash" class="radio-input" required>
+                                        <div class="radio-dot"></div>
+                                        <span class="flex items-center">
+                                            <i class="fas fa-money-bill-wave mr-2"></i> Cash
+                                        </span>
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="payment" value="upi" class="radio-input">
+                                        <div class="radio-dot"></div>
+                                        <span class="flex items-center">
+                                            <i class="fas fa-qrcode mr-2"></i> UPI
+                                        </span>
+                                    </label>
+                                </div>
+                            </div> -->
+
+                    <!-- Terms and Conditions -->
+                    <!-- <div class="pt-4 border-t border-primary/20">
+                                <label class="flex items-start space-x-3 cursor-pointer">
+                                    <input type="checkbox" class="mt-1" required>
+                                    <span class="text-sm text-gray-300">
+                                        I agree to the <a href="#" class="text-primary hover:underline">terms and
+                                            conditions</a> and confirm that all information provided is accurate. I
+                                        understand that this is a pre-order and delivery will be made during the
+                                        festival days.
+                                    </span>
+                                </label>
+                            </div> -->
+
+                    <!-- Submit Button -->
+                    <div class="pt-6">
+                        <div id="loading-spinner" class="loading-spinner"></div>
+                        <div id="success-message" class="success-message">
+                            <i class="fas fa-check-circle text-4xl text-green-400 mb-4"></i>
+                            <h3 class="text-xl font-bold mb-2">Registration Successful!</h3>
+                            <p class="text-gray-300">Your T-Shirt order has been registered. You'll receive a
+                                confirmation email shortly.</p>
+                        </div>
+                    </div>
+                    </form>
+                </div>
+
+                <!-- Delivery Information -->
+                <!-- <div class="form-container p-6">
+                        <h2 class="text-xl font-bold mb-4 text-primary flex items-center">
+                            <i class="fas fa-info-circle mr-3"></i> Important Information
+                        </h2>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <i class="fas fa-calendar-check text-primary mr-3 mt-1"></i>
+                                <div>
+                                    <div class="font-bold text-white">Collection Date</div>
+                                    <div class="text-sm text-gray-300">21-22 February 2026 at the Registration Desk
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-receipt text-primary mr-3 mt-1"></i>
+                                <div>
+                                    <div class="font-bold text-white">Confirmation Required</div>
+                                    <div class="text-sm text-gray-300">Bring your college ID and confirmation email
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-exchange-alt text-primary mr-3 mt-1"></i>
+                                <div>
+                                    <div class="font-bold text-white">Size Exchange</div>
+                                    <div class="text-sm text-gray-300">Subject to availability on spot</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-bg/90 border-t border-primary/30 py-8 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <img src="suravi.png" alt="Suravi Logo" class="h-12 w-12">
+                        <div>
+                            <div class="text-xl font-bold text-primary">SURAVI 2K26</div>
+                            <div class="text-sm text-gray-400">Official Merchandise</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Get your exclusive festival merchandise and be part of the SURAVI legacy!
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Quick Links</h3>
+                    <div class="space-y-2">
+                        <a href="index.html" class="block text-gray-400 hover:text-primary transition-colors">
+                            <i class="fas fa-arrow-right mr-2"></i> Back to Home
+                        </a>
+                        <a href="esports.html" class="block text-gray-400 hover:text-primary transition-colors">
+                            <i class="fas fa-gamepad mr-2"></i> E-Sports Registration
+                        </a>
+                        <a href="contact.html" class="block text-gray-400 hover:text-primary transition-colors">
+                            <i class="fas fa-phone mr-2"></i> Contact Support
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold mb-4 text-white">Need Help?</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-gray-400">
+                            <i class="fas fa-envelope mr-3"></i>
+                            <span>suravi2k242@gmail.com</span>
+                        </div>
+                        <div class="flex items-center text-gray-400">
+                            <i class="fas fa-phone mr-3"></i>
+                            <span>+91 8984860628</span>
+                        </div>
+                        <div class="flex items-center text-gray-400">
+                            <i class="fas fa-clock mr-3"></i>
+                            <span>10 AM - 6 PM (Mon-Sat)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center">
+                <p class="text-gray-500 text-sm">
+                    © 2026 SURAVI 2K26 - GIET Ghangapatna. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Size Guide Modal -->
+    <div id="size-guide-modal"
+        class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="size-guide max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-primary">Size Guide</h3>
+                <button onclick="toggleSizeGuide()" class="text-gray-400 hover:text-white text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="size-table">
+                    <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Chest (inches)</th>
+                            <th>Length (inches)</th>
+                            <th>Fit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-bold text-white">S</td>
+                            <td>36-38</td>
+                            <td>27</td>
+                            <td>Regular</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold text-white">M</td>
+                            <td>38-40</td>
+                            <td>28</td>
+                            <td>Regular</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold text-white">L</td>
+                            <td>40-42</td>
+                            <td>29</td>
+                            <td>Regular</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold text-white">XL</td>
+                            <td>42-44</td>
+                            <td>30</td>
+                            <td>Loose</td>
+                        </tr>
+                        <tr>
+                            <td class="font-bold text-white">XXL</td>
+                            <td>44-46</td>
+                            <td>31</td>
+                            <td>Loose</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-6 p-4 bg-gray-900/50 rounded-lg">
+                <h4 class="font-bold text-white mb-2">Measurement Tips:</h4>
+                <ul class="text-sm text-gray-300 space-y-1">
+                    <li>• Chest: Measure around the fullest part of your chest</li>
+                    <li>• Length: Measure from shoulder to hem</li>
+                    <li>• If between sizes, we recommend going one size up</li>
+                    <li>• All measurements are in inches</li>
+                </ul>
+            </div>
+
+            <div class="mt-6 text-center">
+                <button onclick="toggleSizeGuide()"
+                    class="px-6 py-2 bg-primary rounded-lg hover:bg-orange-600 transition-colors">
+                    Close Guide
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // T-shirt color selection
+        document.querySelectorAll('.color-option').forEach(option => {
+            option.addEventListener('click', function () {
+                // Remove active class from all options
+                document.querySelectorAll('.color-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+
+                // Add active class to clicked option
+                this.classList.add('active');
+
+                // Update T-shirt color
+                const color = this.getAttribute('data-color');
+                const tshirtPath = document.querySelector('.tshirt-base path');
+                let fillColor;
+
+                switch (color) {
+                    case 'black':
+                        fillColor = '#1a1a2e';
+                        break;
+                    case 'white':
+                        fillColor = '#ffffff';
+                        break;
+                    case 'red':
+                        fillColor = '#dc2626';
+                        break;
+                    case 'blue':
+                        fillColor = '#3b82f6';
+                        break;
+                    case 'gray':
+                        fillColor = '#374151';
+                        break;
+                    default:
+                        fillColor = '#1a1a2e';
+                }
+
+                tshirtPath.style.fill = fillColor;
+            });
+        });
+
+        // Quantity adjustment
+        function adjustQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
+            quantity += change;
+
+            if (quantity >= 1 && quantity <= 5) {
+                quantityInput.value = quantity;
+                updateTotalPrice();
+            }
+        }
+
+        // Update total price
+        function updateTotalPrice() {
+            const quantity = parseInt(document.getElementById('quantity').value);
+            const pricePerShirt = 399;
+            const total = quantity * pricePerShirt;
+            document.getElementById('total-price').textContent = total;
+        }
+
+        // Size guide modal
+        function toggleSizeGuide() {
+            const modal = document.getElementById('size-guide-modal');
+            modal.classList.toggle('hidden');
+            document.body.style.overflow = modal.classList.contains('hidden') ? 'auto' : 'hidden';
+        }
+
+        // Form submission
+        document.getElementById('tshirt-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const form = this;
+            const submitBtn = form.querySelector('.submit-btn');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const successMessage = document.getElementById('success-message');
+
+            // Show loading spinner
+            submitBtn.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+
+            // Simulate form submission delay
+            setTimeout(() => {
+                loadingSpinner.style.display = 'none';
+                successMessage.style.display = 'block';
+
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    form.reset();
+                    successMessage.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                    document.getElementById('quantity').value = 1;
+                    updateTotalPrice();
+                }, 3000);
+            }, 1500);
+        });
+
+        // Radio button interaction
+        document.querySelectorAll('.radio-option').forEach(option => {
+            const radioInput = option.querySelector('.radio-input');
+
+            option.addEventListener('click', function () {
+                // For radio buttons
+                if (radioInput.type === 'radio') {
+                    document.querySelectorAll('.radio-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    radioInput.checked = true;
+                }
+            });
+        });
+
+        // Initialize price
+        updateTotalPrice();
+    </script>
+</body>
+
+</html>
