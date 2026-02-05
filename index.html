@@ -474,6 +474,34 @@
             </div>
         </nav>
 
+
+
+        <!-- Admin Panel Button (hidden by default, will be shown to admin) -->
+        <div id="admin-panel" style="display: none;">
+            <button id="admin-btn" class="admin-btn">
+                <i class="fas fa-cog mr-2"></i>Admin Panel
+            </button>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="admin-login-modal" class="admin-modal">
+            <div class="admin-form">
+                <h2 class="text-2xl font-bold mb-4 text-neon-cyan">Admin Login</h2>
+                <div class="mb-4">
+                    <label class="block text-gray-300 mb-2">Admin Password</label>
+                    <input type="password" id="admin-password"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
+                        placeholder="Enter admin password">
+                </div>
+                <div class="flex gap-4">
+                    <button id="login-btn"
+                        class="flex-1 px-4 py-2 bg-neon-blue text-dark-bg font-bold rounded-lg hover:opacity-90">Login</button>
+                    <button id="close-login-btn"
+                        class="flex-1 px-4 py-2 bg-gray-700 text-white font-bold rounded-lg hover:bg-gray-600">Cancel</button>
+                </div>
+            </div>
+        </div>
+
         <!-- FIXED LATEST UPDATES BAR START-->
         <div class="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-cyan-400/40 z-50">
             <div class="flex items-center gap-4 px-4 py-2 overflow-hidden">
@@ -702,6 +730,23 @@
 
     <!-- JavaScript -->
     <script>
+        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Check if this is the first visit
+        const isFirstVisit = !sessionStorage.getItem('suravi_visited');
+
         // If first visit, show loader
         if (isFirstVisit) {
             document.addEventListener('DOMContentLoaded', function () {
@@ -878,9 +923,15 @@
 
         // LATEST UPDATES BAR SCRIPT START //
 
+        /* =========================
+           CONFIG
+        ========================= */
         const SHEET_ID = "1s1oGhggm3rNrOGXmzgLDMSTk7fxPTHspNpfXhoNS_ME";
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
 
+        /* =========================
+           CSV PARSER (SAFE)
+        ========================= */
         function parseCSV(text) {
             const rows = [];
             let row = [], cell = "", insideQuotes = false;
@@ -908,6 +959,9 @@
             return rows;
         }
 
+        /* =========================
+           HELPERS
+        ========================= */
         function parseDate(str) {
             if (!str) return null;
             const p = str.split(" ");
@@ -920,6 +974,9 @@
             return (new Date() - d) < 24 * 60 * 60 * 1000;
         }
 
+        /* =========================
+           LOAD MARQUEE
+        ========================= */
         fetch(CSV_URL)
             .then(r => r.text())
             .then(text => {
