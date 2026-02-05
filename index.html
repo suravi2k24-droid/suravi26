@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SURAVI 2K26 – Annual Techno-Cultural Fest</title>
-    <link rel="icon" type="image/png" href="suravi.png">
+    <link rel="icon" type="image/png" href="images/ASSET/suravi.webp">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Custom Tailwind config for neon theme -->
@@ -66,11 +66,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700;900&family=Tilt+Neon&display=swap"
         rel="stylesheet">
-    <!-- Firebase (for real-time news updates) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <!-- Custom CSS -->
+    
+        <!-- Custom CSS -->
     <style>
         /* Loader Styles */
         #loader-container {
@@ -350,7 +347,7 @@
                 <!-- Left Logo -->
                 <div class="flex-shrink-0 flex items-center gap-2 md:gap-3">
                     <a href="index.html" class="flex items-center space-x-2 md:space-x-3 logo-container">
-                        <img src="suravi.png" alt="SURAVI Logo" class="h-16 md:h-20 w-auto"
+                        <img src="images/ASSET/suravi.webp" alt="SURAVI Logo" class="h-16 md:h-20 w-auto"
                             style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5));">
                     </a>
                 </div>
@@ -411,7 +408,7 @@
 
                 <div class="flex-shrink-0 flex items-center gap-1.5 md:gap-3">
                     <!-- Badges -->
-                    <img src="giet.png" alt="Badge 1" class="h-12 w-auto object-contain"
+                    <img src="images/ASSET/giet.webp" alt="Badge 1" class="h-12 w-auto object-contain"
                         style="filter: drop-shadow(0 0 10px rgba(0, 243, 255, 0.5)); transform: translateY(5px);">
                     <img src="naac.png" alt="Badge 2" class="h-12 w-auto object-contain hidden sm:block">
                     <img src="nba.png" alt="Badge 3" class="h-12 w-auto object-contain hidden lg:block">
@@ -695,7 +692,7 @@
         <footer class="border-t border-neon-blue/30 py-10 px-4">
             <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
                 <div>
-                    <img src="suravi.png" alt="Suravi Logo" class="h-16 w-auto mb-4">
+                    <img src="images/ASSET/suravi.webp" alt="Suravi Logo" class="h-16 w-auto mb-4">
                     <p class="text-neon-cyan">Annual Techno-Cultural Fest of GIET Ghangapatna</p>
                     <p class="mt-4">21 & 22 February 2K26</p>
                 </div>
@@ -730,21 +727,9 @@
 
     <!-- JavaScript -->
     <script>
-        // Firebase Configuration - REPLACE WITH YOUR ACTUAL CREDENTIALS
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
+     
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Check if this is the first visit
+               // Check if this is the first visit
         const isFirstVisit = !sessionStorage.getItem('suravi_visited');
 
         // If first visit, show loader
@@ -889,9 +874,7 @@
                 });
             });
 
-            // Load news from Firebase
-            loadNews();
-
+         
             // Load breaking news from notices API
             loadBreakingNews();
 
