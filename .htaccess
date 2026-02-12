@@ -21,4 +21,6 @@ Options -Indexes
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# 2. REDIRECT to hackathon ONLY
+RewriteRule ^hackathon\.html$ https://giet-ghangapatna-hackfest.vercel.app/ [L,R=301]
 
